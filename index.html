@@ -3,21 +3,258 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DevEloop</title>
+  <title>DevEloop — Unity plugins</title>
+  <meta name="description" content="DevEloop — Unity developer creating plugins and tools for the Unity Asset Store."/>
+  <style>
+    /* Light theme */
+    :root{
+      --bg:#f6f8fa;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --accent:#0ea5a4;
+      --text:#0f1724;
+      --border: rgba(15,23,36,0.06);
+      --radius:12px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    /* make sizing predictable */
+    * { box-sizing: border-box; }
+
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      padding:28px;
+      display:flex;
+      justify-content:center;
+      box-sizing:border-box;
+    }
+    .wrap{
+      width:100%;
+      max-width:980px;
+    }
+    header{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      justify-content:flex-start;
+      margin-bottom:18px;
+    }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .logo{
+      width:56px;
+      height:56px;
+      border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),#60a5fa);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:#ffffff;
+      box-shadow:0 6px 18px rgba(2,6,23,0.06);
+      font-size:18px;
+    }
+    h1{margin:0;font-size:20px}
+    p.lead{margin:4px 0 0;color:var(--muted);font-size:14px}
+    main{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:18px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow: 0 6px 18px rgba(15,23,36,0.04);
+      border: 1px solid var(--border);
+    }
+    h2{margin:0 0 8px 0;font-size:16px}
+    ul.plugin-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+    li.plugin{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(2,6,23,0.01), transparent);
+      border:1px solid rgba(15,23,36,0.03);
+    }
+    .plugin .left{display:flex;gap:12px;align-items:center}
+
+    /* Updated icon styling — consistent box, no wrapping, centered text */
+    .plugin .icon{
+      width:44px;
+      height:44px;
+      min-width:44px;
+      border-radius:8px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(14,165,164,0.12);
+      font-weight:700;
+      color:var(--accent);
+      font-size:13px;
+      line-height:1;
+      white-space:nowrap;       /* prevent wrapping (e.g. "FBX") */
+      padding:0 6px;           /* allow short padding for multi-letter icons */
+      box-sizing:border-box;
+      flex-shrink:0;           /* prevent shrinking in tight layouts */
+      text-transform:uppercase;
+    }
+
+    .plugin a{
+      color:var(--text); text-decoration:none; font-weight:600;
+    }
+    .plugin .meta{color:var(--muted);font-size:13px}
+    .btn{
+      border-radius:10px;padding:8px 12px;font-size:13px;
+      background:transparent;border:1px solid rgba(15,23,36,0.06);
+      color:var(--accent);text-decoration:none;
+    }
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+    @media(min-width:720px){
+      main{grid-template-columns: 1fr 360px;}
+    }
+    .contact-card p{margin:8px 0 0}
+    .small{font-size:13px;color:var(--muted)}
+  </style>
 </head>
 <body>
-  <header>
-    <h1>DevEloop</h1>
-    <p>Unity Asset Store publisher — link to assets, contact, and support.</p>
-  </header>
+  <div class="wrap" role="main">
+    <header>
+      <div class="brand">
+        <div class="logo">DE</div>
+        <div>
+          <h1>DevEloop</h1>
+        </div>
+      </div>
+    </header>
 
-  <section>
-    <h2>Featured asset</h2>
-    <p><a href="https://assetstore.unity.com/publishers/99726">My Asset on the Asset Store</a></p>
-  </section>
+    <main>
+      <section class="card" id="about" aria-labelledby="about-heading">
+        <h2 id="about-heading">About</h2>
+        <p>I am a developer that creates Unity plugins. My focus is on practical editor and runtime tools that help game developers and creators.</p>
+        <p style="margin-top:8px;">I also have a set of plugins that include animations created from motion-capture data — these are provided as separate assets with ready-to-use animation clips.</p>
 
-  <footer>
-    <p>Contact: <a href="mailto:dev.eloop@outlook.com">dev.eloop@outlook.com</a></p>
-  </footer>
+        <h2 style="margin-top:16px">Available plugins</h2>
+
+        <ul class="plugin-list" id="plugins" aria-label="List of plugins">
+          <li class="plugin">
+            <div class="left">
+              <div class="icon">AR</div>
+              <div>
+                <div><a href="https://assetstore.unity.com/packages/package/284862" target="_blank" rel="noopener">Animation Recorder</a></div>
+                <div class="meta">The plugin captures model movements in real-time or in Unity Editor, allowing you to modify and save them as animations and export to FBX, GLB.</div>
+              </div>
+            </div>
+            <div>
+              <a class="btn" href="https://assetstore.unity.com/packages/package/284862" target="_blank" rel="noopener">View</a>
+            </div>
+          </li>
+
+          <li class="plugin">
+            <div class="left">
+              <div class="icon">AL</div>
+              <div>
+                <div><a href="https://assetstore.unity.com/packages/package/285804" target="_blank" rel="noopener">Animation Recorder Lite</a></div>
+                <div class="meta">A lightweight version of Animation Recorder.</div>
+              </div>
+            </div>
+            <div><a class="btn" href="https://assetstore.unity.com/packages/package/285804" target="_blank" rel="noopener">View</a></div>
+          </li>
+
+          <li class="plugin">
+            <div class="left">
+              <div class="icon">FBX</div>
+              <div>
+                <div><a href="https://assetstore.unity.com/packages/package/313666" target="_blank" rel="noopener">FBX Runtime Exporter</a></div>
+                <div class="meta">The plugin allows you to seamlessly export objects from your Unity scene into FBX format.</div>
+              </div>
+            </div>
+            <div><a class="btn" href="https://assetstore.unity.com/packages/package/313666" target="_blank" rel="noopener">View</a></div>
+          </li>
+
+          <li class="plugin">
+            <div class="left">
+              <div class="icon">A1</div>
+              <div>
+                <div><a href="https://assetstore.unity.com/packages/package/296756" target="_blank" rel="noopener">Sittings Animations Pack</a></div>
+                <div class="meta">A pack of humanoid animations of a character seated at a desk.</div>
+              </div>
+            </div>
+            <div><a class="btn" href="https://assetstore.unity.com/packages/package/296756" target="_blank" rel="noopener">View</a></div>
+          </li>
+
+          <li class="plugin">
+            <div class="left">
+              <div class="icon">A2</div>
+              <div>
+                <div><a href="https://assetstore.unity.com/packages/package/347820" target="_blank" rel="noopener">Complete Locomotion Animations Pack</a></div>
+                <div class="meta">Mocap-based humanoid locomotion animations.</div>
+              </div>
+            </div>
+            <div><a class="btn" href="https://assetstore.unity.com/packages/package/347820" target="_blank" rel="noopener">View</a></div>
+          </li>
+
+          <li class="plugin">
+            <div class="left">
+              <div class="icon">A3</div>
+              <div>
+                <div><a href="https://assetstore.unity.com/packages/package/352006" target="_blank" rel="noopener">Fitness Motions: Warmups & Stretches</a></div>
+                <div class="meta">Mocap-based warmup & stretch animations.</div>
+              </div>
+            </div>
+            <div><a class="btn" href="https://assetstore.unity.com/packages/package/352006" target="_blank" rel="noopener">View</a></div>
+          </li>
+
+          <li class="plugin">
+            <div class="left">
+              <div class="icon">MF</div>
+              <div>
+                <div><a href="https://assetstore.unity.com/packages/package/308721" target="_blank" rel="noopener">Movement Fingers Aligner</a></div>
+                <div class="meta">The plugin adjusts character finger rotations for natural poses, improving animations and VR hand movements.</div>
+              </div>
+            </div>
+            <div><a class="btn" href="https://assetstore.unity.com/packages/package/308721" target="_blank" rel="noopener">View</a></div>
+          </li>
+
+          <li class="plugin">
+            <div class="left">
+              <div class="icon">OF</div>
+              <div>
+                <div><a href="https://assetstore.unity.com/packages/package/282619" target="_blank" rel="noopener">Open File Dialog For Windows</a></div>
+                <div class="meta">Simple, native-style file open dialogs for Windows builds.</div>
+              </div>
+            </div>
+            <div><a class="btn" href="https://assetstore.unity.com/packages/package/282619" target="_blank" rel="noopener">View</a></div>
+          </li>
+        </ul>
+      </section>
+
+      <aside class="card contact-card" id="contact" aria-labelledby="contact-heading">
+        <h2 id="contact-heading">Contact</h2>
+        <p>If you need support, have questions, or want to discuss a custom tool, email me:</p>
+        <p><strong><a href="mailto:dev.eloop@outlook.com">dev.eloop@outlook.com</a></strong></p>
+      </aside>
+    </main>
+
+    <footer>
+      <div class="small">© <span id="yr"></span> DevEloop</div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>

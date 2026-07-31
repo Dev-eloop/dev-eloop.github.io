@@ -3,267 +3,862 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DevEloop — Unity plugins</title>
-  <meta name="description" content="DevEloop — Unity developer creating plugins and tools for the Unity Asset Store."/>
+  <title>DevEloop — Unity tools & animation packs for the Asset Store</title>
+  <meta name="description" content="DevEloop Team builds practical Unity editor and runtime tools — animation recording, FBX export, audio-driven facial animation — plus mocap-based humanoid animation packs." />
+  <link rel="canonical" href="https://dev-eloop.github.io/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="DevEloop" />
+  <meta property="og:title" content="DevEloop — Unity tools & animation packs" />
+  <meta property="og:description" content="Practical Unity editor and runtime tools plus mocap-based animation packs, published on the Unity Asset Store." />
+  <meta property="og:url" content="https://dev-eloop.github.io/" />
+  <meta property="og:image" content="https://dev-eloop.github.io/img/383624.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%230ea5a4'/%3E%3Cstop offset='1' stop-color='%236366f1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Segoe UI,Arial' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'%3EDE%3C/text%3E%3C/svg%3E" />
+
   <style>
-    /* Light theme */
     :root{
-      --bg:#f6f8fa;
+      color-scheme: light dark;
+
+      --accent:#0d9488;
+      --accent-2:#6366f1;
+
+      --bg:#f5f7fa;
+      --bg-2:#eaeff5;
       --card:#ffffff;
-      --muted:#6b7280;
-      --accent:#0ea5a4;
       --text:#0f1724;
-      --border: rgba(15,23,36,0.06);
-      --radius:12px;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --muted:#5b6577;
+      --border:rgba(15,23,36,.10);
+      --border-strong:rgba(15,23,36,.16);
+      --shadow:0 1px 2px rgba(15,23,36,.05), 0 8px 24px rgba(15,23,36,.06);
+      --shadow-lg:0 2px 4px rgba(15,23,36,.06), 0 18px 40px rgba(15,23,36,.12);
+      --chip:rgba(13,148,136,.10);
+
+      --radius:16px;
+      --radius-sm:10px;
+      --maxw:1120px;
+
+      font-family:"Inter var", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-feature-settings:"cv02","cv03","cv04","cv11";
     }
 
-    /* make sizing predictable */
-    * { box-sizing: border-box; }
+    :root[data-theme="dark"]{
+      --accent:#2dd4bf;
+      --accent-2:#818cf8;
+      --bg:#0b1017;
+      --bg-2:#0f1620;
+      --card:#141c26;
+      --text:#e8edf4;
+      --muted:#94a3b5;
+      --border:rgba(255,255,255,.09);
+      --border-strong:rgba(255,255,255,.16);
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+      --shadow-lg:0 2px 4px rgba(0,0,0,.4), 0 18px 40px rgba(0,0,0,.5);
+      --chip:rgba(45,212,191,.12);
+    }
 
-    html,body{height:100%}
+    @media (prefers-color-scheme: dark){
+      :root:not([data-theme="light"]){
+        --accent:#2dd4bf;
+        --accent-2:#818cf8;
+        --bg:#0b1017;
+        --bg-2:#0f1620;
+        --card:#141c26;
+        --text:#e8edf4;
+        --muted:#94a3b5;
+        --border:rgba(255,255,255,.09);
+        --border-strong:rgba(255,255,255,.16);
+        --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+        --shadow-lg:0 2px 4px rgba(0,0,0,.4), 0 18px 40px rgba(0,0,0,.5);
+        --chip:rgba(45,212,191,.12);
+      }
+    }
+
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{
       margin:0;
       background:var(--bg);
       color:var(--text);
+      line-height:1.6;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      line-height:1.5;
-      padding:28px;
-      display:flex;
-      justify-content:center;
-      box-sizing:border-box;
+      overflow-x:hidden;
     }
-    .wrap{
-      width:100%;
-      max-width:980px;
-    }
-    header{
-      display:flex;
-      gap:16px;
-      align-items:center;
-      justify-content:flex-start;
-      margin-bottom:18px;
-    }
-    .brand{
-      display:flex;
-      gap:12px;
-      align-items:center;
-    }
-    .logo{
-      width:56px;
-      height:56px;
-      border-radius:12px;
-      background:linear-gradient(135deg,var(--accent),#60a5fa);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:700;
-      color:#ffffff;
-      box-shadow:0 6px 18px rgba(2,6,23,0.06);
-      font-size:18px;
-    }
-    h1{margin:0;font-size:20px}
-    p.lead{margin:4px 0 0;color:var(--muted);font-size:14px}
-    main{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:18px;
-    }
-    .card{
-      background:var(--card);
-      border-radius:var(--radius);
-      padding:18px;
-      box-shadow: 0 6px 18px rgba(15,23,36,0.04);
-      border: 1px solid var(--border);
-    }
-    h2{margin:0 0 8px 0;font-size:16px}
-    ul.plugin-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
-    li.plugin{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      justify-content:space-between;
-      padding:12px;
-      border-radius:10px;
-      background:linear-gradient(180deg, rgba(2,6,23,0.01), transparent);
-      border:1px solid rgba(15,23,36,0.03);
-    }
-    .plugin .left{display:flex;gap:12px;align-items:center}
+    a{color:inherit}
+    img{max-width:100%;display:block}
 
-    /* Updated icon styling — consistent box, no wrapping, centered text */
-    .plugin .icon{
-      width:44px;
-      height:44px;
-      min-width:44px;
-      border-radius:8px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(14,165,164,0.12);
-      font-weight:700;
-      color:var(--accent);
-      font-size:13px;
-      line-height:1;
-      white-space:nowrap;       /* prevent wrapping (e.g. "FBX") */
-      padding:0 6px;           /* allow short padding for multi-letter icons */
-      box-sizing:border-box;
-      flex-shrink:0;           /* prevent shrinking in tight layouts */
-      text-transform:uppercase;
-    }
+    .wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:20px}
 
-    .plugin a{
-      color:var(--text); text-decoration:none; font-weight:600;
+    /* ---------- top bar ---------- */
+    .topbar{
+      position:sticky; top:0; z-index:40;
+      backdrop-filter:saturate(180%) blur(12px);
+      -webkit-backdrop-filter:saturate(180%) blur(12px);
+      background:color-mix(in srgb, var(--bg) 82%, transparent);
+      border-bottom:1px solid var(--border);
     }
-    .plugin .meta{color:var(--muted);font-size:13px}
+    .topbar .wrap{display:flex;align-items:center;gap:16px;height:64px}
+    .brand{display:flex;align-items:center;gap:11px;text-decoration:none;font-weight:700;letter-spacing:-.01em}
+    .brand .logo{
+      width:38px;height:38px;border-radius:11px;flex:0 0 auto;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:grid;place-items:center;color:#fff;font-size:14px;font-weight:800;
+      box-shadow:0 4px 14px color-mix(in srgb, var(--accent) 35%, transparent);
+    }
+    .navlinks{margin-left:auto;display:flex;align-items:center;gap:4px}
+    .navlinks a{
+      text-decoration:none;color:var(--muted);font-size:14px;font-weight:500;
+      padding:8px 12px;border-radius:8px;transition:color .15s, background .15s;
+    }
+    .navlinks a:hover{color:var(--text);background:var(--bg-2)}
+    @media (max-width:720px){ .navlinks a.hide-sm{display:none} }
+
+    .theme-toggle{
+      width:38px;height:38px;border-radius:10px;flex:0 0 auto;
+      border:1px solid var(--border);background:var(--card);color:var(--muted);
+      cursor:pointer;display:grid;place-items:center;transition:color .15s,border-color .15s;
+    }
+    .theme-toggle:hover{color:var(--text);border-color:var(--border-strong)}
+    .theme-toggle svg{width:18px;height:18px}
+    /* Which glyph shows is driven by JS setting data-shows on the button. */
+    .theme-toggle[data-shows="sun"] .icon-moon,
+    .theme-toggle[data-shows="moon"] .icon-sun{display:none}
+
+    /* ---------- hero ---------- */
+    .hero{position:relative;padding:76px 0 56px;overflow:hidden}
+    .hero::before{
+      content:"";position:absolute;inset:-40% -20% auto -20%;height:620px;z-index:-1;
+      background:
+        radial-gradient(46% 46% at 22% 34%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 70%),
+        radial-gradient(42% 42% at 78% 20%, color-mix(in srgb, var(--accent-2) 24%, transparent), transparent 70%);
+      filter:blur(14px);
+      pointer-events:none;
+    }
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+      color:var(--accent);background:var(--chip);
+      border:1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+      padding:6px 12px;border-radius:999px;margin-bottom:20px;
+    }
+    .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+    h1{
+      margin:0;font-size:clamp(2rem, 5.2vw, 3.35rem);line-height:1.08;
+      letter-spacing:-.035em;font-weight:800;max-width:16ch;
+    }
+    h1 .grad{
+      background:linear-gradient(100deg,var(--accent),var(--accent-2));
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .lead{margin:20px 0 0;font-size:clamp(1rem,1.9vw,1.175rem);color:var(--muted);max-width:60ch}
+    .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+
     .btn{
-      border-radius:10px;padding:8px 12px;font-size:13px;
-      background:transparent;border:1px solid rgba(15,23,36,0.06);
-      color:var(--accent);text-decoration:none;
+      display:inline-flex;align-items:center;gap:8px;
+      padding:11px 20px;border-radius:11px;font-size:14.5px;font-weight:600;
+      text-decoration:none;cursor:pointer;border:1px solid transparent;
+      transition:transform .15s, box-shadow .15s, background .15s, border-color .15s;
     }
-    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
-    @media(min-width:720px){
-      main{grid-template-columns: 1fr 360px;}
+    .btn svg{width:16px;height:16px;flex:0 0 auto}
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;
+      box-shadow:0 6px 20px color-mix(in srgb, var(--accent) 32%, transparent);
     }
-    .contact-card p{margin:8px 0 0}
-    .small{font-size:13px;color:var(--muted)}
+    .btn-primary:hover{transform:translateY(-1px);box-shadow:0 10px 28px color-mix(in srgb, var(--accent) 40%, transparent)}
+    .btn-ghost{background:var(--card);border-color:var(--border-strong);color:var(--text)}
+    .btn-ghost:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+
+    .stats{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+      gap:14px;margin-top:46px;
+    }
+    .stat{
+      background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
+      padding:16px 18px;box-shadow:var(--shadow);
+    }
+    .stat b{display:block;font-size:1.6rem;line-height:1.2;letter-spacing:-.02em}
+    .stat span{font-size:13px;color:var(--muted)}
+
+    /* ---------- sections ---------- */
+    section{scroll-margin-top:80px}
+    .section-head{margin:0 0 8px}
+    h2{margin:0;font-size:clamp(1.45rem,3vw,1.9rem);letter-spacing:-.025em;font-weight:750}
+    .section-sub{color:var(--muted);margin:8px 0 0;max-width:62ch}
+    .divider{height:1px;background:var(--border);margin:0}
+
+    #catalog{padding:64px 0 80px}
+
+    .filters{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 26px}
+    .filter{
+      padding:8px 15px;border-radius:999px;font-size:13.5px;font-weight:600;
+      border:1px solid var(--border-strong);background:var(--card);color:var(--muted);
+      cursor:pointer;transition:all .15s;
+    }
+    .filter:hover{color:var(--text)}
+    .filter[aria-pressed="true"]{
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:#fff;border-color:transparent;
+      box-shadow:0 4px 14px color-mix(in srgb, var(--accent) 30%, transparent);
+    }
+    .filter .count{opacity:.65;font-weight:500;margin-left:5px}
+
+    .grid{
+      display:grid;gap:22px;
+      grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+      list-style:none;padding:0;margin:0;
+    }
+
+    .card{
+      display:flex;flex-direction:column;
+      background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+      box-shadow:var(--shadow);overflow:hidden;
+      transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--border-strong)}
+
+    .thumb{
+      position:relative;aspect-ratio:3/2;overflow:hidden;
+      background:linear-gradient(135deg, var(--c1,#0d9488), var(--c2,#6366f1));
+      display:grid;place-items:center;
+    }
+    /* Decorative wash so the generated tiles read as designed, not as a missing image. */
+    .thumb::before{
+      content:"";position:absolute;inset:0;
+      background:
+        radial-gradient(60% 80% at 78% 12%, rgba(255,255,255,.30), transparent 62%),
+        radial-gradient(46% 64% at 12% 96%, rgba(0,0,0,.28), transparent 60%);
+    }
+    /* The image sits on top of the gradient/monogram, which stays as the fallback. */
+    .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+    .thumb .mono{
+      position:relative;z-index:1;
+      font-size:clamp(2rem,5vw,2.6rem);font-weight:800;letter-spacing:-.04em;
+      color:rgba(255,255,255,.94);text-shadow:0 2px 18px rgba(0,0,0,.28);
+    }
+    .thumb::after{
+      content:"";position:absolute;inset:0;pointer-events:none;
+      box-shadow:inset 0 -1px 0 var(--border);
+    }
+
+    .badge{
+      position:absolute;top:10px;right:10px;z-index:2;
+      font-size:11.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
+      padding:5px 10px;border-radius:999px;
+      background:rgba(9,14,22,.72);color:#fff;backdrop-filter:blur(6px);
+    }
+    .badge.free{background:#16a34a}
+
+    .play{
+      position:absolute;inset:0;z-index:2;display:grid;place-items:center;
+      border:0;background:rgba(9,14,22,.28);cursor:pointer;
+      opacity:0;transition:opacity .18s;
+    }
+    .card:hover .play,.play:focus-visible{opacity:1}
+    .play span{
+      width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.94);
+      display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.35);
+    }
+    .play svg{width:20px;height:20px;margin-left:3px;fill:#0f1724}
+
+    .card-body{padding:18px 18px 0;flex:1 1 auto;display:flex;flex-direction:column}
+    .card h3{margin:0;font-size:1.06rem;line-height:1.32;letter-spacing:-.015em;font-weight:700}
+    .card h3 a{text-decoration:none}
+    .card h3 a:hover{color:var(--accent)}
+    .kicker{
+      display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+      font-size:12px;color:var(--muted);margin-bottom:9px;
+    }
+    .kicker .cat{
+      color:var(--accent);background:var(--chip);border-radius:6px;
+      padding:2px 8px;font-weight:600;
+    }
+    .card p{margin:10px 0 0;font-size:14px;color:var(--muted);flex:1 1 auto}
+    .tags{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0;padding:0;list-style:none}
+    .tags li{
+      font-size:11.5px;color:var(--muted);border:1px solid var(--border);
+      border-radius:6px;padding:2px 8px;
+    }
+    .card-foot{
+      display:flex;align-items:center;gap:10px;
+      padding:16px 18px;margin-top:16px;border-top:1px solid var(--border);
+    }
+    .card-foot .btn{padding:9px 15px;font-size:13.5px}
+    .card-foot .price{margin-left:auto;font-size:13.5px;font-weight:700;color:var(--muted)}
+    .card-foot .price.free{color:#16a34a}
+    :root[data-theme="dark"] .card-foot .price.free{color:#4ade80}
+    @media (prefers-color-scheme: dark){
+      :root:not([data-theme="light"]) .card-foot .price.free{color:#4ade80}
+    }
+
+    .empty{color:var(--muted);padding:40px 0;text-align:center;grid-column:1/-1}
+
+    /* ---------- about / contact ---------- */
+    #about{padding:70px 0;background:var(--bg-2);border-block:1px solid var(--border)}
+    .about-grid{display:grid;gap:34px;margin-top:30px}
+    @media (min-width:860px){ .about-grid{grid-template-columns:1.25fr 1fr;gap:44px} }
+    .about-grid p{color:var(--muted);margin:0 0 14px}
+    .feature-list{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:14px}
+    .feature-list li{display:flex;gap:12px;align-items:flex-start;font-size:14.5px}
+    .feature-list .ico{
+      width:32px;height:32px;flex:0 0 auto;border-radius:9px;display:grid;place-items:center;
+      background:var(--chip);color:var(--accent);
+    }
+    .feature-list .ico svg{width:16px;height:16px}
+    .feature-list b{display:block;font-weight:650}
+    .feature-list span{color:var(--muted);font-size:13.5px}
+
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+      padding:26px;box-shadow:var(--shadow);
+    }
+    .panel h3{margin:0 0 6px;font-size:1.1rem;letter-spacing:-.015em}
+    .panel p{margin:0 0 16px;color:var(--muted);font-size:14.5px}
+    .mailto{
+      display:flex;align-items:center;gap:10px;font-weight:650;text-decoration:none;
+      color:var(--accent);word-break:break-all;
+    }
+    .mailto svg{width:17px;height:17px;flex:0 0 auto}
+    .note{
+      margin-top:18px;padding-top:16px;border-top:1px solid var(--border);
+      font-size:13px;color:var(--muted);
+    }
+
+    /* ---------- footer ---------- */
+    footer{padding:34px 0;font-size:13.5px;color:var(--muted)}
+    footer .wrap{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+    footer a{color:var(--muted);text-decoration:none}
+    footer a:hover{color:var(--text)}
+
+    /* ---------- video modal ---------- */
+    dialog#video{
+      border:0;padding:0;background:transparent;max-width:min(960px,94vw);width:100%;
+      overflow:visible;
+    }
+    dialog#video::backdrop{background:rgba(5,8,12,.78);backdrop-filter:blur(4px)}
+    .video-shell{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;box-shadow:var(--shadow-lg)}
+    .video-shell iframe{width:100%;height:100%;border:0;display:block}
+    .video-close{
+      position:absolute;top:-14px;right:-14px;width:36px;height:36px;border-radius:50%;
+      border:0;background:#fff;color:#0f1724;cursor:pointer;font-size:19px;line-height:1;
+      box-shadow:0 4px 14px rgba(0,0,0,.4);
+    }
+    @media (max-width:600px){ .video-close{top:-46px;right:0} }
+
+    /* ---------- motion ---------- */
+    /* Cards are visible by default; JS opts them into the fade-in by adding .pre,
+       so a failed observer or blocked script can never leave the grid blank. */
+    .reveal{transition:opacity .5s ease, transform .5s ease}
+    .reveal.pre{opacity:0;transform:translateY(14px)}
+    @media (prefers-reduced-motion: reduce){
+      html{scroll-behavior:auto}
+      *,*::before,*::after{animation:none!important;transition:none!important}
+      .reveal.pre{opacity:1;transform:none}
+    }
+    :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
   </style>
-  
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZS2M22J91N"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-ZS2M22J91N');
+  </script>
+
+  <script>
+    /* Apply the saved theme before first paint to avoid a flash. */
+    try{
+      var t = localStorage.getItem('theme');
+      if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+    }catch(e){}
   </script>
 </head>
 <body>
-  <div class="wrap" role="main">
-    <header>
-      <div class="brand">
-        <div class="logo">DE</div>
-        <div>
-          <h1>DevEloop</h1>
-        </div>
-      </div>
-    </header>
 
-    <main>
-      <section class="card" id="about" aria-labelledby="about-heading">
-        <h2 id="about-heading">About</h2>
-        <p>I am a developer that creates Unity plugins. My focus is on practical editor and runtime tools that help game developers and creators.</p>
-        <p style="margin-top:8px;">I also have a set of plugins that include animations created from motion-capture data — these are provided as separate assets with ready-to-use animation clips.</p>
-
-        <h2 style="margin-top:16px">Available plugins</h2>
-
-        <ul class="plugin-list" id="plugins" aria-label="List of plugins">
-          <li class="plugin">
-            <div class="left">
-              <div class="icon">AR</div>
-              <div>
-                <div><a href="https://assetstore.unity.com/packages/package/284862" target="_blank" rel="noopener">Animation Recorder</a></div>
-                <div class="meta">The plugin captures model movements in real-time or in Unity Editor, allowing you to modify and save them as animations and export to FBX, GLB.</div>
-              </div>
-            </div>
-            <div>
-              <a class="btn" href="https://assetstore.unity.com/packages/package/284862" target="_blank" rel="noopener">View</a>
-            </div>
-          </li>
-
-          <li class="plugin">
-            <div class="left">
-              <div class="icon">AL</div>
-              <div>
-                <div><a href="https://assetstore.unity.com/packages/package/285804" target="_blank" rel="noopener">Animation Recorder Lite</a></div>
-                <div class="meta">A lightweight version of Animation Recorder.</div>
-              </div>
-            </div>
-            <div><a class="btn" href="https://assetstore.unity.com/packages/package/285804" target="_blank" rel="noopener">View</a></div>
-          </li>
-
-          <li class="plugin">
-            <div class="left">
-              <div class="icon">FBX</div>
-              <div>
-                <div><a href="https://assetstore.unity.com/packages/package/313666" target="_blank" rel="noopener">FBX Runtime Exporter</a></div>
-                <div class="meta">The plugin allows you to seamlessly export objects from your Unity scene into FBX format.</div>
-              </div>
-            </div>
-            <div><a class="btn" href="https://assetstore.unity.com/packages/package/313666" target="_blank" rel="noopener">View</a></div>
-          </li>
-
-          <li class="plugin">
-            <div class="left">
-              <div class="icon">A1</div>
-              <div>
-                <div><a href="https://assetstore.unity.com/packages/package/296756" target="_blank" rel="noopener">Sittings Animations Pack</a></div>
-                <div class="meta">A pack of humanoid animations of a character seated at a desk.</div>
-              </div>
-            </div>
-            <div><a class="btn" href="https://assetstore.unity.com/packages/package/296756" target="_blank" rel="noopener">View</a></div>
-          </li>
-
-          <li class="plugin">
-            <div class="left">
-              <div class="icon">A2</div>
-              <div>
-                <div><a href="https://assetstore.unity.com/packages/package/347820" target="_blank" rel="noopener">Complete Locomotion Animations Pack</a></div>
-                <div class="meta">Mocap-based humanoid locomotion animations.</div>
-              </div>
-            </div>
-            <div><a class="btn" href="https://assetstore.unity.com/packages/package/347820" target="_blank" rel="noopener">View</a></div>
-          </li>
-
-          <li class="plugin">
-            <div class="left">
-              <div class="icon">A3</div>
-              <div>
-                <div><a href="https://assetstore.unity.com/packages/package/352006" target="_blank" rel="noopener">Fitness Motions: Warmups & Stretches</a></div>
-                <div class="meta">Mocap-based warmup & stretch animations.</div>
-              </div>
-            </div>
-            <div><a class="btn" href="https://assetstore.unity.com/packages/package/352006" target="_blank" rel="noopener">View</a></div>
-          </li>
-
-          <li class="plugin">
-            <div class="left">
-              <div class="icon">MF</div>
-              <div>
-                <div><a href="https://assetstore.unity.com/packages/package/308721" target="_blank" rel="noopener">Movement Fingers Aligner</a></div>
-                <div class="meta">The plugin adjusts character finger rotations for natural poses, improving animations and VR hand movements.</div>
-              </div>
-            </div>
-            <div><a class="btn" href="https://assetstore.unity.com/packages/package/308721" target="_blank" rel="noopener">View</a></div>
-          </li>
-
-          <li class="plugin">
-            <div class="left">
-              <div class="icon">OF</div>
-              <div>
-                <div><a href="https://assetstore.unity.com/packages/package/282619" target="_blank" rel="noopener">Open File Dialog For Windows</a></div>
-                <div class="meta">Simple, native-style file open dialogs for Windows builds.</div>
-              </div>
-            </div>
-            <div><a class="btn" href="https://assetstore.unity.com/packages/package/282619" target="_blank" rel="noopener">View</a></div>
-          </li>
-        </ul>
-      </section>
-
-      <aside class="card contact-card" id="contact" aria-labelledby="contact-heading">
-        <h2 id="contact-heading">Contact</h2>
-        <p>If you need support, have questions, or want to discuss a custom tool, email me:</p>
-        <p><strong><a href="mailto:dev.eloop@outlook.com">dev.eloop@outlook.com</a></strong></p>
-      </aside>
-    </main>
-
-    <footer>
-      <div class="small">© <span id="yr"></span> DevEloop</div>
-    </footer>
+<div class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <span class="logo">DE</span>
+      <span>DevEloop</span>
+    </a>
+    <nav class="navlinks">
+      <a href="#catalog">Assets</a>
+      <a href="#about" class="hide-sm">About</a>
+      <a href="#contact">Contact</a>
+      <button class="theme-toggle" id="themeBtn" type="button" aria-label="Toggle colour theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </nav>
   </div>
+</div>
 
-  <script>
-    document.getElementById('yr').textContent = new Date().getFullYear();
-  </script>
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span> Unity Asset Store publisher</span>
+    <h1>Unity tools that <span class="grad">save you hours</span>.</h1>
+    <p class="lead">
+      I'm DevEloop — I build practical editor and runtime extensions for Unity: animation recording,
+      FBX&nbsp;export, audio-driven facial animation and rig fixes. Alongside them I publish
+      motion-capture animation packs with clean, retarget-ready humanoid clips.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#catalog">
+        Browse the assets
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="mailto:dev.eloop@outlook.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+        Get support
+      </a>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b id="statTotal">11</b><span>published assets</span></div>
+      <div class="stat"><b id="statTools">7</b><span>editor &amp; runtime tools</span></div>
+      <div class="stat"><b id="statPacks">4</b><span>mocap animation packs</span></div>
+      <div class="stat"><b id="statFree">2</b><span>free to download</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="catalog">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Assets on the Unity Asset Store</h2>
+        <p class="section-sub">
+          Every package below works with the Built-in pipeline, URP and HDRP unless the store page says otherwise.
+          Click through for screenshots, documentation and the current price in your region.
+        </p>
+      </div>
+
+      <div class="filters" role="group" aria-label="Filter assets by type" id="filters"></div>
+
+      <ul class="grid" id="grid"></ul>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>About DevEloop</h2>
+      </div>
+      <div class="about-grid">
+        <div>
+          <p>
+            DevEloop is a small independent studio publishing on the Unity Asset Store since 2024.
+            The tools come out of real production problems: getting animation out of Unity and into a DCC app,
+            recording gameplay or mocap straight into an <code>.anim</code> clip, cleaning up finger rotations
+            that retargeting always breaks, and driving a face rig from nothing but an audio file.
+          </p>
+          <p>
+            The animation packs are recorded from motion capture and delivered as ready-to-use humanoid clips,
+            so they drop into an existing Animator without extra rigging work.
+          </p>
+          <ul class="feature-list">
+            <li>
+              <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+              <div><b>Editor and runtime</b><span>Most tools work in play mode and in shipped builds, not just in the Editor.</span></div>
+            </li>
+            <li>
+              <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/></svg></span>
+              <div><b>Try before you buy</b><span>Two assets are free, including a Lite build of the flagship tools.</span></div>
+            </li>
+            <li>
+              <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+              <div><b>Kept up to date</b><span>Packages are maintained across Unity LTS releases and updated regularly.</span></div>
+            </li>
+            <li>
+              <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+              <div><b>Direct support</b><span>Questions and bug reports go straight to the developer — no ticket queue.</span></div>
+            </li>
+          </ul>
+        </div>
+
+        <aside class="panel" id="contact">
+          <h3>Contact &amp; support</h3>
+          <p>
+            Need help with an asset, hit a bug, or want to talk about a custom Unity tool?
+            Email me — I usually reply within a couple of working days.
+          </p>
+          <a class="mailto" href="mailto:dev.eloop@outlook.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+            dev.eloop@outlook.com
+          </a>
+          <p class="note">
+            When reporting an issue, please include the asset name and version, your Unity version
+            and render pipeline, and the console output. It gets to a fix much faster.
+          </p>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span id="yr"></span> DevEloop. Unity is a trademark of Unity Technologies.</div>
+    <div><a href="mailto:dev.eloop@outlook.com">dev.eloop@outlook.com</a></div>
+  </div>
+</footer>
+
+<dialog id="video" aria-label="Asset video">
+  <div class="video-shell">
+    <button class="video-close" id="videoClose" type="button" aria-label="Close video">&times;</button>
+    <div id="videoMount"></div>
+  </div>
+</dialog>
+
+<script>
+/* ==========================================================================
+   ASSET CATALOGUE — this is the only block you need to edit.
+
+   id     : Unity Asset Store package id (the number at the end of the URL)
+   title  : package name
+   type   : "tool" or "pack"  (drives the filter buttons)
+   cat    : short category label shown on the card
+   price  : "Free" or the listed price, e.g. "€23". Set to "" to hide it.
+   image  : card cover. Either form works:
+              "img/284862.webp"  — a file in this repo (preferred: you control it,
+                                   it can't break when Unity changes their CDN).
+                                   Use 3:2, 800x533 is plenty.
+              "8a37ef8e-…"       — a Unity CDN key-image UUID. Open the asset page,
+                                   right-click the main image → "Copy image address"
+                                   (…/key-image/<UUID>.jpg) and paste just the UUID.
+            Leave "" for a generated gradient tile.
+            Anything containing "/" or "." is treated as a path or URL; a bare
+            value is expanded to the Unity CDN.
+   video  : YouTube video ID only (the part after v=). Leave "" for no video.
+   desc   : one or two sentences shown on the card
+   tags   : short keywords
+   ========================================================================== */
+const PLUGINS = [
+  {
+    id: 383624,
+    title: "Audio Face Animator",
+    type: "tool",
+    cat: "Animation Tools",
+    price: "€46",
+    image: "img/383624.webp",
+    video: "",
+    desc: "Turn any audio clip into facial animation. Generates lip-sync and expressions on your character's blendshapes, with ARKit-compatible rigs and streaming audio support.",
+    tags: ["Lip-sync", "Blendshapes", "ARKit", "Audio2Face"]
+  },
+  {
+    id: 383626,
+    title: "Audio Face Animator Lite",
+    type: "tool",
+    cat: "Animation Tools",
+    price: "Free",
+    image: "img/383626.webp",
+    video: "",
+    desc: "The free edition of Audio Face Animator — try audio-driven lip-sync and facial expressions on your own characters before upgrading.",
+    tags: ["Free", "Lip-sync", "Facial animation"]
+  },
+  {
+    id: 284862,
+    title: "Animation Recorder",
+    type: "tool",
+    cat: "Animation Tools",
+    price: "€23",
+    image: "img/284862.webp",
+    video: "",
+    desc: "Capture model movement in real time or in the Editor, trim and edit the result, then save it as an AnimationClip or export it to FBX and GLB.",
+    tags: ["Mocap", "AnimationClip", "FBX", "GLB"]
+  },
+  {
+    id: 285804,
+    title: "Animation Recorder Lite",
+    type: "tool",
+    cat: "Animation Tools",
+    price: "Free",
+    image: "img/285804.webp",
+    video: "",
+    desc: "A lightweight, free build of Animation Recorder for recording skeletal animation straight into AnimationClips.",
+    tags: ["Free", "Recording", "Skeletal"]
+  },
+  {
+    id: 313666,
+    title: "FBX Runtime Exporter",
+    type: "tool",
+    cat: "Modeling Tools",
+    price: "€13.79",
+    image: "img/313666.webp",
+    video: "",
+    desc: "Export any object from your Unity scene to FBX — at runtime or in the Editor — including meshes, skinning, blendshapes, materials, textures, terrain and animation.",
+    tags: ["FBX", "Runtime export", "Blendshapes", "Terrain"]
+  },
+  {
+    id: 308721,
+    title: "Movement Fingers Aligner",
+    type: "tool",
+    cat: "Animation Tools",
+    price: "€23",
+    image: "img/308721.webp",
+    video: "",
+    desc: "Fixes the finger rotations that retargeting always breaks. Produces natural hand poses for character animation and VR, and works with the Meta Movement SDK.",
+    tags: ["VR hands", "Retargeting", "Meta Movement SDK"]
+  },
+  {
+    id: 282619,
+    title: "Open File Dialog for Windows",
+    type: "tool",
+    cat: "Utilities",
+    price: "€9.20",
+    image: "img/282619.webp",
+    video: "",
+    desc: "Native Windows open/save file dialogs for your Unity builds — filters, multi-select and folder picking, with no external dependencies.",
+    tags: ["Windows", "Native dialog", "File I/O"]
+  },
+  {
+    id: 347820,
+    title: "Complete Locomotion Animations Pack",
+    type: "pack",
+    cat: "3D Animations",
+    price: "€9.19",
+    image: "img/347820.webp",
+    video: "",
+    desc: "A full mocap locomotion set — idle, walk, run, turns and jumps — recorded on a humanoid rig and ready to drop into an Animator Controller.",
+    tags: ["Mocap", "Humanoid", "Locomotion"]
+  },
+  {
+    id: 296756,
+    title: "Sitting Animations Pack",
+    type: "pack",
+    cat: "3D Animations",
+    price: "€9.19",
+    image: "img/296756.webp",
+    video: "",
+    desc: "Humanoid animations of a character seated at a desk: idle poses, typing and writing — ideal for offices, classrooms and dialogue scenes.",
+    tags: ["Mocap", "Sitting", "Desk", "Idle"]
+  },
+  {
+    id: 360110,
+    title: "Dance Animations",
+    type: "pack",
+    cat: "3D Animations",
+    price: "€9.19",
+    image: "img/360110.webp",
+    video: "",
+    desc: "A mocap dance collection spanning breakdance, waltz and folk-inspired routines, delivered as clean humanoid clips.",
+    tags: ["Mocap", "Dance", "Humanoid"]
+  },
+  {
+    id: 352006,
+    title: "Fitness Motions: Warmups & Stretches",
+    type: "pack",
+    cat: "3D Animations",
+    price: "€9.19",
+    image: "img/352006.webp",
+    video: "",
+    desc: "Motion-captured warmup and stretching routines for fitness, wellness and training apps, retarget-ready on any humanoid avatar.",
+    tags: ["Mocap", "Fitness", "Stretching"]
+  }
+];
+
+/* ---------- rendering ---------- */
+
+const STORE = id => `https://assetstore.unity.com/packages/slug/${id}`;
+
+/* A local path or full URL is used as-is; a bare value is a Unity CDN key-image UUID. */
+const coverURL = image => /[/.]/.test(image)
+  ? image
+  : `https://assetstorev1-prd-cdn.unity3d.com/key-image/${image}.jpg`;
+
+const esc = s => String(s).replace(/[&<>"']/g, c =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+/* Deterministic gradient + monogram, used when no key image is set. */
+function palette(id){
+  const h = (id * 2654435761) % 360;
+  return [`hsl(${h} 62% 44%)`, `hsl(${(h + 58) % 360} 66% 52%)`];
+}
+function monogram(title){
+  return title.replace(/[^A-Za-z0-9 ]/g, " ").split(/\s+/)
+    .filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("");
+}
+
+function cardHTML(p){
+  const [c1, c2] = palette(p.id);
+  const url = STORE(p.id);
+  const isFree = /^free$/i.test(p.price);
+
+  const media = p.image
+    ? `<img src="${esc(coverURL(p.image))}" alt="" loading="lazy" decoding="async"
+            onerror="this.remove()">`
+    : "";
+
+  const play = p.video
+    ? `<button class="play" type="button" data-video="${esc(p.video)}"
+               aria-label="Watch the ${esc(p.title)} video">
+         <span><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+       </button>`
+    : "";
+
+  const priceTag = p.price
+    ? `<span class="price${isFree ? " free" : ""}">${esc(p.price)}</span>` : "";
+
+  const badge = isFree ? `<span class="badge free">Free</span>` : "";
+
+  return `
+  <li class="card reveal" data-type="${esc(p.type)}" data-free="${isFree}">
+    <div class="thumb" style="--c1:${c1};--c2:${c2}">
+      <span class="mono" aria-hidden="true">${esc(monogram(p.title))}</span>
+      ${media}${badge}${play}
+    </div>
+    <div class="card-body">
+      <div class="kicker"><span class="cat">${esc(p.cat)}</span></div>
+      <h3><a href="${url}" target="_blank" rel="noopener">${esc(p.title)}</a></h3>
+      <p>${esc(p.desc)}</p>
+      <ul class="tags">${p.tags.map(t => `<li>${esc(t)}</li>`).join("")}</ul>
+    </div>
+    <div class="card-foot">
+      <a class="btn btn-primary" href="${url}" target="_blank" rel="noopener">
+        View on Asset Store
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+      </a>
+      ${priceTag}
+    </div>
+  </li>`;
+}
+
+const grid = document.getElementById("grid");
+const filterBar = document.getElementById("filters");
+
+const FILTERS = [
+  { key: "all",  label: "All assets", test: () => true },
+  { key: "tool", label: "Tools",      test: p => p.type === "tool" },
+  { key: "pack", label: "Animation packs", test: p => p.type === "pack" },
+  { key: "free", label: "Free",       test: p => /^free$/i.test(p.price) }
+];
+
+filterBar.innerHTML = FILTERS.map((f, i) => `
+  <button class="filter" type="button" data-filter="${f.key}" aria-pressed="${i === 0}">
+    ${f.label}<span class="count">${PLUGINS.filter(f.test).length}</span>
+  </button>`).join("");
+
+function render(key){
+  const f = FILTERS.find(x => x.key === key) || FILTERS[0];
+  const items = PLUGINS.filter(f.test);
+  grid.innerHTML = items.length
+    ? items.map(cardHTML).join("")
+    : `<li class="empty">Nothing here yet.</li>`;
+  observeCards();
+}
+
+filterBar.addEventListener("click", e => {
+  const btn = e.target.closest(".filter");
+  if (!btn) return;
+  filterBar.querySelectorAll(".filter").forEach(b =>
+    b.setAttribute("aria-pressed", String(b === btn)));
+  render(btn.dataset.filter);
+});
+
+/* ---------- stats ---------- */
+document.getElementById("statTotal").textContent = PLUGINS.length;
+document.getElementById("statTools").textContent = PLUGINS.filter(p => p.type === "tool").length;
+document.getElementById("statPacks").textContent = PLUGINS.filter(p => p.type === "pack").length;
+document.getElementById("statFree").textContent = PLUGINS.filter(p => /^free$/i.test(p.price)).length;
+
+/* ---------- reveal on scroll ----------
+   Cards render visible; we hide them (.pre) only once we know we can reveal
+   them again, and a timer un-hides everything if the observer never fires. */
+let io = null, revealTimer = null;
+
+function reveal(el){
+  el.style.transitionDelay = el.dataset.delay || "0ms";
+  el.classList.remove("pre");
+}
+
+function observeCards(){
+  const targets = [...grid.querySelectorAll(".reveal")];
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduced || !("IntersectionObserver" in window)) return;
+
+  if (!io){
+    io = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        reveal(en.target);
+        io.unobserve(en.target);
+      });
+    }, { rootMargin: "0px 0px -8% 0px" });
+  }
+
+  targets.forEach((el, i) => {
+    el.dataset.delay = Math.min(i, 6) * 55 + "ms";
+    el.classList.add("pre");
+    io.observe(el);
+  });
+
+  clearTimeout(revealTimer);
+  revealTimer = setTimeout(() => targets.forEach(reveal), 1500);
+}
+
+/* ---------- video modal (YouTube only loads once you click play) ---------- */
+const dlg = document.getElementById("video");
+const mount = document.getElementById("videoMount");
+
+grid.addEventListener("click", e => {
+  const btn = e.target.closest(".play");
+  if (!btn) return;
+  const id = btn.dataset.video;
+  mount.innerHTML =
+    `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0"
+             title="Asset video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+             allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+  if (typeof dlg.showModal === "function") dlg.showModal();
+});
+
+function closeVideo(){ mount.innerHTML = ""; if (dlg.open) dlg.close(); }
+document.getElementById("videoClose").addEventListener("click", closeVideo);
+dlg.addEventListener("close", () => { mount.innerHTML = ""; });
+dlg.addEventListener("click", e => { if (e.target === dlg) closeVideo(); });
+
+/* ---------- theme toggle ---------- */
+const themeBtn = document.getElementById("themeBtn");
+const systemDark = matchMedia("(prefers-color-scheme: dark)");
+
+const resolvedTheme = () =>
+  document.documentElement.dataset.theme || (systemDark.matches ? "dark" : "light");
+
+function syncThemeButton(){
+  /* Show the theme you'd switch *to*. */
+  const next = resolvedTheme() === "dark" ? "light" : "dark";
+  themeBtn.dataset.shows = next === "dark" ? "moon" : "sun";
+  themeBtn.setAttribute("aria-label", `Switch to ${next} theme`);
+}
+
+themeBtn.addEventListener("click", () => {
+  const next = resolvedTheme() === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem("theme", next); } catch (e) {}
+  syncThemeButton();
+});
+
+systemDark.addEventListener("change", syncThemeButton);
+syncThemeButton();
+
+document.getElementById("yr").textContent = new Date().getFullYear();
+
+render("all");
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "DevEloop",
+  "alternateName": "DevEloop Team",
+  "url": "https://dev-eloop.github.io/",
+  "email": "dev.eloop@outlook.com",
+  "description": "Independent publisher of Unity editor and runtime tools and motion-capture animation packs on the Unity Asset Store."
+}
+</script>
+
 </body>
 </html>

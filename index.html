@@ -124,33 +124,30 @@
     .theme-toggle[data-shows="moon"] .icon-sun{display:none}
 
     /* ---------- hero ---------- */
-    .hero{position:relative;padding:76px 0 56px;overflow:hidden}
+    .hero{position:relative;padding:72px 0 4px;overflow:hidden}
+    /* Sized to the hero itself, with both gradients anchored to the top edge so they
+       fade out before the bottom — .hero has overflow:hidden, and a gradient still
+       carrying colour at that edge gets sliced into a visible hard line. */
     .hero::before{
-      content:"";position:absolute;inset:-40% -20% auto -20%;height:620px;z-index:-1;
+      content:"";position:absolute;inset:0 -20%;z-index:-1;
       background:
-        radial-gradient(46% 46% at 22% 34%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 70%),
-        radial-gradient(42% 42% at 78% 20%, color-mix(in srgb, var(--accent-2) 24%, transparent), transparent 70%);
-      filter:blur(14px);
+        radial-gradient(52% 115% at 22% 0%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 72%),
+        radial-gradient(46% 105% at 78% 0%, color-mix(in srgb, var(--accent-2) 22%, transparent), transparent 72%);
+      filter:blur(12px);
       pointer-events:none;
     }
-    .eyebrow{
-      display:inline-flex;align-items:center;gap:8px;
-      font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
-      color:var(--accent);background:var(--chip);
-      border:1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-      padding:6px 12px;border-radius:999px;margin-bottom:20px;
-    }
-    .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
     h1{
       margin:0;font-size:clamp(2rem, 5.2vw, 3.35rem);line-height:1.08;
-      letter-spacing:-.035em;font-weight:800;max-width:16ch;
+      letter-spacing:-.035em;font-weight:800;
     }
     h1 .grad{
       background:linear-gradient(100deg,var(--accent),var(--accent-2));
       -webkit-background-clip:text;background-clip:text;color:transparent;
+      /* Keep the phrase intact: background-clip gives each line fragment its own
+         gradient sweep, so a split renders "save" and "you hours" as different
+         colours. This also forces any narrow-screen wrap to land after "that". */
+      white-space:nowrap;
     }
-    .lead{margin:20px 0 0;font-size:clamp(1rem,1.9vw,1.175rem);color:var(--muted);max-width:60ch}
-    .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
 
     .btn{
       display:inline-flex;align-items:center;gap:8px;
@@ -167,25 +164,13 @@
     .btn-ghost{background:var(--card);border-color:var(--border-strong);color:var(--text)}
     .btn-ghost:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
 
-    .stats{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-      gap:14px;margin-top:46px;
-    }
-    .stat{
-      background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
-      padding:16px 18px;box-shadow:var(--shadow);
-    }
-    .stat b{display:block;font-size:1.6rem;line-height:1.2;letter-spacing:-.02em}
-    .stat span{font-size:13px;color:var(--muted)}
-
     /* ---------- sections ---------- */
     section{scroll-margin-top:80px}
     .section-head{margin:0 0 8px}
     h2{margin:0;font-size:clamp(1.45rem,3vw,1.9rem);letter-spacing:-.025em;font-weight:750}
-    .section-sub{color:var(--muted);margin:8px 0 0;max-width:62ch}
     .divider{height:1px;background:var(--border);margin:0}
 
-    #catalog{padding:64px 0 80px}
+    #catalog{padding:24px 0 80px}
 
     .filters{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 26px}
     .filter{
@@ -395,43 +380,14 @@
 
 <header class="hero" id="top">
   <div class="wrap">
-    <span class="eyebrow"><span class="dot"></span> Unity Asset Store publisher</span>
     <h1>Unity tools that <span class="grad">save you hours</span>.</h1>
-    <p class="lead">
-      I'm DevEloop — I build practical editor and runtime extensions for Unity: animation recording,
-      FBX&nbsp;export, audio-driven facial animation and rig fixes. Alongside them I publish
-      motion-capture animation packs with clean, retarget-ready humanoid clips.
-    </p>
-    <div class="hero-cta">
-      <a class="btn btn-primary" href="#catalog">
-        Browse the assets
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </a>
-      <a class="btn btn-ghost" href="mailto:dev.eloop@outlook.com">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
-        Get support
-      </a>
-    </div>
-
-    <div class="stats">
-      <div class="stat"><b id="statTotal">11</b><span>published assets</span></div>
-      <div class="stat"><b id="statTools">7</b><span>editor &amp; runtime tools</span></div>
-      <div class="stat"><b id="statPacks">4</b><span>mocap animation packs</span></div>
-      <div class="stat"><b id="statFree">2</b><span>free to download</span></div>
-    </div>
   </div>
 </header>
 
 <main>
   <section id="catalog">
     <div class="wrap">
-      <div class="section-head">
-        <h2>Assets on the Unity Asset Store</h2>
-        <p class="section-sub">
-          Every package below works with the Built-in pipeline, URP and HDRP unless the store page says otherwise.
-          Click through for screenshots, documentation and the current price in your region.
-        </p>
-      </div>
+      <h2 class="sr-only">Assets on the Unity Asset Store</h2>
 
       <div class="filters" role="group" aria-label="Filter assets by type" id="filters"></div>
 
@@ -754,12 +710,6 @@ filterBar.addEventListener("click", e => {
     b.setAttribute("aria-pressed", String(b === btn)));
   render(btn.dataset.filter);
 });
-
-/* ---------- stats ---------- */
-document.getElementById("statTotal").textContent = PLUGINS.length;
-document.getElementById("statTools").textContent = PLUGINS.filter(p => p.type === "tool").length;
-document.getElementById("statPacks").textContent = PLUGINS.filter(p => p.type === "pack").length;
-document.getElementById("statFree").textContent = PLUGINS.filter(p => /^free$/i.test(p.price)).length;
 
 /* ---------- reveal on scroll ----------
    Cards render visible; we hide them (.pre) only once we know we can reveal

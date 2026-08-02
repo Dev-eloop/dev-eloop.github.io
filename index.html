@@ -298,6 +298,10 @@
     footer .wrap{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
     footer a{color:var(--muted);text-decoration:none}
     footer a:hover{color:var(--text)}
+    .foot-links{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px}
+    .foot-links a{display:inline-flex;align-items:center;gap:7px}
+    .foot-links svg{width:17px;height:17px;flex:0 0 auto}
+    .foot-links a:hover svg{color:#ff0000}
 
     /* ---------- video modal ---------- */
     dialog#video{
@@ -418,7 +422,13 @@
 <footer>
   <div class="wrap">
     <div>© <span id="yr"></span> DevEloop</div>
-    <div><a href="mailto:dev.eloop@outlook.com">dev.eloop@outlook.com</a></div>
+    <div class="foot-links">
+      <a href="https://www.youtube.com/@develoop-video/videos" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+        YouTube
+      </a>
+      <a href="mailto:dev.eloop@outlook.com">dev.eloop@outlook.com</a>
+    </div>
   </div>
 </footer>
 

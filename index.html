@@ -472,7 +472,7 @@ const PLUGINS = [
     cat: "Animation Tools",
     price: "€46",
     image: "img/383624.webp",
-    video: "",
+    video: "xT1ONHNwERw",
     desc: "Turn any audio clip into facial animation. Generates lip-sync and expressions on your character's blendshapes, with ARKit-compatible rigs and streaming audio support.",
     tags: ["Lip-sync", "Blendshapes", "ARKit", "Audio2Face"]
   },
@@ -483,7 +483,7 @@ const PLUGINS = [
     cat: "Animation Tools",
     price: "Free",
     image: "img/383626.webp",
-    video: "",
+    video: "xT1ONHNwERw",
     desc: "The free edition of Audio Face Animator — try audio-driven lip-sync and facial expressions on your own characters before upgrading.",
     tags: ["Lip-sync", "Blendshapes", "ARKit", "Audio2Face"]
   },
@@ -494,7 +494,7 @@ const PLUGINS = [
     cat: "Animation Tools",
     price: "€23",
     image: "img/284862.webp",
-    video: "",
+    video: "qYjLiAurjzs",
     desc: "Capture model movement in real time or in the Editor, trim and edit the result, then save it as an AnimationClip or export it to FBX and GLB.",
     tags: ["Recording", "AnimationClip", "FBX", "GLB"]
   },
@@ -505,7 +505,7 @@ const PLUGINS = [
     cat: "Animation Tools",
     price: "Free",
     image: "img/285804.webp",
-    video: "",
+    video: "qYjLiAurjzs",
     desc: "A lightweight, free build of Animation Recorder for recording skeletal animation straight into AnimationClips.",
     tags: ["Recording", "AnimationClip", "FBX", "GLB"]
   },
@@ -527,7 +527,7 @@ const PLUGINS = [
     cat: "Animation Tools",
     price: "€23",
     image: "img/308721.webp",
-    video: "",
+    video: "zK5WVpqp6bg",
     desc: "Fixes the finger rotations that retargeting always breaks. Produces natural hand poses for character animation and VR, and works with the Meta Movement SDK.",
     tags: ["VR hands", "Retargeting", "Meta Movement SDK"]
   },
@@ -549,7 +549,7 @@ const PLUGINS = [
     cat: "3D Animations",
     price: "€9.19",
     image: "img/347820.webp",
-    video: "",
+    video: "BaXb9qcgwm0",
     desc: "A full mocap locomotion set — idle, walk, run, turns and jumps — recorded on a humanoid rig and ready to drop into an Animator Controller.",
     tags: ["Mocap", "Humanoid", "Walk", "Run"]
   },
@@ -560,7 +560,7 @@ const PLUGINS = [
     cat: "3D Animations",
     price: "€9.19",
     image: "img/296756.webp",
-    video: "",
+    video: "5o4r5oQmaw8",
     desc: "Humanoid animations of a character seated at a desk: idle poses, typing and writing — ideal for offices, classrooms and dialogue scenes.",
     tags: ["Mocap", "Typing", "Hand Movements"]
   },
@@ -571,7 +571,7 @@ const PLUGINS = [
     cat: "3D Animations",
     price: "€9.19",
     image: "img/360110.webp",
-    video: "",
+    video: "vci5_ZvAaqg",
     desc: "A mocap dance collection spanning breakdance, waltz and folk-inspired routines, delivered as clean humanoid clips.",
     tags: ["Mocap", "Dance", "Humanoid"]
   },
@@ -582,7 +582,7 @@ const PLUGINS = [
     cat: "3D Animations",
     price: "€9.19",
     image: "img/352006.webp",
-    video: "",
+    video: "SGooaxo8Ub0",
     desc: "Motion-captured warmup and stretching routines for fitness, wellness and training apps, retarget-ready on any humanoid avatar.",
     tags: ["Mocap", "Humanoid", "Fitness", "Stretching"]
   }
@@ -616,8 +616,8 @@ function cardHTML(p){
   const isFree = /^free$/i.test(p.price);
 
   const media = p.image
-    ? `<img src="${esc(coverURL(p.image))}" alt="" loading="lazy" decoding="async"
-            onerror="this.remove()">`
+    ? `<img src="${esc(coverURL(p.image))}" alt="${esc(p.title)} cover art"
+            loading="lazy" decoding="async" onerror="this.remove()">`
     : "";
 
   const play = p.video
@@ -768,15 +768,191 @@ document.getElementById("yr").textContent = new Date().getFullYear();
 render("all");
 </script>
 
+<!--
+  Structured data for search engines.
+
+  IMPORTANT: this duplicates the PLUGINS array above, on purpose. The card grid is
+  rendered by JavaScript, so crawlers that don't execute JS see an empty <ul>. This
+  block is static HTML, which is the whole point — generating it from PLUGINS at
+  runtime would reproduce the problem it exists to solve.
+
+  So: when you add, rename or remove an asset, update BOTH places.
+
+  Prices are deliberately omitted. Asset Store prices move with sales, and a stale
+  price here can produce a wrong rich result or a Search Console warning.
+-->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "DevEloop",
-  "alternateName": "DevEloop Team",
-  "url": "https://dev-eloop.github.io/",
-  "email": "dev.eloop@outlook.com",
-  "description": "Independent publisher of Unity editor and runtime tools and motion-capture animation packs on the Unity Asset Store."
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://dev-eloop.github.io/#org",
+      "name": "DevEloop",
+      "alternateName": "DevEloop Team",
+      "url": "https://dev-eloop.github.io/",
+      "email": "dev.eloop@outlook.com",
+      "sameAs": ["https://www.youtube.com/@develoop-video"],
+      "description": "Independent publisher of Unity editor and runtime tools and motion-capture animation packs on the Unity Asset Store."
+    },
+    {
+      "@type": "ItemList",
+      "name": "DevEloop assets on the Unity Asset Store",
+      "numberOfItems": 11,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "SoftwareApplication",
+            "name": "Audio Face Animator",
+            "url": "https://assetstore.unity.com/packages/slug/383624",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Unity 2021.3 or newer",
+            "publisher": { "@id": "https://dev-eloop.github.io/#org" },
+            "image": "https://dev-eloop.github.io/img/383624.webp",
+            "description": "Turn any audio clip into facial animation. Generates lip-sync and expressions on your character's blendshapes, with ARKit-compatible rigs and streaming audio support."
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "SoftwareApplication",
+            "name": "Audio Face Animator Lite",
+            "url": "https://assetstore.unity.com/packages/slug/383626",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Unity 2021.3 or newer",
+            "publisher": { "@id": "https://dev-eloop.github.io/#org" },
+            "image": "https://dev-eloop.github.io/img/383626.webp",
+            "description": "The free edition of Audio Face Animator — try audio-driven lip-sync and facial expressions on your own characters before upgrading."
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "SoftwareApplication",
+            "name": "Animation Recorder",
+            "url": "https://assetstore.unity.com/packages/slug/284862",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Unity 2021.3 or newer",
+            "publisher": { "@id": "https://dev-eloop.github.io/#org" },
+            "image": "https://dev-eloop.github.io/img/284862.webp",
+            "description": "Capture model movement in real time or in the Editor, trim and edit the result, then save it as an AnimationClip or export it to FBX and GLB."
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "SoftwareApplication",
+            "name": "Animation Recorder Lite",
+            "url": "https://assetstore.unity.com/packages/slug/285804",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Unity 2021.3 or newer",
+            "publisher": { "@id": "https://dev-eloop.github.io/#org" },
+            "image": "https://dev-eloop.github.io/img/285804.webp",
+            "description": "A lightweight, free build of Animation Recorder for recording skeletal animation straight into AnimationClips."
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@type": "SoftwareApplication",
+            "name": "FBX Runtime Exporter",
+            "url": "https://assetstore.unity.com/packages/slug/313666",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Unity 2021.3 or newer",
+            "publisher": { "@id": "https://dev-eloop.github.io/#org" },
+            "image": "https://dev-eloop.github.io/img/313666.webp",
+            "description": "Export any object from your Unity scene to FBX — at runtime or in the Editor — including meshes, skinning, blendshapes, materials, textures, terrain and animation."
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "item": {
+            "@type": "SoftwareApplication",
+            "name": "Movement Fingers Aligner",
+            "url": "https://assetstore.unity.com/packages/slug/308721",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Unity 2021.3 or newer",
+            "publisher": { "@id": "https://dev-eloop.github.io/#org" },
+            "image": "https://dev-eloop.github.io/img/308721.webp",
+            "description": "Fixes the finger rotations that retargeting always breaks. Produces natural hand poses for character animation and VR, and works with the Meta Movement SDK."
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "item": {
+            "@type": "SoftwareApplication",
+            "name": "Open File Dialog for Windows",
+            "url": "https://assetstore.unity.com/packages/slug/282619",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Windows",
+            "publisher": { "@id": "https://dev-eloop.github.io/#org" },
+            "image": "https://dev-eloop.github.io/img/282619.webp",
+            "description": "Native Windows open/save file dialogs for your Unity builds — filters, multi-select and folder picking, with no external dependencies."
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "Complete Locomotion Animations Pack",
+            "url": "https://assetstore.unity.com/packages/slug/347820",
+            "genre": "3D Animations",
+            "creator": { "@id": "https://dev-eloop.github.io/#org" },
+            "image": "https://dev-eloop.github.io/img/347820.webp",
+            "description": "A full mocap locomotion set — idle, walk, run, turns and jumps — recorded on a humanoid rig and ready to drop into an Animator Controller."
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "Sitting Animations Pack",
+            "url": "https://assetstore.unity.com/packages/slug/296756",
+            "genre": "3D Animations",
+            "creator": { "@id": "https://dev-eloop.github.io/#org" },
+            "image": "https://dev-eloop.github.io/img/296756.webp",
+            "description": "Humanoid animations of a character seated at a desk: idle poses, typing and writing — ideal for offices, classrooms and dialogue scenes."
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "Dance Animations",
+            "url": "https://assetstore.unity.com/packages/slug/360110",
+            "genre": "3D Animations",
+            "creator": { "@id": "https://dev-eloop.github.io/#org" },
+            "image": "https://dev-eloop.github.io/img/360110.webp",
+            "description": "A mocap dance collection spanning breakdance, waltz and folk-inspired routines, delivered as clean humanoid clips."
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "Fitness Motions: Warmups & Stretches",
+            "url": "https://assetstore.unity.com/packages/slug/352006",
+            "genre": "3D Animations",
+            "creator": { "@id": "https://dev-eloop.github.io/#org" },
+            "image": "https://dev-eloop.github.io/img/352006.webp",
+            "description": "Motion-captured warmup and stretching routines for fitness, wellness and training apps, retarget-ready on any humanoid avatar."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 

@@ -1,0 +1,6 @@
+# Local tooling config — machine-specific, and this repo is served publicly,
+# so anything committed here ends up at https://dev-eloop.github.io/
+.claude/
+
+# Names the path to a private SSH key. Not a secret, but no reason to publish it.
+how_to_set_ssh_key.txt

@@ -224,14 +224,6 @@
       box-shadow:inset 0 -1px 0 var(--border);
     }
 
-    .badge{
-      position:absolute;top:10px;right:10px;z-index:2;
-      font-size:11.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
-      padding:5px 10px;border-radius:999px;
-      background:rgba(9,14,22,.72);color:#fff;backdrop-filter:blur(6px);
-    }
-    .badge.free{background:#16a34a}
-
     .play{
       position:absolute;inset:0;z-index:2;display:grid;place-items:center;
       border:0;background:rgba(9,14,22,.28);cursor:pointer;
@@ -278,19 +270,13 @@
 
     /* ---------- about / contact ---------- */
     #about{padding:70px 0;background:var(--bg-2);border-block:1px solid var(--border)}
-    .about-grid{display:grid;gap:34px;margin-top:30px}
-    @media (min-width:860px){ .about-grid{grid-template-columns:1.25fr 1fr;gap:44px} }
+    /* A single centred column. The old two-column layout was sized for a much taller
+       left side (two paragraphs plus a four-item feature list); once that went, the
+       short paragraph left a large empty block beside the contact card. */
+    #about .section-head,
+    #about .about-grid{max-width:680px;margin-inline:auto}
+    .about-grid{display:grid;gap:24px;margin-top:26px}
     .about-grid p{color:var(--muted);margin:0 0 14px}
-    .feature-list{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:14px}
-    .feature-list li{display:flex;gap:12px;align-items:flex-start;font-size:14.5px}
-    .feature-list .ico{
-      width:32px;height:32px;flex:0 0 auto;border-radius:9px;display:grid;place-items:center;
-      background:var(--chip);color:var(--accent);
-    }
-    .feature-list .ico svg{width:16px;height:16px}
-    .feature-list b{display:block;font-weight:650}
-    .feature-list span{color:var(--muted);font-size:13.5px}
-
     .panel{
       background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
       padding:26px;box-shadow:var(--shadow);
@@ -404,39 +390,16 @@
         <div>
           <p>
             DevEloop is a small independent studio publishing on the Unity Asset Store since 2024.
-            The tools come out of real production problems: getting animation out of Unity and into a DCC app,
-            recording gameplay or mocap straight into an <code>.anim</code> clip, cleaning up finger rotations
-            that retargeting always breaks, and driving a face rig from nothing but an audio file.
+            We are focused on assets with animations, covering the whole path a clip takes —
+            capture, cleanup, export, or ready-made.
           </p>
-          <p>
-            The animation packs are recorded from motion capture and delivered as ready-to-use humanoid clips,
-            so they drop into an existing Animator without extra rigging work.
-          </p>
-          <ul class="feature-list">
-            <li>
-              <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
-              <div><b>Editor and runtime</b><span>Most tools work in play mode and in shipped builds, not just in the Editor.</span></div>
-            </li>
-            <li>
-              <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/></svg></span>
-              <div><b>Try before you buy</b><span>Two assets are free, including a Lite build of the flagship tools.</span></div>
-            </li>
-            <li>
-              <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
-              <div><b>Kept up to date</b><span>Packages are maintained across Unity LTS releases and updated regularly.</span></div>
-            </li>
-            <li>
-              <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
-              <div><b>Direct support</b><span>Questions and bug reports go straight to the developer — no ticket queue.</span></div>
-            </li>
-          </ul>
         </div>
 
         <aside class="panel" id="contact">
           <h3>Contact &amp; support</h3>
           <p>
             Need help with an asset, hit a bug, or want to talk about a custom Unity tool?
-            Email me — I usually reply within a couple of working days.
+            Email us — we usually reply within a couple of working days.
           </p>
           <a class="mailto" href="mailto:dev.eloop@outlook.com">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
@@ -454,7 +417,7 @@
 
 <footer>
   <div class="wrap">
-    <div>© <span id="yr"></span> DevEloop. Unity is a trademark of Unity Technologies.</div>
+    <div>© <span id="yr"></span> DevEloop</div>
     <div><a href="mailto:dev.eloop@outlook.com">dev.eloop@outlook.com</a></div>
   </div>
 </footer>
@@ -475,6 +438,8 @@
    type   : "tool" or "pack"  (drives the filter buttons)
    cat    : short category label shown on the card
    price  : "Free" or the listed price, e.g. "€23". Set to "" to hide it.
+            Also drives the "Free" filter button, so don't delete the field.
+            Re-check after Asset Store sales.
    image  : card cover. Either form works:
               "img/284862.webp"  — a file in this repo (preferred: you control it,
                                    it can't break when Unity changes their CDN).
@@ -510,7 +475,7 @@ const PLUGINS = [
     image: "img/383626.webp",
     video: "",
     desc: "The free edition of Audio Face Animator — try audio-driven lip-sync and facial expressions on your own characters before upgrading.",
-    tags: ["Free", "Lip-sync", "Facial animation"]
+    tags: ["Lip-sync", "Blendshapes", "ARKit", "Audio2Face"]
   },
   {
     id: 284862,
@@ -521,7 +486,7 @@ const PLUGINS = [
     image: "img/284862.webp",
     video: "",
     desc: "Capture model movement in real time or in the Editor, trim and edit the result, then save it as an AnimationClip or export it to FBX and GLB.",
-    tags: ["Mocap", "AnimationClip", "FBX", "GLB"]
+    tags: ["Recording", "AnimationClip", "FBX", "GLB"]
   },
   {
     id: 285804,
@@ -532,7 +497,7 @@ const PLUGINS = [
     image: "img/285804.webp",
     video: "",
     desc: "A lightweight, free build of Animation Recorder for recording skeletal animation straight into AnimationClips.",
-    tags: ["Free", "Recording", "Skeletal"]
+    tags: ["Recording", "AnimationClip", "FBX", "GLB"]
   },
   {
     id: 313666,
@@ -543,7 +508,7 @@ const PLUGINS = [
     image: "img/313666.webp",
     video: "",
     desc: "Export any object from your Unity scene to FBX — at runtime or in the Editor — including meshes, skinning, blendshapes, materials, textures, terrain and animation.",
-    tags: ["FBX", "Runtime export", "Blendshapes", "Terrain"]
+    tags: ["Runtime Export", "FBX", "Mesh", "Animations"]
   },
   {
     id: 308721,
@@ -565,7 +530,7 @@ const PLUGINS = [
     image: "img/282619.webp",
     video: "",
     desc: "Native Windows open/save file dialogs for your Unity builds — filters, multi-select and folder picking, with no external dependencies.",
-    tags: ["Windows", "Native dialog", "File I/O"]
+    tags: ["Windows", "Runtime", "File Dialog"]
   },
   {
     id: 347820,
@@ -576,7 +541,7 @@ const PLUGINS = [
     image: "img/347820.webp",
     video: "",
     desc: "A full mocap locomotion set — idle, walk, run, turns and jumps — recorded on a humanoid rig and ready to drop into an Animator Controller.",
-    tags: ["Mocap", "Humanoid", "Locomotion"]
+    tags: ["Mocap", "Humanoid", "Walk", "Run"]
   },
   {
     id: 296756,
@@ -587,7 +552,7 @@ const PLUGINS = [
     image: "img/296756.webp",
     video: "",
     desc: "Humanoid animations of a character seated at a desk: idle poses, typing and writing — ideal for offices, classrooms and dialogue scenes.",
-    tags: ["Mocap", "Sitting", "Desk", "Idle"]
+    tags: ["Mocap", "Typing", "Hand Movements"]
   },
   {
     id: 360110,
@@ -609,7 +574,7 @@ const PLUGINS = [
     image: "img/352006.webp",
     video: "",
     desc: "Motion-captured warmup and stretching routines for fitness, wellness and training apps, retarget-ready on any humanoid avatar.",
-    tags: ["Mocap", "Fitness", "Stretching"]
+    tags: ["Mocap", "Humanoid", "Fitness", "Stretching"]
   }
 ];
 
@@ -655,13 +620,11 @@ function cardHTML(p){
   const priceTag = p.price
     ? `<span class="price${isFree ? " free" : ""}">${esc(p.price)}</span>` : "";
 
-  const badge = isFree ? `<span class="badge free">Free</span>` : "";
-
   return `
   <li class="card reveal" data-type="${esc(p.type)}" data-free="${isFree}">
     <div class="thumb" style="--c1:${c1};--c2:${c2}">
       <span class="mono" aria-hidden="true">${esc(monogram(p.title))}</span>
-      ${media}${badge}${play}
+      ${media}${play}
     </div>
     <div class="card-body">
       <div class="kicker"><span class="cat">${esc(p.cat)}</span></div>

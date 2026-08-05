@@ -193,6 +193,8 @@
     }
 
     .card{
+      /* Clears the sticky topbar when jumped to via its #anchor. */
+      scroll-margin-top:84px;
       display:flex;flex-direction:column;
       background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
       box-shadow:var(--shadow);overflow:hidden;
@@ -613,6 +615,11 @@ function monogram(title){
     .filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("");
 }
 
+/* Anchor id for each card, so a YouTube description can link to one asset:
+   dev-eloop.github.io/#animation-recorder */
+const slugify = title => title.toLowerCase()
+  .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
 function cardHTML(p){
   const [c1, c2] = palette(p.id);
   const url = STORE(p.id);
@@ -634,7 +641,7 @@ function cardHTML(p){
     ? `<span class="price${isFree ? " free" : ""}">${esc(p.price)}</span>` : "";
 
   return `
-  <li class="card reveal" data-type="${esc(p.type)}" data-free="${isFree}">
+  <li class="card reveal" id="${esc(slugify(p.title))}" data-type="${esc(p.type)}" data-free="${isFree}">
     <div class="thumb" style="--c1:${c1};--c2:${c2}">
       <span class="mono" aria-hidden="true">${esc(monogram(p.title))}</span>
       ${media}${play}
@@ -679,12 +686,26 @@ function render(key){
   observeCards();
 }
 
+/* Filter state lives in ?filter=, card anchors in the #hash — keeping them in
+   separate parts of the URL means a link can use either without clashing. */
+function setFilter(key, updateURL){
+  const f = FILTERS.find(x => x.key === key) || FILTERS[0];
+  filterBar.querySelectorAll(".filter").forEach(b =>
+    b.setAttribute("aria-pressed", String(b.dataset.filter === f.key)));
+  render(f.key);
+
+  if (updateURL){
+    const url = new URL(location);
+    if (f.key === "all") url.searchParams.delete("filter");
+    else url.searchParams.set("filter", f.key);
+    url.hash = "";
+    history.replaceState(null, "", url);
+  }
+}
+
 filterBar.addEventListener("click", e => {
   const btn = e.target.closest(".filter");
-  if (!btn) return;
-  filterBar.querySelectorAll(".filter").forEach(b =>
-    b.setAttribute("aria-pressed", String(b === btn)));
-  render(btn.dataset.filter);
+  if (btn) setFilter(btn.dataset.filter, true);
 });
 
 /* ---------- reveal on scroll ----------
@@ -768,7 +789,43 @@ syncThemeButton();
 
 document.getElementById("yr").textContent = new Date().getFullYear();
 
-render("all");
+/* ---------- deep links to a single card ---------- */
+const isCardSlug = id => PLUGINS.some(p => slugify(p.title) === id);
+const currentHashId = () => decodeURIComponent(location.hash.slice(1));
+
+function jumpToCard(id){
+  const target = document.getElementById(id);
+  if (!target) return;
+  target.classList.remove("pre");          // may still be mid fade-in
+  target.scrollIntoView({ behavior: "instant", block: "start" });
+}
+
+{
+  const hashId = currentHashId();
+  const hashIsCard = isCardSlug(hashId);
+  const asked = new URLSearchParams(location.search).get("filter");
+
+  /* A card anchor wins over ?filter=: linking to one asset must never land on a
+     filter that hides it. Non-card hashes (#about, #contact) are left to the
+     browser and keep whatever filter was requested. */
+  setFilter(hashIsCard ? "all"
+    : (FILTERS.some(f => f.key === asked) ? asked : "all"), false);
+
+  if (hashIsCard){
+    jumpToCard(hashId);
+    /* Re-run once everything has loaded: this script executes before the lazy
+       cover images do, and they shift the layout out from under the first jump. */
+    addEventListener("load", () => jumpToCard(hashId), { once: true });
+  }
+}
+
+/* Pasting a card link into an already-open page, or using back/forward. */
+addEventListener("hashchange", () => {
+  const id = currentHashId();
+  if (!isCardSlug(id)) return;
+  if (!document.getElementById(id)) setFilter("all", false);  // unhide it first
+  jumpToCard(id);
+});
 </script>
 
 <!--

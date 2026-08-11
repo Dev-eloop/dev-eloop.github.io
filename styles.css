@@ -1,0 +1,420 @@
+/* ==========================================================================
+   DevEloop � shared stylesheet for index.html and the per-asset pages.
+   Extracted from index.html when the site gained its second page.
+   ========================================================================== */
+
+    :root{
+      color-scheme: light dark;
+
+      --accent:#0d9488;
+      --accent-2:#6366f1;
+
+      --bg:#f5f7fa;
+      --bg-2:#eaeff5;
+      --card:#ffffff;
+      --text:#0f1724;
+      --muted:#5b6577;
+      --border:rgba(15,23,36,.10);
+      --border-strong:rgba(15,23,36,.16);
+      --shadow:0 1px 2px rgba(15,23,36,.05), 0 8px 24px rgba(15,23,36,.06);
+      --shadow-lg:0 2px 4px rgba(15,23,36,.06), 0 18px 40px rgba(15,23,36,.12);
+      --chip:rgba(13,148,136,.10);
+
+      --radius:16px;
+      --radius-sm:10px;
+      --maxw:1120px;
+
+      font-family:"Inter var", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-feature-settings:"cv02","cv03","cv04","cv11";
+    }
+
+    :root[data-theme="dark"]{
+      --accent:#2dd4bf;
+      --accent-2:#818cf8;
+      --bg:#0b1017;
+      --bg-2:#0f1620;
+      --card:#141c26;
+      --text:#e8edf4;
+      --muted:#94a3b5;
+      --border:rgba(255,255,255,.09);
+      --border-strong:rgba(255,255,255,.16);
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+      --shadow-lg:0 2px 4px rgba(0,0,0,.4), 0 18px 40px rgba(0,0,0,.5);
+      --chip:rgba(45,212,191,.12);
+    }
+
+    @media (prefers-color-scheme: dark){
+      :root:not([data-theme="light"]){
+        --accent:#2dd4bf;
+        --accent-2:#818cf8;
+        --bg:#0b1017;
+        --bg-2:#0f1620;
+        --card:#141c26;
+        --text:#e8edf4;
+        --muted:#94a3b5;
+        --border:rgba(255,255,255,.09);
+        --border-strong:rgba(255,255,255,.16);
+        --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+        --shadow-lg:0 2px 4px rgba(0,0,0,.4), 0 18px 40px rgba(0,0,0,.5);
+        --chip:rgba(45,212,191,.12);
+      }
+    }
+
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+    a{color:inherit}
+    img{max-width:100%;display:block}
+
+    .wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:20px}
+
+    /* ---------- top bar ---------- */
+    .topbar{
+      position:sticky; top:0; z-index:40;
+      backdrop-filter:saturate(180%) blur(12px);
+      -webkit-backdrop-filter:saturate(180%) blur(12px);
+      background:color-mix(in srgb, var(--bg) 82%, transparent);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar .wrap{display:flex;align-items:center;gap:16px;height:64px}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;letter-spacing:-.01em}
+    /* Brand mark: transparent PNG/WebP, so it sits on either theme unchanged. */
+    .brand .logo{height:28px;width:auto;flex:0 0 auto}
+    .navlinks{margin-left:auto;display:flex;align-items:center;gap:4px}
+    .navlinks a{
+      text-decoration:none;color:var(--muted);font-size:14px;font-weight:500;
+      padding:8px 12px;border-radius:8px;transition:color .15s, background .15s;
+    }
+    .navlinks a:hover{color:var(--text);background:var(--bg-2)}
+    @media (max-width:720px){ .navlinks a.hide-sm{display:none} }
+
+    .theme-toggle{
+      width:38px;height:38px;border-radius:10px;flex:0 0 auto;
+      border:1px solid var(--border);background:var(--card);color:var(--muted);
+      cursor:pointer;display:grid;place-items:center;transition:color .15s,border-color .15s;
+    }
+    .theme-toggle:hover{color:var(--text);border-color:var(--border-strong)}
+    .theme-toggle svg{width:18px;height:18px}
+    /* Which glyph shows is driven by JS setting data-shows on the button. */
+    .theme-toggle[data-shows="sun"] .icon-moon,
+    .theme-toggle[data-shows="moon"] .icon-sun{display:none}
+
+    /* ---------- hero ---------- */
+    .hero{position:relative;padding:72px 0 4px;overflow:hidden}
+    /* Sized to the hero itself, with both gradients anchored to the top edge so they
+       fade out before the bottom — .hero has overflow:hidden, and a gradient still
+       carrying colour at that edge gets sliced into a visible hard line. */
+    .hero::before{
+      content:"";position:absolute;inset:0 -20%;z-index:-1;
+      background:
+        radial-gradient(52% 115% at 22% 0%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 72%),
+        radial-gradient(46% 105% at 78% 0%, color-mix(in srgb, var(--accent-2) 22%, transparent), transparent 72%);
+      filter:blur(12px);
+      pointer-events:none;
+    }
+    h1{
+      margin:0;font-size:clamp(2rem, 5.2vw, 3.35rem);line-height:1.08;
+      letter-spacing:-.035em;font-weight:800;
+    }
+    h1 .grad{
+      background:linear-gradient(100deg,var(--accent),var(--accent-2));
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      /* Keep the phrase intact: background-clip gives each line fragment its own
+         gradient sweep, so a split renders "save" and "you hours" as different
+         colours. This also forces any narrow-screen wrap to land after "that". */
+      white-space:nowrap;
+    }
+
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:11px 20px;border-radius:11px;font-size:14.5px;font-weight:600;
+      text-decoration:none;cursor:pointer;border:1px solid transparent;
+      transition:transform .15s, box-shadow .15s, background .15s, border-color .15s;
+    }
+    .btn svg{width:16px;height:16px;flex:0 0 auto}
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;
+      box-shadow:0 6px 20px color-mix(in srgb, var(--accent) 32%, transparent);
+    }
+    .btn-primary:hover{transform:translateY(-1px);box-shadow:0 10px 28px color-mix(in srgb, var(--accent) 40%, transparent)}
+    .btn-ghost{background:var(--card);border-color:var(--border-strong);color:var(--text)}
+    .btn-ghost:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+
+    /* ---------- sections ---------- */
+    section{scroll-margin-top:80px}
+    .section-head{margin:0 0 8px}
+    h2{margin:0;font-size:clamp(1.45rem,3vw,1.9rem);letter-spacing:-.025em;font-weight:750}
+    .divider{height:1px;background:var(--border);margin:0}
+
+    #catalog{padding:24px 0 80px}
+
+    .filters{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 26px}
+    .filter{
+      padding:8px 15px;border-radius:999px;font-size:13.5px;font-weight:600;
+      border:1px solid var(--border-strong);background:var(--card);color:var(--muted);
+      cursor:pointer;transition:all .15s;
+    }
+    .filter:hover{color:var(--text)}
+    .filter[aria-pressed="true"]{
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:#fff;border-color:transparent;
+      box-shadow:0 4px 14px color-mix(in srgb, var(--accent) 30%, transparent);
+    }
+    .filter .count{opacity:.65;font-weight:500;margin-left:5px}
+
+    .grid{
+      display:grid;gap:22px;
+      grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+      list-style:none;padding:0;margin:0;
+    }
+
+    .card{
+      /* Clears the sticky topbar when jumped to via its #anchor. */
+      scroll-margin-top:84px;
+      display:flex;flex-direction:column;
+      background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+      box-shadow:var(--shadow);overflow:hidden;
+      transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--border-strong)}
+
+    .thumb{
+      position:relative;aspect-ratio:3/2;overflow:hidden;
+      background:linear-gradient(135deg, var(--c1,#0d9488), var(--c2,#6366f1));
+      display:grid;place-items:center;
+    }
+    /* Decorative wash so the generated tiles read as designed, not as a missing image. */
+    .thumb::before{
+      content:"";position:absolute;inset:0;
+      background:
+        radial-gradient(60% 80% at 78% 12%, rgba(255,255,255,.30), transparent 62%),
+        radial-gradient(46% 64% at 12% 96%, rgba(0,0,0,.28), transparent 60%);
+    }
+    /* The image sits on top of the gradient/monogram, which stays as the fallback. */
+    .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+    .thumb .mono{
+      position:relative;z-index:1;
+      font-size:clamp(2rem,5vw,2.6rem);font-weight:800;letter-spacing:-.04em;
+      color:rgba(255,255,255,.94);text-shadow:0 2px 18px rgba(0,0,0,.28);
+    }
+    .thumb::after{
+      content:"";position:absolute;inset:0;pointer-events:none;
+      box-shadow:inset 0 -1px 0 var(--border);
+    }
+
+    .play{
+      position:absolute;inset:0;z-index:2;display:grid;place-items:center;
+      border:0;background:rgba(9,14,22,.28);cursor:pointer;
+      opacity:0;transition:opacity .18s;
+    }
+    .card:hover .play,.play:focus-visible{opacity:1}
+    .play span{
+      width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.94);
+      display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.35);
+    }
+    .play svg{width:20px;height:20px;margin-left:3px;fill:#0f1724}
+
+    /* Cover art that links to a per-asset page instead of opening the video. */
+    .thumb-link{text-decoration:none;cursor:pointer}
+    .thumb-cta{
+      position:absolute;inset:0;z-index:2;display:grid;place-items:center;
+      background:rgba(9,14,22,.42);color:#fff;
+      font-size:14.5px;font-weight:650;letter-spacing:.01em;
+      opacity:0;transition:opacity .18s;
+    }
+    .card:hover .thumb-cta,.thumb-link:focus-visible .thumb-cta{opacity:1}
+
+    .card-body{padding:18px 18px 0;flex:1 1 auto;display:flex;flex-direction:column}
+    .card h3{margin:0;font-size:1.06rem;line-height:1.32;letter-spacing:-.015em;font-weight:700}
+    .card h3 a{text-decoration:none}
+    .card h3 a:hover{color:var(--accent)}
+    .kicker{
+      display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+      font-size:12px;color:var(--muted);margin-bottom:9px;
+    }
+    .kicker .cat{
+      color:var(--accent);background:var(--chip);border-radius:6px;
+      padding:2px 8px;font-weight:600;
+    }
+    .card p{margin:10px 0 0;font-size:14px;color:var(--muted);flex:1 1 auto}
+    .tags{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0;padding:0;list-style:none}
+    .tags li{
+      font-size:11.5px;color:var(--muted);border:1px solid var(--border);
+      border-radius:6px;padding:2px 8px;
+    }
+    .card-foot{
+      display:flex;align-items:center;gap:10px;
+      padding:16px 18px;margin-top:16px;border-top:1px solid var(--border);
+    }
+    .card-foot .btn{padding:9px 15px;font-size:13.5px}
+    .card-more{
+      font-size:13.5px;font-weight:600;color:var(--accent);text-decoration:none;
+      white-space:nowrap;
+    }
+    .card-more:hover{text-decoration:underline}
+    .card-foot .price{margin-left:auto;font-size:13.5px;font-weight:700;color:var(--muted)}
+    .card-foot .price.free{color:#16a34a}
+    :root[data-theme="dark"] .card-foot .price.free{color:#4ade80}
+    @media (prefers-color-scheme: dark){
+      :root:not([data-theme="light"]) .card-foot .price.free{color:#4ade80}
+    }
+
+    .empty{color:var(--muted);padding:40px 0;text-align:center;grid-column:1/-1}
+
+    /* ---------- about / contact ---------- */
+    #about{padding:70px 0;background:var(--bg-2);border-block:1px solid var(--border)}
+    /* A single centred column. The old two-column layout was sized for a much taller
+       left side (two paragraphs plus a four-item feature list); once that went, the
+       short paragraph left a large empty block beside the contact card. */
+    #about .section-head,
+    #about .about-grid{max-width:680px;margin-inline:auto}
+    .about-grid{display:grid;gap:24px;margin-top:26px}
+    .about-grid p{color:var(--muted);margin:0 0 14px}
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+      padding:26px;box-shadow:var(--shadow);
+    }
+    .panel h3{margin:0 0 6px;font-size:1.1rem;letter-spacing:-.015em}
+    .panel p{margin:0 0 16px;color:var(--muted);font-size:14.5px}
+    .mailto{
+      display:flex;align-items:center;gap:10px;font-weight:650;text-decoration:none;
+      color:var(--accent);word-break:break-all;
+    }
+    .mailto svg{width:17px;height:17px;flex:0 0 auto}
+    .note{
+      margin-top:18px;padding-top:16px;border-top:1px solid var(--border);
+      font-size:13px;color:var(--muted);
+    }
+
+    /* ---------- footer ---------- */
+    footer{padding:34px 0;font-size:13.5px;color:var(--muted)}
+    footer .wrap{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+    footer a{color:var(--muted);text-decoration:none}
+    footer a:hover{color:var(--text)}
+    .foot-links{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px}
+    .foot-links a{display:inline-flex;align-items:center;gap:7px}
+    .foot-links svg{width:17px;height:17px;flex:0 0 auto}
+    .foot-links a:hover svg{color:#ff0000}
+
+    /* ---------- video modal ---------- */
+    dialog#video{
+      border:0;padding:0;background:transparent;max-width:min(960px,94vw);width:100%;
+      overflow:visible;
+    }
+    dialog#video::backdrop{background:rgba(5,8,12,.78);backdrop-filter:blur(4px)}
+    .video-shell{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;box-shadow:var(--shadow-lg)}
+    /* Positioned against the shell's edges rather than sized with height:100%.
+       The shell's height comes from aspect-ratio, and a percentage height does not
+       resolve against that — the iframe silently fell back to its default 150px. */
+    .video-shell iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+    .video-close{
+      position:absolute;top:-14px;right:-14px;width:36px;height:36px;border-radius:50%;
+      border:0;background:#fff;color:#0f1724;cursor:pointer;font-size:19px;line-height:1;
+      box-shadow:0 4px 14px rgba(0,0,0,.4);
+    }
+    @media (max-width:600px){ .video-close{top:-46px;right:0} }
+
+    /* ---------- motion ---------- */
+    /* Cards are visible by default; JS opts them into the fade-in by adding .pre,
+       so a failed observer or blocked script can never leave the grid blank. */
+    .reveal{transition:opacity .5s ease, transform .5s ease}
+    .reveal.pre{opacity:0;transform:translateY(14px)}
+    @media (prefers-reduced-motion: reduce){
+      html{scroll-behavior:auto}
+      *,*::before,*::after{animation:none!important;transition:none!important}
+      .reveal.pre{opacity:1;transform:none}
+    }
+    :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+    /* ==========================================================================
+       Per-asset detail pages (e.g. /audio-face-animator/). Only these pages use
+       the rules below; the home page never emits these classes.
+       ========================================================================== */
+    .crumbs{font-size:13px;color:var(--muted);margin-bottom:18px}
+    .crumbs a{color:var(--muted);text-decoration:none}
+    .crumbs a:hover{color:var(--accent)}
+    .crumbs span[aria-hidden]{margin:0 6px;opacity:.5}
+
+    .page-lead{
+      margin:22px 0 0;font-size:clamp(1rem,1.9vw,1.175rem);
+      color:var(--muted);
+    }
+    .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+
+    /* One measure for the whole page. Prose alone was capped at 70ch while the
+       grids ran the full 1120px, so the right edge was ragged. Constraining every
+       block to the same width — and NOT centring it — keeps the left edge aligned
+       with the topbar and gives a single, straight right edge. */
+    .detail .hero .wrap > *,
+    .doc .wrap > *{max-width:860px}
+
+    .doc{padding:8px 0 80px}
+    .doc h2{margin:44px 0 12px;font-size:clamp(1.3rem,2.6vw,1.6rem)}
+    .doc p{color:var(--muted);margin:0 0 14px}
+    .doc strong{color:var(--text);font-weight:650}
+    .doc code{
+      background:var(--bg-2);border:1px solid var(--border);border-radius:6px;
+      padding:1px 6px;font-size:.92em;
+    }
+
+    .feature-grid{
+      list-style:none;padding:0;margin:18px 0 0;display:grid;gap:16px;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    }
+    .feature-grid li{
+      background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
+      padding:16px 18px;box-shadow:var(--shadow);
+    }
+    .feature-grid b{display:block;margin-bottom:4px;font-weight:650}
+    .feature-grid span{color:var(--muted);font-size:14px}
+
+    .req-note{
+      background:var(--chip);border:1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+      border-radius:var(--radius-sm);padding:12px 16px;color:var(--text)!important;
+      font-size:14.5px;
+    }
+    .req-list{margin:14px 0 0;padding-left:20px;color:var(--muted)}
+    .req-list li{margin-bottom:8px}
+    .req-list b{color:var(--text);font-weight:650}
+
+    .video-embed{
+      position:relative;aspect-ratio:16/9;margin:18px 0 12px;
+      border-radius:14px;overflow:hidden;background:#000;box-shadow:var(--shadow-lg);
+    }
+    .video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+    .video-facade{
+      position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;
+      background:none;cursor:pointer;display:block;
+    }
+    .video-facade img{width:100%;height:100%;object-fit:cover}
+    .video-play{
+      position:absolute;inset:0;display:grid;place-items:center;
+      background:rgba(9,14,22,.30);transition:background .18s;
+    }
+    .video-facade:hover .video-play{background:rgba(9,14,22,.14)}
+    .video-play svg{
+      width:74px;height:74px;padding:22px;box-sizing:content-box;
+      background:rgba(255,255,255,.94);border-radius:50%;fill:#0f1724;
+      box-shadow:0 6px 22px rgba(0,0,0,.4);
+    }
+    .vid-links{font-size:14px}
+    .vid-links a{color:var(--accent);text-decoration:none;font-weight:600}
+    .vid-links a:hover{text-decoration:underline}
+
+    .edition-grid{display:grid;gap:18px;margin-top:18px}
+    @media (min-width:700px){ .edition-grid{grid-template-columns:1fr 1fr} }
+    .edition-grid .panel h3{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .edition-grid .panel .btn{margin-top:4px}
+
+    .back-link{margin-top:48px}
+    .back-link a{color:var(--accent);text-decoration:none;font-weight:600}
+    .back-link a:hover{text-decoration:underline}

@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NVIDIA Audio2Face in Unity — Audio Face Animator | DevEloop</title>
+  <meta name="description" content="Run the NVIDIA Audio2Face model inside Unity. Audio Face Animator generates ARKit blendshape facial animation from audio files, fully offline, in the Editor or at runtime on Windows." />
+  <link rel="canonical" href="https://dev-eloop.github.io/audio-face-animator/" />
+
+  <meta property="og:type" content="product" />
+  <meta property="og:site_name" content="DevEloop" />
+  <meta property="og:title" content="NVIDIA Audio2Face in Unity — Audio Face Animator" />
+  <meta property="og:description" content="Run the NVIDIA Audio2Face model inside Unity. ARKit blendshape facial animation from audio files, fully offline, in the Editor or at runtime." />
+  <meta property="og:url" content="https://dev-eloop.github.io/audio-face-animator/" />
+  <meta property="og:image" content="https://dev-eloop.github.io/img/383624.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" type="image/png" sizes="64x64" href="../img/favicon.png" />
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png" />
+
+  <link rel="stylesheet" href="../styles.css" />
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZS2M22J91N"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZS2M22J91N');
+  </script>
+
+  <script>
+    /* Apply the saved theme before first paint to avoid a flash. */
+    try{
+      var t = localStorage.getItem('theme');
+      if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+    }catch(e){}
+  </script>
+</head>
+<body class="detail">
+
+<div class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../">
+      <img class="logo" src="../img/logo-mark.webp" alt="" width="320" height="163" decoding="async" />
+      <span>DevEloop</span>
+    </a>
+    <nav class="navlinks">
+      <a href="../">Assets</a>
+      <a href="../#about" class="hide-sm">About</a>
+      <a href="../#contact">Contact</a>
+      <button class="theme-toggle" id="themeBtn" type="button" aria-label="Toggle colour theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </nav>
+  </div>
+</div>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../">All assets</a> <span aria-hidden="true">/</span> <span>Audio Face Animator</span>
+    </nav>
+    <h1>NVIDIA <span class="grad">Audio2Face</span> in Unity</h1>
+    <p class="page-lead">
+      Audio Face Animator runs the NVIDIA Audio2Face AI model inside Unity. Give it an audio
+      file and it generates synchronised lip-sync and facial expression on ARKit-compatible
+      blendshapes — no manual keyframing, and no internet connection.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://assetstore.unity.com/packages/slug/383624" target="_blank" rel="noopener">
+        Get it on the Asset Store
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="https://assetstore.unity.com/packages/slug/383626" target="_blank" rel="noopener">
+        Try the free Lite edition
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="doc">
+    <div class="wrap">
+
+      <div class="video-embed" id="videoEmbed">
+        <button class="video-facade" type="button" data-video="xT1ONHNwERw" aria-label="Play the Audio Face Animator overview video">
+          <img src="../img/383624.webp" alt="" width="900" height="600" decoding="async" />
+          <span class="video-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        </button>
+      </div>
+      <p class="vid-links">
+        Setting up your own character? There is a
+        <a href="https://youtu.be/-6sJwitVeBE" target="_blank" rel="noopener">step-by-step configuration walkthrough</a>
+        on our <a href="https://www.youtube.com/@develoop-video" target="_blank" rel="noopener">YouTube channel</a>.
+      </p>
+
+      <h2>Why this exists</h2>
+      <p>
+        NVIDIA Audio2Face produces excellent facial animation from speech, but getting it into
+        Unity has never been straightforward. Unreal has an official LiveLink plugin; Unity
+        does not, and the usual answers involve exporting caches through USD or Maya formats,
+        or writing your own connector to receive streamed blendshape weights.
+      </p>
+      <p>
+        Audio Face Animator removes that step entirely. The model runs <strong>inside your
+        Unity project</strong>, and the output lands where you want it — as a Unity
+        AnimationClip you can drop straight into an Animator.
+      </p>
+
+      <h2>How it works</h2>
+      <p>
+        The plugin analyses a speech recording and drives ARKit-compatible blendshapes on your
+        character, producing synchronised mouth movement and facial expression. Everything is
+        computed locally: CUDA and TensorRT ship with the plugin, so there is nothing to install
+        separately and no connection is required at any point.
+      </p>
+
+      <h2>What you get</h2>
+      <ul class="feature-grid">
+        <li><b>Animation from audio files</b><span>Point it at a recording and generate a performance — no keyframing pass.</span></li>
+        <li><b>NVIDIA Audio2Face</b><span>The real AI model, running locally inside Unity.</span></li>
+        <li><b>Fully offline</b><span>No internet connection required at any stage.</span></li>
+        <li><b>ARKit blendshapes</b><span>Works with the standard ARKit facial rig your character already uses.</span></li>
+        <li><b>Saves AnimationClips</b><span>Output is a normal Unity clip — reuse, edit and blend it like any other.</span></li>
+        <li><b>Editor and runtime</b><span>Generate while authoring, or at runtime in a Windows Standalone build.</span></li>
+      </ul>
+
+      <h2>First run</h2>
+      <p>
+        The AI model ships as ONNX. The first time you generate, the plugin compiles a TensorRT
+        engine matched to your specific GPU — roughly a minute on a modern card. That engine is
+        then cached and reused, so it happens once.
+      </p>
+      <p>
+        In the Editor you can get it out of the way up front via
+        <code>Tools &gt; AudioFaceAnimator &gt; Setup TensorRT Engine</code>, which shows your GPU
+        and a progress bar. The same applies per machine in a shipped build: the first generation
+        call on each player's PC builds and caches an engine, so show your own loading UI while it
+        runs. This is precisely why the model ships as ONNX rather than a prebuilt engine — a
+        prebuilt engine only loads on the GPU architecture it was compiled for.
+      </p>
+
+      <h2>Requirements</h2>
+      <p class="req-note">
+        This plugin runs the Audio2Face model on your GPU, so the hardware requirements are
+        specific. Please check them before buying.
+      </p>
+      <ul class="req-list">
+        <li><b>Windows 10 or 11, 64-bit.</b></li>
+        <li><b>NVIDIA GPU, compute capability 7.5 or newer</b> — GeForce RTX 20-series or newer, or an equivalent Quadro, RTX A-series or data-center card. <strong>AMD and Intel GPUs are not supported.</strong></li>
+        <li><b>NVIDIA driver 576 or newer.</b> CUDA and TensorRT are bundled; nothing needs installing separately.</li>
+        <li><b>6 GB or more free VRAM</b> while generating.</li>
+        <li><b>About 3 GB of disk space</b>, and roughly the same again while the plugin copies its model files into StreamingAssets.</li>
+        <li><b>A character model with ARKit blendshapes.</b></li>
+      </ul>
+
+      <h2>Two editions</h2>
+      <div class="edition-grid">
+        <div class="panel">
+          <h3>Audio Face Animator</h3>
+          <p>The full plugin, including runtime generation in Windows Standalone builds.</p>
+          <a class="btn btn-primary" href="https://assetstore.unity.com/packages/slug/383624" target="_blank" rel="noopener">
+            View on Asset Store
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+        <div class="panel">
+          <h3>Audio Face Animator Lite <span class="price free">Free</span></h3>
+          <p>Try audio-driven lip-sync and expressions on your own characters before buying.</p>
+          <a class="btn btn-ghost" href="https://assetstore.unity.com/packages/slug/383626" target="_blank" rel="noopener">
+            View on Asset Store
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <p class="back-link">
+        <a href="../">← See all 12 DevEloop assets</a>
+      </p>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span id="yr"></span> DevEloop</div>
+    <div class="foot-links">
+      <a href="https://www.youtube.com/@develoop-video/videos" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+        YouTube
+      </a>
+      <a href="mailto:dev.eloop@outlook.com">dev.eloop@outlook.com</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Theme toggle — same behaviour as the home page. */
+const themeBtn = document.getElementById("themeBtn");
+const systemDark = matchMedia("(prefers-color-scheme: dark)");
+const resolvedTheme = () =>
+  document.documentElement.dataset.theme || (systemDark.matches ? "dark" : "light");
+
+function syncThemeButton(){
+  const next = resolvedTheme() === "dark" ? "light" : "dark";
+  themeBtn.dataset.shows = next === "dark" ? "moon" : "sun";
+  themeBtn.setAttribute("aria-label", `Switch to ${next} theme`);
+}
+themeBtn.addEventListener("click", () => {
+  const next = resolvedTheme() === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem("theme", next); } catch (e) {}
+  syncThemeButton();
+});
+systemDark.addEventListener("change", syncThemeButton);
+syncThemeButton();
+
+/* Click-to-load video: nothing reaches YouTube until the facade is clicked. */
+document.getElementById("videoEmbed").addEventListener("click", e => {
+  const btn = e.target.closest(".video-facade");
+  if (!btn) return;
+  const id = encodeURIComponent(btn.dataset.video);
+  btn.outerHTML =
+    `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0"
+             title="Audio Face Animator overview"
+             allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+             allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+});
+
+document.getElementById("yr").textContent = new Date().getFullYear();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Audio Face Animator",
+  "url": "https://assetstore.unity.com/packages/slug/383624",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Windows 10, Windows 11 (64-bit)",
+  "processorRequirements": "NVIDIA GPU with compute capability 7.5 or newer (GeForce RTX 20-series or later). AMD and Intel GPUs are not supported.",
+  "memoryRequirements": "6 GB VRAM",
+  "storageRequirements": "3 GB",
+  "softwareRequirements": "Unity 2021.3 or newer; NVIDIA driver 576 or newer",
+  "image": "https://dev-eloop.github.io/img/383624.webp",
+  "description": "A Unity plugin that runs the NVIDIA Audio2Face AI model locally to generate facial animation from audio files, driving ARKit-compatible blendshapes and saving the result as Unity AnimationClips. Works in the Editor and at runtime in Windows Standalone builds, fully offline.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "DevEloop",
+    "url": "https://dev-eloop.github.io/"
+  }
+}
+</script>
+
+</body>
+</html>

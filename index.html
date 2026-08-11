@@ -341,9 +341,6 @@ function cardHTML(p){
   const priceTag = p.price
     ? `<span class="price${isFree ? " free" : ""}">${esc(p.price)}</span>` : "";
 
-  const pageLink = p.page
-    ? `<a class="card-more" href="${esc(p.page)}">Learn more &rarr;</a>` : "";
-
   const thumbInner = `
       <span class="mono" aria-hidden="true">${esc(monogram(p.title))}</span>
       ${media}${play}`;
@@ -370,7 +367,7 @@ function cardHTML(p){
         View on Asset Store
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
       </a>
-      ${pageLink}${priceTag}
+      ${priceTag}
     </div>
   </li>`;
 }

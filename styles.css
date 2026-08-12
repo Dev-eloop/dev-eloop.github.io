@@ -185,6 +185,10 @@
       transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     }
     .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--border-strong)}
+    /* Filtering hides cards with the hidden attribute. Needed because the rule
+       above sets display:flex, which would otherwise override the UA default of
+       [hidden]{display:none} and leave "hidden" cards on screen. */
+    .card[hidden]{display:none}
 
     .thumb{
       position:relative;aspect-ratio:3/2;overflow:hidden;

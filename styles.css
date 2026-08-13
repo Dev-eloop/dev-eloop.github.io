@@ -6,19 +6,41 @@
     :root{
       color-scheme: light dark;
 
-      --accent:#0d9488;
-      --accent-2:#6366f1;
+      /* ---- Ember palette: #ba1200 #031927 #9dd1f1 #508aa8 #c8e0f4 ----
+         Ink navy and sky blue. The five swatches don't cover a UI on their own,
+         so the page, card, border and muted values are derived in the same hue
+         family, and #508aa8 is darkened here because the raw swatch only makes
+         3.3:1 on white. */
+      --accent:#2f6a8a;
+      /* A mid navy, not the palette's ink. Ink here would equal --text, which
+         made the h1 gradient end in the same colour as the sentence around it
+         and took the primary button to near-black. */
+      --accent-2:#16496b;
+      /* Text laid over the accent gradient (primary button, active filter).
+         Inverts to ink in dark mode, where the accents are pale. */
+      --on-accent:#ffffff;
+      --ok:#1f7a4d;
 
-      --bg:#f5f7fa;
-      --bg-2:#eaeff5;
+      --bg:#eef4f9;
+      --bg-2:#e0ebf5;
       --card:#ffffff;
-      --text:#0f1724;
-      --muted:#5b6577;
-      --border:rgba(15,23,36,.10);
-      --border-strong:rgba(15,23,36,.16);
-      --shadow:0 1px 2px rgba(15,23,36,.05), 0 8px 24px rgba(15,23,36,.06);
-      --shadow-lg:0 2px 4px rgba(15,23,36,.06), 0 18px 40px rgba(15,23,36,.12);
-      --chip:rgba(13,148,136,.10);
+      --text:#031927;
+      --muted:#556775;
+      --border:rgba(3,25,39,.11);
+      --border-strong:rgba(3,25,39,.19);
+      --shadow:0 1px 2px rgba(3,25,39,.05), 0 8px 24px rgba(3,25,39,.07);
+      --shadow-lg:0 2px 4px rgba(3,25,39,.06), 0 18px 40px rgba(3,25,39,.13);
+      --chip:rgba(47,106,138,.11);
+      /* Hero background wash. Set apart from the accents so the brick red gets
+         a place: it is the palette's signature, but a red primary button reads
+         as "destructive", so it stays out of anything clickable. */
+      --glow-1:#ba1200;
+      --glow-2:#9dd1f1;
+      /* Second stop of the h1 gradient, kept off --accent-2 so the headline can
+         carry the brick red — the one piece of text that can. Dark mode lifts it
+         to a brighter ember: the raw #ba1200 only makes 2.81:1 on the ink page. */
+      --headline-1:var(--accent);
+      --headline-2:#ba1200;
 
       --radius:16px;
       --radius-sm:10px;
@@ -28,35 +50,48 @@
       font-feature-settings:"cv02","cv03","cv04","cv11";
     }
 
+    /* Dark mode inverts the palette: the ink becomes the page and the two pale
+       blues become the accents, which is why --on-accent flips to ink. Keep this
+       block and the prefers-color-scheme one below identical. */
     :root[data-theme="dark"]{
-      --accent:#2dd4bf;
-      --accent-2:#818cf8;
-      --bg:#0b1017;
-      --bg-2:#0f1620;
-      --card:#141c26;
-      --text:#e8edf4;
-      --muted:#94a3b5;
-      --border:rgba(255,255,255,.09);
-      --border-strong:rgba(255,255,255,.16);
+      --accent:#9dd1f1;
+      --accent-2:#c8e0f4;
+      --on-accent:#031927;
+      --ok:#7fd8a8;
+      --bg:#03151f;
+      --bg-2:#08202c;
+      --card:#0e2836;
+      --text:#dfeaf3;
+      --muted:#8ba6b8;
+      --border:rgba(223,234,243,.11);
+      --border-strong:rgba(223,234,243,.20);
       --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
       --shadow-lg:0 2px 4px rgba(0,0,0,.4), 0 18px 40px rgba(0,0,0,.5);
-      --chip:rgba(45,212,191,.12);
+      --chip:rgba(157,209,241,.14);
+      --glow-1:#ba1200;
+      --glow-2:#508aa8;
+      --headline-2:#f2543f;
     }
 
     @media (prefers-color-scheme: dark){
       :root:not([data-theme="light"]){
-        --accent:#2dd4bf;
-        --accent-2:#818cf8;
-        --bg:#0b1017;
-        --bg-2:#0f1620;
-        --card:#141c26;
-        --text:#e8edf4;
-        --muted:#94a3b5;
-        --border:rgba(255,255,255,.09);
-        --border-strong:rgba(255,255,255,.16);
+        --accent:#9dd1f1;
+        --accent-2:#c8e0f4;
+        --on-accent:#031927;
+        --ok:#7fd8a8;
+        --bg:#03151f;
+        --bg-2:#08202c;
+        --card:#0e2836;
+        --text:#dfeaf3;
+        --muted:#8ba6b8;
+        --border:rgba(223,234,243,.11);
+        --border-strong:rgba(223,234,243,.20);
         --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
         --shadow-lg:0 2px 4px rgba(0,0,0,.4), 0 18px 40px rgba(0,0,0,.5);
-        --chip:rgba(45,212,191,.12);
+        --chip:rgba(157,209,241,.14);
+        --glow-1:#ba1200;
+        --glow-2:#508aa8;
+        --headline-2:#f2543f;
       }
     }
 
@@ -115,8 +150,8 @@
     .hero::before{
       content:"";position:absolute;inset:0 -20%;z-index:-1;
       background:
-        radial-gradient(52% 115% at 22% 0%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 72%),
-        radial-gradient(46% 105% at 78% 0%, color-mix(in srgb, var(--accent-2) 22%, transparent), transparent 72%);
+        radial-gradient(52% 115% at 22% 0%, color-mix(in srgb, var(--glow-1) 24%, transparent), transparent 72%),
+        radial-gradient(46% 105% at 78% 0%, color-mix(in srgb, var(--glow-2) 22%, transparent), transparent 72%);
       filter:blur(12px);
       pointer-events:none;
     }
@@ -125,7 +160,7 @@
       letter-spacing:-.035em;font-weight:800;
     }
     h1 .grad{
-      background:linear-gradient(100deg,var(--accent),var(--accent-2));
+      background:linear-gradient(100deg,var(--headline-1),var(--headline-2));
       -webkit-background-clip:text;background-clip:text;color:transparent;
       /* Keep the phrase intact: background-clip gives each line fragment its own
          gradient sweep, so a split renders "save" and "you hours" as different
@@ -141,7 +176,7 @@
     }
     .btn svg{width:16px;height:16px;flex:0 0 auto}
     .btn-primary{
-      background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--on-accent);
       box-shadow:0 6px 20px color-mix(in srgb, var(--accent) 32%, transparent);
     }
     .btn-primary:hover{transform:translateY(-1px);box-shadow:0 10px 28px color-mix(in srgb, var(--accent) 40%, transparent)}
@@ -165,7 +200,7 @@
     .filter:hover{color:var(--text)}
     .filter[aria-pressed="true"]{
       background:linear-gradient(135deg,var(--accent),var(--accent-2));
-      color:#fff;border-color:transparent;
+      color:var(--on-accent);border-color:transparent;
       box-shadow:0 4px 14px color-mix(in srgb, var(--accent) 30%, transparent);
     }
     .filter .count{opacity:.65;font-weight:500;margin-left:5px}
@@ -192,7 +227,7 @@
 
     .thumb{
       position:relative;aspect-ratio:3/2;overflow:hidden;
-      background:linear-gradient(135deg, var(--c1,#0d9488), var(--c2,#6366f1));
+      background:linear-gradient(135deg, var(--c1,#2f6a8a), var(--c2,#031927));
       display:grid;place-items:center;
     }
     /* Decorative wash so the generated tiles read as designed, not as a missing image. */
@@ -224,7 +259,7 @@
       width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.94);
       display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.35);
     }
-    .play svg{width:20px;height:20px;margin-left:3px;fill:#0f1724}
+    .play svg{width:20px;height:20px;margin-left:3px;fill:#031927}
 
     /* Cover art that links to a per-asset page instead of opening the video. */
     .thumb-link{text-decoration:none;cursor:pointer}
@@ -260,11 +295,7 @@
     }
     .card-foot .btn{padding:9px 15px;font-size:13.5px}
     .card-foot .price{margin-left:auto;font-size:13.5px;font-weight:700;color:var(--muted)}
-    .card-foot .price.free{color:#16a34a}
-    :root[data-theme="dark"] .card-foot .price.free{color:#4ade80}
-    @media (prefers-color-scheme: dark){
-      :root:not([data-theme="light"]) .card-foot .price.free{color:#4ade80}
-    }
+    .card-foot .price.free{color:var(--ok)}
 
     .empty{color:var(--muted);padding:40px 0;text-align:center;grid-column:1/-1}
 
@@ -316,7 +347,7 @@
     .video-shell iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
     .video-close{
       position:absolute;top:-14px;right:-14px;width:36px;height:36px;border-radius:50%;
-      border:0;background:#fff;color:#0f1724;cursor:pointer;font-size:19px;line-height:1;
+      border:0;background:#fff;color:#031927;cursor:pointer;font-size:19px;line-height:1;
       box-shadow:0 4px 14px rgba(0,0,0,.4);
     }
     @media (max-width:600px){ .video-close{top:-46px;right:0} }
@@ -402,7 +433,7 @@
     .video-facade:hover .video-play{background:rgba(9,14,22,.14)}
     .video-play svg{
       width:74px;height:74px;padding:22px;box-sizing:content-box;
-      background:rgba(255,255,255,.94);border-radius:50%;fill:#0f1724;
+      background:rgba(255,255,255,.94);border-radius:50%;fill:#031927;
       box-shadow:0 6px 22px rgba(0,0,0,.4);
     }
     .vid-links{font-size:14px}

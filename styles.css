@@ -380,12 +380,13 @@
     }
     .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
 
-    /* One measure for the whole page. Prose alone was capped at 70ch while the
-       grids ran the full 1120px, so the right edge was ragged. Constraining every
-       block to the same width — and NOT centring it — keeps the left edge aligned
-       with the topbar and gives a single, straight right edge. */
+    /* One measure for the whole page, centred. Prose alone was once capped at 70ch
+       while the grids ran the full 1120px, which left a ragged right edge; every
+       block now shares a width. It is centred rather than run to the full wrap
+       because full width would put body text at roughly 150 characters a line —
+       the home page never does that, since its prose sits inside 300px cards. */
     .detail .hero .wrap > *,
-    .doc .wrap > *{max-width:860px}
+    .doc .wrap > *{max-width:860px;margin-inline:auto}
 
     .doc{padding:8px 0 80px}
     .doc h2{margin:44px 0 12px;font-size:clamp(1.3rem,2.6vw,1.6rem)}

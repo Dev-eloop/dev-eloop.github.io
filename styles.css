@@ -454,8 +454,11 @@
        so these elements arrive as plain tags with no classes to hook onto.
        ========================================================================== */
     .doc h3{margin:28px 0 8px;font-size:1.12rem;letter-spacing:-.015em;font-weight:700}
-    .doc a{color:var(--accent);text-decoration:none}
-    .doc a:hover{text-decoration:underline}
+    /* Prose links only. Without :not(.btn) this outranks .btn-primary — a single
+       class — and repaints button labels in the accent colour, leaving them at
+       1:1 contrast against their own accent-gradient background. */
+    .doc a:not(.btn){color:var(--accent);text-decoration:none}
+    .doc a:not(.btn):hover{text-decoration:underline}
     .doc ul,.doc ol{margin:0 0 14px;padding-left:22px;color:var(--muted)}
     .doc li{margin-bottom:6px}
     .doc li > ul,.doc li > ol{margin:6px 0 0}

@@ -448,3 +448,43 @@
     .back-link{margin-top:48px}
     .back-link a{color:var(--accent);text-decoration:none;font-weight:600}
     .back-link a:hover{text-decoration:underline}
+
+    /* ==========================================================================
+       Markdown output. Doc pages are written in Markdown and converted by Jekyll,
+       so these elements arrive as plain tags with no classes to hook onto.
+       ========================================================================== */
+    .doc h3{margin:28px 0 8px;font-size:1.12rem;letter-spacing:-.015em;font-weight:700}
+    .doc a{color:var(--accent);text-decoration:none}
+    .doc a:hover{text-decoration:underline}
+    .doc ul,.doc ol{margin:0 0 14px;padding-left:22px;color:var(--muted)}
+    .doc li{margin-bottom:6px}
+    .doc li > ul,.doc li > ol{margin:6px 0 0}
+
+    /* Code blocks scroll on their own rather than widening the page. */
+    .doc pre{
+      background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-sm);
+      padding:14px 16px;overflow-x:auto;margin:0 0 16px;font-size:13.5px;line-height:1.55;
+    }
+    .doc pre code{background:none;border:0;padding:0;font-size:inherit}
+
+    /* Same for tables — the wrapper keeps a wide table from breaking the layout. */
+    .doc .table-scroll{overflow-x:auto;margin:0 0 16px}
+    .doc table{border-collapse:collapse;width:100%;font-size:14px}
+    .doc th,.doc td{
+      border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top;
+    }
+    .doc th{background:var(--bg-2);font-weight:650;color:var(--text)}
+    .doc td{color:var(--muted)}
+
+    .doc blockquote{
+      margin:0 0 16px;padding:2px 0 2px 16px;
+      border-left:3px solid color-mix(in srgb, var(--accent) 45%, transparent);
+      color:var(--muted);
+    }
+    .doc blockquote p:last-child{margin-bottom:0}
+    .doc hr{border:0;border-top:1px solid var(--border);margin:32px 0}
+
+    .doc-links{margin:14px 0 0;padding-left:20px;color:var(--muted)}
+    .doc-links li{margin-bottom:8px}
+    .doc-links a{color:var(--accent);text-decoration:none;font-weight:600}
+    .doc-links a:hover{text-decoration:underline}

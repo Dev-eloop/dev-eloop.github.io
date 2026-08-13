@@ -16,4 +16,6 @@ permalink: pretty
 exclude:
   - .claude
   - how_to_set_ssh_key.txt
+  - how_to_run_locally.txt
   - README.md
+  - Gemfile

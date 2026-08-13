@@ -1,0 +1,80 @@
+Running the site locally
+========================
+
+GitHub Pages builds this site with Jekyll. To preview changes before pushing,
+run the same build on your own machine.
+
+
+One-time setup
+--------------
+
+1. Install Ruby 3.3 with the DevKit:
+
+       winget install RubyInstallerTeam.RubyWithDevKit.3.3
+
+   At the end the installer runs `ridk install` in a console window. Accept the
+   default (option 3, MSYS2 + MINGW toolchain) — that is what lets gems with
+   native extensions compile.
+
+   Use 3.3, not a newer Ruby. GitHub Pages pins Jekyll 3.x, which breaks on
+   Ruby 3.4+ because gems it assumes are in the standard library (logger, csv,
+   base64) were removed there.
+
+2. Close and reopen your terminal so PATH picks up Ruby, then confirm:
+
+       ruby -v
+
+3. Install Bundler (works from any directory — it installs system-wide):
+
+       gem install bundler
+
+4. From the repository root, install the site's gems:
+
+       cd D:\DevEloop\dev-eloop.github.io
+       bundle install
+
+   The first run takes a few minutes while native extensions compile.
+
+
+Every time
+----------
+
+From the repository root:
+
+    bundle exec jekyll serve --livereload
+
+Then open http://localhost:4000
+
+Edits to Markdown files, _layouts/, and styles.css rebuild automatically.
+Edits to _config.yml do NOT — stop the server with Ctrl+C and start it again.
+
+
+Things worth knowing
+--------------------
+
+The Gemfile uses the `github-pages` gem rather than a plain `jekyll` gem. That
+is the whole point of previewing locally: it pins the exact Jekyll, Liquid and
+kramdown versions GitHub Pages runs, so what you see locally is what deploys.
+As of this writing that resolves to github-pages 232 / Jekyll 3.10 / kramdown
+2.4.
+
+The .html files in this repo have no YAML front matter, so Jekyll copies them
+through byte-for-byte without processing Liquid. For index.html and
+audio-face-animator/index.html, Jekyll is acting as a plain static file server —
+you would see the same result opening those files directly in a browser. The
+local build matters for the Markdown-authored pages, which get wrapped in
+_layouts/doc.html.
+
+Gemfile.lock is deliberately gitignored. GitHub Pages ignores it and resolves
+its own versions, so committing it only creates conflicts when Actions and your
+machine disagree. The Gemfile itself is committed.
+
+Do not add the `wdm` gem, even though guides suggest it for Windows. The last
+release (0.1.1, from 2015) does not compile against Ruby 3.3. Without it
+Jekyll's file watcher falls back to polling, which is fine for a site this size.
+If edits ever stop triggering rebuilds, add --force_polling to the serve
+command.
+
+If a gem download fails with an SSL error like "unable to get local issuer
+certificate", that is Norton's Web/Mail Shield intercepting TLS with its own
+certificate, which RubyGems does not trust. It is not a network problem.

@@ -18,6 +18,7 @@ permalink: pretty
 # documentation was consolidated onto one page.
 plugins:
   - jekyll-redirect-from
+  - jekyll-sitemap
 
 # Never publish local-only files, even if one is committed by accident.
 exclude:

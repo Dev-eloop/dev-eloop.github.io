@@ -289,8 +289,11 @@
       font-size:11.5px;color:var(--muted);border:1px solid var(--border);
       border-radius:6px;padding:2px 8px;
     }
+    /* Wraps because the two Audio Face Animator cards carry a second button
+       (Docs) alongside the store link, which does not fit beside it and the price
+       at the 300px minimum card width. */
     .card-foot{
-      display:flex;align-items:center;gap:10px;
+      display:flex;flex-wrap:wrap;align-items:center;gap:10px;
       padding:16px 18px;margin-top:16px;border-top:1px solid var(--border);
     }
     .card-foot .btn{padding:9px 15px;font-size:13.5px}
@@ -396,6 +399,10 @@
       background:var(--bg-2);border:1px solid var(--border);border-radius:6px;
       padding:1px 6px;font-size:.92em;
     }
+    /* Inline code only. An unbroken file path — Assets/DevEloop/… — is one long
+       "word" that widens the whole page on a phone; code inside <pre> is excluded
+       because those scroll horizontally on their own instead. */
+    .doc :not(pre) > code{overflow-wrap:anywhere}
 
     .feature-grid{
       list-style:none;padding:0;margin:18px 0 0;display:grid;gap:16px;
@@ -471,8 +478,11 @@
     }
     .doc pre code{background:none;border:0;padding:0;font-size:inherit}
 
-    /* Same for tables — the wrapper keeps a wide table from breaking the layout. */
-    .doc .table-scroll{overflow-x:auto;margin:0 0 16px}
+    /* Same for tables — the wrapper keeps a wide table from breaking the layout.
+       The horizontal margin must stay `auto`: this rule ties on specificity with
+       the `.doc .wrap > *` measure above and wins on order, so a `margin:0 0 16px`
+       here silently un-centres the table and hangs it 110px left of the prose. */
+    .doc .table-scroll{overflow-x:auto;margin:0 auto 16px}
     .doc table{border-collapse:collapse;width:100%;font-size:14px}
     .doc th,.doc td{
       border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top;
@@ -480,8 +490,16 @@
     .doc th{background:var(--bg-2);font-weight:650;color:var(--text)}
     .doc td{color:var(--muted)}
 
+    /* Screenshots. Unity's editor chrome is mid-grey, so a border is what keeps a
+       screenshot from bleeding into the page background in one theme or the other. */
+    .doc img{
+      display:block;max-width:100%;height:auto;margin:18px 0;
+      border:1px solid var(--border);border-radius:var(--radius-sm);
+      background:var(--bg-2);
+    }
+
     .doc blockquote{
-      margin:0 0 16px;padding:2px 0 2px 16px;
+      margin:0 auto 16px;padding:2px 0 2px 16px;
       border-left:3px solid color-mix(in srgb, var(--accent) 45%, transparent);
       color:var(--muted);
     }

@@ -467,6 +467,9 @@
        1:1 contrast against their own accent-gradient background. */
     .doc a:not(.btn){color:var(--accent);text-decoration:none}
     .doc a:not(.btn):hover{text-decoration:underline}
+    /* A bold link is still a link. `.doc strong` above sets an explicit colour,
+       which otherwise wins inside the anchor and paints the label body text. */
+    .doc a:not(.btn) strong{color:inherit}
     .doc ul,.doc ol{margin:0 0 14px;padding-left:22px;color:var(--muted)}
     .doc li{margin-bottom:6px}
     .doc li > ul,.doc li > ol{margin:6px 0 0}

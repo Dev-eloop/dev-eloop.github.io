@@ -12,7 +12,8 @@
   <meta property="og:title" content="{{ page.title }}" />
   <meta property="og:description" content="{{ page.description }}" />
   <meta property="og:url" content="{{ site.url }}{{ page.url }}" />
-  <meta property="og:image" content="{{ site.url }}/img/383624.webp" />
+  <!-- Per-page cover art; falls back to Audio Face Animator's. -->
+  <meta property="og:image" content="{{ site.url }}{{ page.og_image | default: '/img/383624.webp' }}" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon.png" />

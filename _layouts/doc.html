@@ -36,6 +36,13 @@
       var t = localStorage.getItem('theme');
       if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
     }catch(e){}
+
+    /* The table of contents is built from the headings further down the page, so
+       it cannot exist before the content is parsed. The two-column layout it
+       lives in is decided here instead — before first paint — so the prose never
+       renders centred and then jumps sideways once the script runs. Without
+       JavaScript the class is absent and the page stays single-column. */
+    document.documentElement.classList.add('js-toc');
   </script>
 </head>
 <body class="detail">
@@ -75,18 +82,115 @@
 <main>
   <section class="doc">
     <div class="wrap">
-      {{ content }}
+      <!-- Filled in by the script below. Sits before the prose in source order so
+           that, on narrow screens where there is no room for a sidebar, it reads
+           as a contents list at the top of the page. -->
+      <nav class="doc-toc" id="docToc" aria-labelledby="docTocHead">
+        <p class="doc-toc-head" id="docTocHead">On this page</p>
+        <ul></ul>
+      </nav>
 
-      <p class="back-link">
-        {% if page.parent_url %}
-          <a href="{{ page.parent_url }}">← Back to {{ page.parent }}</a>
-        {% else %}
-          <a href="/">← See all DevEloop assets</a>
-        {% endif %}
-      </p>
+      <div class="doc-body">
+        {{ content }}
+
+        <p class="back-link">
+          {% if page.parent_url %}
+            <a href="{{ page.parent_url }}">← Back to {{ page.parent }}</a>
+          {% else %}
+            <a href="/">← See all DevEloop assets</a>
+          {% endif %}
+        </p>
+      </div>
     </div>
   </section>
 </main>
+
+<script>
+/* ---------- table of contents ----------
+   Built from the headings themselves rather than written by hand, so a section
+   added to the Markdown cannot be missing from the list. Kramdown already gives
+   every heading an id; the few that carry an explicit `{: #custom }` are used as
+   written, and anything without an id is skipped rather than guessed at.
+
+   This runs inline, immediately after the prose it reads, so the list is in place
+   by the time the page first paints. */
+(function(){
+  const toc = document.getElementById("docToc");
+  const list = toc.querySelector("ul");
+  const headings = [...document.querySelectorAll(".doc-body h2[id], .doc-body h3[id]")];
+
+  /* A contents list is navigation, not decoration: below a handful of sections it
+     saves nobody a scroll, so drop it and give the column back to the prose. */
+  if (headings.length < 3){
+    toc.remove();
+    document.documentElement.classList.remove("js-toc");
+    return;
+  }
+
+  const links = headings.map(h => {
+    const li = document.createElement("li");
+    li.className = "lvl-" + h.tagName[1];
+    const a = document.createElement("a");
+    a.href = "#" + h.id;
+    a.textContent = h.textContent;
+    li.appendChild(a);
+    list.appendChild(li);
+    return a;
+  });
+
+  /* Where the list belongs depends on how much room there is. Wide enough for the
+     sidebar and it has to be a child of the grid; too narrow and it becomes a card
+     in the flow, which reads better below the opening paragraph than above it —
+     the intro is what the page is for. The breakpoint is the one in styles.css. */
+  const wrap = toc.parentElement;
+  const intro = document.querySelector(".doc-body > p");
+  const wide = matchMedia("(min-width:1200px)");
+
+  function place(){
+    if (wide.matches) wrap.prepend(toc);
+    else if (intro) intro.after(toc);
+  }
+  wide.addEventListener("change", place);
+  place();
+
+  /* Highlight the section being read: the last heading to have passed under the
+     sticky top bar. Measured on scroll rather than observed, because a section
+     shorter than the viewport can leave two headings on screen at once and the
+     lower one must not win. */
+  let current = null;
+  let queued = false;
+
+  function highlight(){
+    queued = false;
+    let index = 0;
+    for (let i = 0; i < headings.length; i++){
+      if (headings[i].getBoundingClientRect().top > 96) break;
+      index = i;
+    }
+    /* At the very bottom the last section may be too short to ever reach the top
+       bar, so nothing would mark it read. */
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 2){
+      index = headings.length - 1;
+    }
+    const active = links[index];
+    if (active === current) return;
+    if (current) current.removeAttribute("aria-current");
+    active.setAttribute("aria-current", "true");
+    current = active;
+
+    /* Keep the marked entry visible when the list itself is scrolling. */
+    const box = active.getBoundingClientRect(), panel = toc.getBoundingClientRect();
+    if (box.top < panel.top || box.bottom > panel.bottom){
+      active.scrollIntoView({block: "nearest"});
+    }
+  }
+
+  addEventListener("scroll", () => {
+    if (!queued){ queued = true; requestAnimationFrame(highlight); }
+  }, {passive: true});
+  highlight();
+})();
+</script>
 
 <footer>
   <div class="wrap">

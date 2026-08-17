@@ -15,20 +15,6 @@ anything else that moves a hierarchy. Save the result as a Unity
 **AnimationClip**, or export it to **FBX** or **GLB** for Blender, Maya or the
 web.
 
-<ul class="doc-links">
-  <li><a href="#videos">Videos</a></li>
-  <li><a href="#what-you-can-record-and-where-it-runs">What you can record, and where it runs</a></li>
-  <li><a href="#editions">Versions comparison: Pro vs Lite</a></li>
-  <li><a href="#record-in-the-editor">Record in the Editor</a></li>
-  <li><a href="#review-and-edit-the-recording">Review and edit the recording</a></li>
-  <li><a href="#save-and-export">Save and export</a></li>
-  <li><a href="#record-at-runtime">Record at runtime</a></li>
-  <li><a href="#play-a-recording-back">Play a recording back</a></li>
-  <li><a href="#sample-scenes">Sample scenes</a></li>
-  <li><a href="#troubleshooting">Troubleshooting</a></li>
-  <li><a href="#support">Support</a></li>
-</ul>
-
 ## Videos
 
 - [**Overview**](https://youtu.be/qYjLiAurjzs){:target="_blank" rel="noopener"} —

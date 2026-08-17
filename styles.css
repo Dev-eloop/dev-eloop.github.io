@@ -393,6 +393,9 @@
 
     .doc{padding:8px 0 80px}
     .doc h2{margin:44px 0 12px;font-size:clamp(1.3rem,2.6vw,1.6rem)}
+    /* Jumping to a section from the contents list would otherwise park the
+       heading underneath the 64px sticky top bar. */
+    .doc h2,.doc h3{scroll-margin-top:84px}
     .doc p{color:var(--muted);margin:0 0 14px}
     .doc strong{color:var(--text);font-weight:650}
     .doc code{
@@ -508,6 +511,74 @@
     }
     .doc blockquote p:last-child{margin-bottom:0}
     .doc hr{border:0;border-top:1px solid var(--border);margin:32px 0}
+
+    /* ---------- documentation table of contents ----------
+       One list, two shapes. Narrow: a contents card above the prose, where it sits
+       in source order. Wide: a sticky column beside the prose, in view the whole
+       way down. The markup is identical — only the container changes. */
+    .doc-toc{margin:22px auto 8px;padding:16px 18px;
+      border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-2)}
+    .doc-toc-head{
+      margin:0 0 10px;font-size:.75rem;font-weight:700;letter-spacing:.08em;
+      text-transform:uppercase;color:var(--muted);
+    }
+    .doc-toc ul{list-style:none;margin:0;padding:0}
+    .doc-toc li{margin:0}
+    .doc-toc a{
+      display:block;padding:5px 0;color:var(--muted);text-decoration:none;
+      font-size:.925rem;line-height:1.4;
+    }
+    .doc-toc a:hover{color:var(--accent)}
+    .doc-toc .lvl-3 a{padding-left:14px;font-size:.875rem}
+    /* The card sits above the opening paragraph, so it has to stay short: it
+       lists the sections only, exactly as the hand-written lists it replaced did,
+       and it splits into two columns as soon as there is width for them. Every
+       subsection is still one scroll away in the sidebar on a wide screen. */
+    @media (max-width:1199px){
+      .doc-toc .lvl-3{display:none}
+    }
+    @media (min-width:620px) and (max-width:1199px){
+      .doc-toc ul{columns:2;column-gap:36px}
+      .doc-toc li{break-inside:avoid}
+    }
+    /* The section currently being read. */
+    .doc-toc a[aria-current]{color:var(--accent);font-weight:650}
+
+    /* Two columns only once both fit at full width: 240 + 48 + 860, plus the
+       wrap's own 20px padding on each side. Below that the card layout above
+       stands, and the list stays at the top of the page. */
+    @media (min-width:1200px){
+      /* The hero shares the grid so that the title, the breadcrumb and the prose
+         keep a single left edge — the doc column is off-centre on the page, and a
+         centred title above it would read as a misalignment. */
+      .js-toc .detail .hero .wrap,
+      .js-toc .doc .wrap{
+        max-width:1250px;
+        display:grid;grid-template-columns:240px minmax(0,860px);
+        column-gap:48px;justify-content:center;align-items:start;
+      }
+      .js-toc .detail .hero .wrap > *,
+      .js-toc .doc .wrap > .doc-body{grid-column:2;max-width:860px;margin-inline:0}
+
+      .js-toc .doc-toc{
+        grid-column:1;grid-row:1;
+        position:sticky;top:88px;
+        /* Long contents lists scroll inside the column rather than running off
+           the bottom of a short window. */
+        max-height:calc(100vh - 116px);overflow-y:auto;overscroll-behavior:contain;
+        margin:0;padding:0;background:none;border:0;
+      }
+      /* A rail down the left of the list, with the active entry marked on the
+         rail itself — the -1px pull puts the accent segment on top of the rule
+         rather than beside it, so the marker reads as part of the same line. */
+      .js-toc .doc-toc ul{border-left:1px solid var(--border)}
+      .js-toc .doc-toc a{
+        padding:5px 0 5px 14px;margin-left:-1px;
+        border-left:2px solid transparent;
+      }
+      .js-toc .doc-toc a[aria-current]{border-left-color:var(--accent)}
+      .js-toc .doc-toc .lvl-3 a{padding-left:28px}
+    }
 
     .doc-links{margin:14px 0 0;padding-left:20px;color:var(--muted)}
     .doc-links li{margin-bottom:8px}

@@ -12,17 +12,6 @@ blendshapes**. Everything runs on your own machine — no cloud service, no
 account, no API key and no per-request cost, with the model, CUDA and TensorRT
 all inside the package.
 
-<ul class="doc-links">
-  <li><a href="#requirements">Requirements</a></li>
-  <li><a href="#editions">Versions comparison: Lite vs Full</a></li>
-  <li><a href="#configuration">Configuration</a></li>
-  <li><a href="#preparing-your-character">Preparing your character</a></li>
-  <li><a href="#generate-animation-in-editor">Generate animation in Editor</a></li>
-  <li><a href="#generate-animation-at-runtime">Generate animation at runtime</a></li>
-  <li><a href="#troubleshooting">Troubleshooting</a></li>
-  <li><a href="#support">Support</a></li>
-</ul>
-
 ## Requirements
 
 <div class="table-scroll" markdown="1">

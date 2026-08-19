@@ -16,6 +16,71 @@
   <meta property="og:image" content="{{ site.url }}{{ page.og_image | default: '/img/383624.webp' }}" />
   <meta name="twitter:card" content="summary_large_image" />
 
+  <!-- Structured data. The Organization is repeated here rather than referenced
+       across pages, because Google evaluates each page's markup on its own and a
+       dangling @id would leave the publisher nameless — it must stay identical to
+       the one in index.html. The BreadcrumbList mirrors the visible trail below,
+       which is what Google asks for, and is what lets a search result read
+       "dev-eloop.github.io › FBX Runtime Exporter › documentation".
+       `dateModified` is emitted only when a page declares `updated:` in its front
+       matter; GitHub Pages cannot read file timestamps, so an automatic one would
+       be a guess. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "{{ site.url }}/#org",
+        "name": "DevEloop",
+        "url": "{{ site.url }}/"
+      },
+      {
+        "@type": "TechArticle",
+        "@id": "{{ site.url }}{{ page.url }}#article",
+        "headline": {{ page.title | jsonify }},
+        "description": {{ page.description | jsonify }},
+        "image": "{{ site.url }}{{ page.og_image | default: '/img/383624.webp' }}",
+        "inLanguage": "en",
+        "mainEntityOfPage": "{{ site.url }}{{ page.url }}",
+        {% if page.updated %}"dateModified": "{{ page.updated }}",{% endif %}
+        "author": { "@id": "{{ site.url }}/#org" },
+        "publisher": { "@id": "{{ site.url }}/#org" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "All assets",
+            "item": "{{ site.url }}/"
+          },
+          {% if page.parent_url %}
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ page.parent | jsonify }},
+            "item": "{{ site.url }}{{ page.parent_url }}"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": {{ page.title | jsonify }}
+          }
+          {% else %}
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ page.title | jsonify }}
+          }
+          {% endif %}
+        ]
+      }
+    ]
+  }
+  </script>
+
   <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon.png" />
   <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
 

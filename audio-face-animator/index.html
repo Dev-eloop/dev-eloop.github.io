@@ -83,17 +83,17 @@
   <section class="doc">
     <div class="wrap">
 
-      <div class="video-embed" id="videoEmbed">
-        <button class="video-facade" type="button" data-video="xT1ONHNwERw" aria-label="Play the Audio Face Animator overview video">
-          <img src="../img/383624.webp" alt="" width="900" height="600" decoding="async" />
+      <!-- The featured video is a YouTube Short, so this frame is 9:16 and capped
+           in width by `.portrait`. Putting a vertical video in the 16:9 box would
+           letterbox it to a third of the width and look like a mistake. -->
+      <div class="video-embed portrait" id="videoEmbed">
+        <button class="video-facade" type="button" data-video="QetI6kjNgQE"
+                data-title="How to animate a character&#39;s face in Unity — from audio alone"
+                aria-label="Play the video: How to animate a character&#39;s face in Unity — from audio alone">
+          <img src="../img/audio-face-animator-short.jpg" alt="" width="720" height="1280" decoding="async" />
           <span class="video-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
         </button>
       </div>
-      <p class="vid-links">
-        Setting up your own character? There is a
-        <a href="https://youtu.be/-6sJwitVeBE" target="_blank" rel="noopener">step-by-step configuration walkthrough</a>
-        on our <a href="https://www.youtube.com/@develoop-video" target="_blank" rel="noopener">YouTube channel</a>.
-      </p>
 
       <h2>Why this exists</h2>
       <p>
@@ -178,9 +178,19 @@
         </div>
       </div>
 
+      <h2 id="videos">Videos</h2>
+      <ul class="doc-links">
+        <li><a href="https://youtube.com/shorts/QetI6kjNgQE" target="_blank" rel="noopener">Animate a face from audio alone</a> — lips, brows, eyes and blinks generated from the voice track, with nothing keyframed by hand.</li>
+        <li><a href="https://youtu.be/xT1ONHNwERw" target="_blank" rel="noopener">Plugin overview</a> — what the plugin does, what it produces, and how it runs locally.</li>
+        <li><a href="https://youtu.be/-6sJwitVeBE" target="_blank" rel="noopener">Character setup walkthrough</a> — mapping your own character step by step.</li>
+      </ul>
+      <p class="vid-links">
+        All of it is on our <a href="https://www.youtube.com/@develoop-video" target="_blank" rel="noopener">YouTube channel</a>.
+      </p>
+
       <h2>Documentation</h2>
       <ul class="doc-links">
-        <li><a href="docs/">Full documentation</a> — setup, preparing your character, generating in the Editor and at runtime, the scripting API, and troubleshooting.</li>
+        <li><a href="docs/">Full documentation</a> — setup, preparing your character, emotions, eyes and blinking, generating in the Editor and at runtime, the scripting API, and troubleshooting.</li>
       </ul>
 
       <p class="back-link">
@@ -230,9 +240,11 @@ document.getElementById("videoEmbed").addEventListener("click", e => {
   const btn = e.target.closest(".video-facade");
   if (!btn) return;
   const id = encodeURIComponent(btn.dataset.video);
+  /* The title comes from the facade so the two never drift apart. */
+  const title = (btn.dataset.title || "Audio Face Animator video").replace(/"/g, "&quot;");
   btn.outerHTML =
     `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0"
-             title="Audio Face Animator overview"
+             title="${title}"
              allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
              allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
 });
@@ -254,11 +266,69 @@ document.getElementById("yr").textContent = new Date().getFullYear();
   "softwareRequirements": "Unity 6000.0 or newer; NVIDIA driver 576 or newer",
   "image": "https://dev-eloop.github.io/img/383624.webp",
   "description": "A Unity plugin that runs the NVIDIA Audio2Face AI model locally to generate facial animation from audio files, driving ARKit-compatible blendshapes and saving the result as Unity AnimationClips. Works in the Editor and at runtime in Windows Standalone builds, fully offline.",
+  "video": { "@id": "https://dev-eloop.github.io/audio-face-animator/#video-short" },
   "publisher": {
     "@type": "Organization",
     "name": "DevEloop",
     "url": "https://dev-eloop.github.io/"
   }
+}
+</script>
+
+<!-- The three videos this page links to. Names are the actual YouTube titles and
+     the upload dates and durations are the real ones — Google drops a VideoObject
+     whose uploadDate is missing, and a wrong one is worse than none. The featured
+     short carries the @id the SoftwareApplication above points at. Thumbnails are
+     YouTube's own: `oardefault` is the short's true 9:16 frame, `maxresdefault`
+     the 16:9 one for the other two. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "VideoObject",
+      "@id": "https://dev-eloop.github.io/audio-face-animator/#video-short",
+      "name": "How to animate a character's face in Unity — from audio alone",
+      "description": "A 38-second demonstration of Audio Face Animator: an audio clip goes in, and synchronised lip-sync and facial expression come out on a character's ARKit blendshapes inside Unity.",
+      "thumbnailUrl": "https://i.ytimg.com/vi/QetI6kjNgQE/oardefault.jpg",
+      "uploadDate": "2026-09-02T02:49:28-07:00",
+      "duration": "PT38S",
+      "url": "https://www.youtube.com/shorts/QetI6kjNgQE",
+      "embedUrl": "https://www.youtube.com/embed/QetI6kjNgQE",
+      "mainEntityOfPage": "https://dev-eloop.github.io/audio-face-animator/",
+      "publisher": { "@id": "https://dev-eloop.github.io/#org" }
+    },
+    {
+      "@type": "VideoObject",
+      "@id": "https://dev-eloop.github.io/audio-face-animator/#video-overview",
+      "name": "NVIDIA Audio2Face in Unity — Audio Face Animator Plugin",
+      "description": "An overview of the Audio Face Animator plugin: running the NVIDIA Audio2Face model locally inside Unity, the animation it generates on ARKit-compatible blendshapes, and saving the result as a Unity AnimationClip.",
+      "thumbnailUrl": "https://i.ytimg.com/vi/xT1ONHNwERw/maxresdefault.jpg",
+      "uploadDate": "2026-07-21T03:18:52-07:00",
+      "duration": "PT3M50S",
+      "url": "https://www.youtube.com/watch?v=xT1ONHNwERw",
+      "embedUrl": "https://www.youtube.com/embed/xT1ONHNwERw",
+      "publisher": { "@id": "https://dev-eloop.github.io/#org" }
+    },
+    {
+      "@type": "VideoObject",
+      "@id": "https://dev-eloop.github.io/audio-face-animator/#video-setup",
+      "name": "How to Set Up a Character for Audio2Face in Unity — Audio Face Animator",
+      "description": "A step-by-step walkthrough of preparing your own character for Audio Face Animator: adding a Face Blends Mapper to each face renderer, mapping the 52 ARKit shapes, and generating the animation.",
+      "thumbnailUrl": "https://i.ytimg.com/vi/-6sJwitVeBE/maxresdefault.jpg",
+      "uploadDate": "2026-07-21T03:19:26-07:00",
+      "duration": "PT3M39S",
+      "url": "https://www.youtube.com/watch?v=-6sJwitVeBE",
+      "embedUrl": "https://www.youtube.com/embed/-6sJwitVeBE",
+      "publisher": { "@id": "https://dev-eloop.github.io/#org" }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://dev-eloop.github.io/#org",
+      "name": "DevEloop",
+      "url": "https://dev-eloop.github.io/"
+    }
+  ]
 }
 </script>
 

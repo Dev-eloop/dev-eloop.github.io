@@ -5,6 +5,7 @@ description: Complete documentation for Audio Face Animator — the Unity plugin
 parent: Audio Face Animator
 parent_url: /audio-face-animator/
 updated: 2026-09-02
+nav_blurb: generate lip-sync and facial animation for a Unity character from an audio file, with NVIDIA Audio2Face
 ---
 
 **Audio Face Animator** generates facial animation from audio using the **NVIDIA

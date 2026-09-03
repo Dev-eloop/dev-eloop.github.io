@@ -158,6 +158,27 @@
       <div class="doc-body">
         {{ content }}
 
+        <!-- Every documentation page links to every other one. Two reasons: a
+             reader who found one plugin's guide is a plausible customer for the
+             next, and a leaf URL on a low-authority domain needs more than the
+             single "Docs" button on the home page to be discovered and crawled.
+             The anchor text is each page's own `title`, which already reads
+             "<Asset> documentation" — descriptive, unlike a bare "Docs".
+             Built from `site.pages`, so a new doc page joins the list by
+             existing; the `layout` filter is what keeps the redirect stub out. -->
+        {% assign more_docs = site.pages | where: "layout", "doc" | sort: "title" %}
+        <nav class="doc-more" aria-labelledby="docMoreHead">
+          <h2 id="docMoreHead">More DevEloop documentation</h2>
+          <ul>
+          {% for d in more_docs %}{% unless d.url == page.url %}
+            <li>
+              <a href="{{ d.url }}">{{ d.title }}</a>
+              {% if d.nav_blurb %}<span> — {{ d.nav_blurb }}</span>{% endif %}
+            </li>
+          {% endunless %}{% endfor %}
+          </ul>
+        </nav>
+
         <p class="back-link">
           {% if page.parent_url %}
             <a href="{{ page.parent_url }}">← Back to {{ page.parent }}</a>
@@ -182,7 +203,10 @@
 (function(){
   const toc = document.getElementById("docToc");
   const list = toc.querySelector("ul");
-  const headings = [...document.querySelectorAll(".doc-body h2[id], .doc-body h3[id]")];
+  /* `:not(.doc-more *)` keeps the cross-links block out of the contents list:
+     it is navigation appended by the layout, not a section of the document. */
+  const headings = [...document.querySelectorAll(
+    ".doc-body h2[id]:not(.doc-more *), .doc-body h3[id]:not(.doc-more *)")];
 
   /* A contents list is navigation, not decoration: below a handful of sections it
      saves nobody a scroll, so drop it and give the column back to the prose. */

@@ -7,6 +7,7 @@ description: Correct a character's finger rotations in Unity so retargeted and V
 parent: Movement Fingers Aligner
 parent_url: /#movement-fingers-aligner
 og_image: /img/308721.webp
+nav_blurb: fix retargeted and VR-tracked finger poses on a live rig, every frame
 ---
 
 The **Movement Fingers Aligner** plugin adjusts the rotations of a character's

@@ -7,6 +7,7 @@ description: Load animations from FBX files at runtime or in the Unity Editor an
 parent: FBX Animations Importer
 parent_url: /#fbx-animations-importer
 og_image: /img/380536.webp
+nav_blurb: load animations out of FBX files at runtime and turn them into playable AnimationClips
 ---
 
 The **FBX Animations Importer** plugin loads animation data directly from FBX

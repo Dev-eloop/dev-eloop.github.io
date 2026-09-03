@@ -5,6 +5,7 @@ description: Complete documentation for Animation Recorder — the Unity plugin 
 parent: Animation Recorder
 parent_url: /#animation-recorder
 og_image: /img/284862.webp
+nav_blurb: record transform and blendshape animation in the Editor or at runtime, and save it as an AnimationClip, FBX or GLB
 ---
 
 **Animation Recorder** captures what a character actually does in your scene —

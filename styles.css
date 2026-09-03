@@ -598,3 +598,14 @@
     .doc-links li{margin-bottom:8px}
     .doc-links a{color:var(--accent);text-decoration:none;font-weight:600}
     .doc-links a:hover{text-decoration:underline}
+
+    /* Cross-links to the other documentation pages, appended to every doc page by
+       `_layouts/doc.html`. Set apart from the prose by a rule rather than a card,
+       because it is an appendix to the document, not another section of it. */
+    .doc-more{margin:56px 0 0;padding-top:26px;border-top:1px solid var(--border)}
+    .doc-more h2{font-size:1.05rem;margin:0 0 12px;letter-spacing:.01em}
+    .doc-more ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+    .doc-more li{font-size:.95rem;line-height:1.5}
+    .doc-more a{color:var(--accent);text-decoration:none;font-weight:600}
+    .doc-more a:hover{text-decoration:underline}
+    .doc-more span{color:var(--muted)}

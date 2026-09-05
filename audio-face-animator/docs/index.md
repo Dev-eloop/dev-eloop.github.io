@@ -554,7 +554,7 @@ generic one — the first is the useful one.
 | The engine build fails or is very slow | Building needs several GB of free VRAM and disk. Close other GPU applications; the console shows what TensorRT reported. |
 | The Sync window opens on every Editor start | Files still differ, usually because the sync was cancelled. Press **Copy All Files** and let it finish. |
 | The engine rebuilds after a driver or plugin update | Expected: the cache key is the GPU signature plus a fingerprint of `network.onnx`. |
-| Animation is capped at 5 seconds, or a **⚠️ LITE VERSION** banner appears unexpectedly, or a build refuses to generate with code `-2` | All three are the same thing: the model package is incomplete. In the Lite edition they are the intended limits — [the full version is on the Asset Store](https://assetstore.unity.com/packages/slug/383624). If you own the full version, run **Sync StreamingAssets** and check that `Assets/StreamingAssets/DevEloop/AudioFaceAnimator/bs_skin_Mask.npz` exists and is 128 bytes; a partial Git LFS checkout mangles that one small file without anything else looking wrong. |
+| Animation is capped at 5 seconds, or a **⚠️ LITE VERSION** banner appears unexpectedly, or a build refuses to generate with code `-2` | All three are the same thing: the model package is incomplete. In the Lite edition they are the intended limits — [the full version is on the Asset Store](https://assetstore.unity.com/packages/slug/383624). If you own the full version, the model data did not fully arrive: run **Sync StreamingAssets**, press **Copy All Files**, and re-import the package if that does not settle it. A partial checkout is the usual cause, and it can leave everything else looking fine. |
 
 </div>
 

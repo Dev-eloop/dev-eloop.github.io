@@ -131,6 +131,13 @@
 
       <h2>First run</h2>
       <p>
+        Start at <code>Tools &gt; AudioFaceAnimator &gt; Preflight Check</code>. It opens by
+        itself on a fresh project and works down the requirements one line at a time —
+        Windows, the native plugin, your GPU and its compute capability, the driver, video
+        memory, model files, the TensorRT engine and which edition is installed — putting
+        the button that fixes a problem beside the line that reports it.
+      </p>
+      <p>
         The AI model ships as ONNX. The first time you generate, the plugin compiles a TensorRT
         engine matched to your specific GPU — roughly a minute on a modern card. That engine is
         then cached and reused, so it happens once.

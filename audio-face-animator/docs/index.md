@@ -4,7 +4,7 @@ title: Audio Face Animator documentation
 description: Complete documentation for Audio Face Animator — the Unity plugin that generates ARKit facial animation from audio on your own machine, using the NVIDIA Audio2Face-3D SDK. Setup, character mapping, emotions, eyes and blinking, the scripting API and troubleshooting.
 parent: Audio Face Animator
 parent_url: /audio-face-animator/
-updated: 2026-09-02
+updated: 2026-09-07
 nav_blurb: generate lip-sync and facial animation for a Unity character from an audio file, with NVIDIA Audio2Face
 ---
 
@@ -14,10 +14,16 @@ blendshapes**. Everything runs on your own machine — no cloud service, no
 account, no API key and no per-request cost, with the model, CUDA and TensorRT
 all inside the package.
 
-Since version 1.1 a performance can also carry an **emotion**, the eyes can be
-driven from the rig's own eye bones, and the character **blinks** on its own.
-Individual ARKit shapes can drive **several blendshapes or a bone**, so rigs
-whose jaw is a bone are supported too.
+A performance can carry an **emotion**, the eyes can be driven from the rig's own
+eye bones, and the character **blinks** on its own. Individual ARKit shapes can
+drive **several blendshapes or a bone**, so rigs whose jaw is a bone are
+supported too.
+
+**Version 1.3.0** adds a [preflight check](#preflight-check): one window that
+says whether this machine can run the plugin at all, which requirement failed
+when it cannot, and what to press about it. The Face Animator inspector reports
+the same thing, instead of looking as though everything were fine on a machine
+where the native plugin never loaded.
 
 ## Requirements
 
@@ -52,21 +58,60 @@ the same in both.
 
 If you own the full version and still see a five-second cap or an orange
 **⚠️ LITE VERSION** banner on the Face Animator, the model files did not arrive
-intact; see [Troubleshooting](#troubleshooting).
+intact; see [Troubleshooting](#troubleshooting). The
+[preflight check](#preflight-check) reports which edition is installed, and says
+when it cannot tell yet because the sync has not run.
 
 ## Configuration
 
-Both steps are prompted automatically when the package is imported, and both are
-one-time. Use the menu items below to repeat them later.
+Two one-time steps — syncing the model files, and compiling a TensorRT engine for
+your GPU — with a preflight check in front of them that says which of the two, if
+either, still needs doing.
 
-The package adds three menu items, all under **Tools → AudioFaceAnimator**:
-*Sync StreamingAssets*, *Setup TensorRT Engine* and *Documentation*, which opens
-this page.
+The package adds four menu items, all under **Tools → AudioFaceAnimator**:
+*Preflight Check*, *Sync StreamingAssets*, *Setup TensorRT Engine* and
+*Documentation*, which opens this page.
+
+### Preflight check
+{: #preflight-check}
+
+**Tools → AudioFaceAnimator → Preflight Check**. It also opens by itself the
+first time a project loads, and again whenever something it checks is not ready.
+
+The window works down the requirements one line at a time — **operating system**,
+**native plugin**, **graphics card** and its compute capability, **NVIDIA
+driver**, **video memory**, **model files**, **TensorRT engine**, and which
+**edition** is installed — and puts the button that fixes a problem beside the
+line that reports it.
+
+<div class="table-scroll" markdown="1">
+
+| Badge | Meaning |
+|---|---|
+| **OK** | Nothing to do. |
+| **CHECK** | Generation will run, but something is worth knowing — a card below the recommended VRAM, or an engine not built yet. |
+| **BLOCKED** | Generation cannot run until this is dealt with. |
+| **UNKNOWN** | The check could not run, almost always because an earlier line failed. Fix that one and press **Re-check**. |
+
+</div>
+
+Two results cannot be fixed in software, and the window says so plainly rather
+than sending you looking: an editor that is not 64-bit Windows, and a GPU below
+compute capability 7.5.
+
+**Re-check** runs everything again. **Copy report** puts the whole report on the
+clipboard as text — the GPU, the driver, the edition and every line's result —
+which is what to paste into a [support](#support) message. A tick at the bottom
+stops the window opening on its own, except when the model files need syncing,
+which it always reports.
 
 ### 1. Sync StreamingAssets
 
-**Tools → AudioFaceAnimator → Sync StreamingAssets**, then **Copy All Files**. Run
-it again after every plugin update.
+**Tools → AudioFaceAnimator → Sync StreamingAssets**, then **Copy All Files**. It
+is about 1.4 GB, so give it a minute. Run it again after every plugin update:
+until you do, generation keeps using the old model data without saying anything,
+which is why the preflight treats out-of-date files as a failure and opens itself
+to tell you.
 
 ![The StreamingAssets Sync window, listing model files missing from Assets/StreamingAssets/DevEloop/AudioFaceAnimator](/audio-face-animator/docs/img/streamingassets-sync.png)
 
@@ -79,7 +124,8 @@ to do.
 ### 2. Setup TensorRT engine
 
 **Tools → AudioFaceAnimator → Setup TensorRT Engine**, then **Build Engine for
-This GPU**. About a minute, once per machine.
+This GPU** — the preflight report links straight to it. About a minute, once per
+machine.
 
 ![The TensorRT Engine window: the detected GPU, a warning that no engine exists yet, and the Build Engine for This GPU button](/audio-face-animator/docs/img/tensorrt-engine-setup.png)
 
@@ -523,6 +569,26 @@ is baked `AnimationClip` assets for every line you know in advance. They play on
 any GPU and any platform, with no plugin involved, which makes runtime generation
 an enhancement for dynamic lines rather than a requirement.
 
+`PluginVersion.GetState()` answers the other half of the question — whether the
+plugin can run here at all, and which edition is installed:
+
+<div class="table-scroll" markdown="1">
+
+| `PluginState` | Meaning |
+|---|---|
+| `Ready` | The native plugin loaded and the complete model package is present. |
+| `LiteEdition` | Loaded, but audio is capped at five seconds and generation runs in the Unity Editor only. |
+| `NativePluginUnavailable` | The native plugin did not load — the wrong operating system, no usable NVIDIA driver, or a damaged install. `GetState(out string error)` gives the reason. |
+| `ModelDataMissing` | Loaded, but StreamingAssets has not been synced, so the edition cannot be established yet. |
+
+</div>
+
+It calls into the native plugin, so cache the result per component rather than
+asking on every frame or repaint. `PluginVersion.Version` is the shipped version
+string. The older `IsModelComplete()` is kept for compatibility but cannot
+express `NativePluginUnavailable` — it reports `true` there — so new code should
+call `GetState()`.
+
 You can additionally ship a `network.trt` in
 `Assets/DevEloop/AudioFaceAnimator/StreamingAssets`, copied out of your engine
 cache. Players whose GPU it fits skip the build; everyone else falls back to the
@@ -534,11 +600,43 @@ the build. Generate in the Editor, save AnimationClips, and leave the plugin's
 StreamingAssets out — the clips carry no dependency on it, and local inference is
 not small.
 
+## Skills for AI coding assistants
+
+Seven skills ship inside the package, under
+`Assets/DevEloop/AudioFaceAnimator/AI/Skills/`. Each is a plain `SKILL.md`
+describing one area of the plugin in the terms an assistant needs in order to act
+on it — the real component and API names, what each field does, and the failures
+worth checking first.
+
+<div class="table-scroll" markdown="1">
+
+| Skill | Covers |
+|---|---|
+| `audio-face-animator-setup-and-overview` | Installing and verifying, the preflight check, telling the editions apart, and an index of the rest |
+| `audio-face-animator-prepare-character` | Face Blends Mapper, bone targets, reusing a mapping |
+| `audio-face-animator-generate-animation` | Generating, previewing and baking an `AnimationClip` |
+| `audio-face-animator-emotions` | Emotion presets — shares, intensity, crossfade |
+| `audio-face-animator-eyes-and-blinking` | Eyes Rotation Mapper, axis calibration, gaze, procedural blinking |
+| `audio-face-animator-runtime-and-shipping` | The scripting API, pre-warming the engine, what a build carries |
+| `audio-face-animator-troubleshooting` | What each failure means and what to do about it |
+
+</div>
+
+Point your assistant at that folder, or copy the skills into wherever it reads
+them from. They are ordinary Markdown with YAML frontmatter and carry no
+dependency on any particular tool, and both editions ship the same set.
+
+Worth doing because an assistant working from the plugin's name alone will invent
+an API that reads plausibly and does not exist. These describe what is actually
+there.
+
 ## Troubleshooting
 
-Open the Unity console first. Every failure reports the actual reason, including
-what TensorRT itself said, and failures print a specific line followed by a
-generic one — the first is the useful one.
+Open the [preflight check](#preflight-check) first: it names the requirement that
+failed, which settles most first-run problems on its own. If every line there
+passes, open the Unity console. Every failure reports the actual reason,
+including what TensorRT itself said, and failures print a specific line followed
+by a generic one — the first is the useful one.
 
 ### Setup and the GPU
 
@@ -547,6 +645,8 @@ generic one — the first is the useful one.
 | Symptom | Cause and fix |
 |---|---|
 | *"No usable CUDA device"*, or the native plugin could not be loaded | No NVIDIA GPU was found, or the driver is too old. Update to driver 576 or newer. On switchable-graphics laptops, make sure Unity runs on the NVIDIA GPU. |
+| The Face Animator shows **"Audio Face Animator cannot run on this machine"** | The native plugin did not load, so nothing will generate here whatever the edition is. Press **Open Preflight Check** in that banner: it names the gate that failed. |
+| The Face Animator shows **"The model files have not been synced yet"** | Run **Tools → AudioFaceAnimator → Sync StreamingAssets** and press **Copy All Files**. Until that finishes there is nothing to read an edition out of either, which is why the banner does not name one. |
 | *"The TensorRT engine … cannot be loaded on this GPU"* | A `network.trt` you supplied was built for a different architecture. Build one via **Setup TensorRT Engine**, or remove the file and let the plugin build from `network.onnx`. |
 | *"… is not a TensorRT engine (N bytes)"* | A `network.trt` did not arrive intact — usually Git LFS storing a pointer instead of the file. Delete it and rebuild. |
 | *"no execution context could be created"* | Not enough free VRAM. Close other GPU-heavy applications. If you enabled the full batch range, rebuild with it off. |
@@ -639,9 +739,12 @@ engine-build progress.
 
 ## Support
 
-Include your **GPU model**, **driver version**, **Unity version** and the **full
-console output** — the messages identify the failure precisely, which makes most
-issues diagnosable at a glance. If the console is not conclusive, turn on the
-diagnostic log, reproduce the failure and attach the file.
+Press **Copy report** in the [preflight check](#preflight-check) and paste the
+result into your message: it carries the **GPU**, the **driver version**, the
+**Unity version**, the installed edition and every check's result, which is most
+of what a diagnosis needs. Add the **full console output** alongside it — the
+messages identify the failure precisely, which makes most issues diagnosable at a
+glance. If neither is conclusive, turn on the diagnostic log, reproduce the
+failure and attach the file.
 
 <dev.eloop@outlook.com>

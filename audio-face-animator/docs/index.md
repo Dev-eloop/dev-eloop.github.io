@@ -46,7 +46,7 @@ transforms, and never touches materials or shaders.
 ## Versions Comparison: Lite vs Full
 {: #editions}
 
-![Feature comparison: both versions generate facial animation from audio, process fully offline and work in the Unity Editor. Only the full version supports standalone builds and unlimited audio length; Lite is capped at 5 seconds of audio and animation](/audio-face-animator/docs/img/face-animator-versions-comparison.webp)
+![Feature comparison: both versions generate facial animation from audio, process fully offline and work in the Unity Editor. Only the full version supports standalone builds and unlimited audio length; Lite is capped at 5 seconds of audio and animation](/audio-face-animator/docs/img/face-animator-versions-comparison.webp){: width="1536" height="1024"}
 
 The Lite version has two limitations:
 
@@ -84,7 +84,7 @@ driver**, **video memory**, **model files**, **TensorRT engine**, and which
 **edition** is installed — and puts the button that fixes a problem beside the
 line that reports it.
 
-![The Preflight Check window on a machine that is not ready yet: OK on operating system, native plugin, graphics card and NVIDIA driver, CHECK on video memory, BLOCKED on model files with a Sync StreamingAssets button beside it and on the TensorRT engine, with Re-check and Copy report along the bottom](/audio-face-animator/docs/img/face-animator-preflight-check.png)
+![The Preflight Check window on a machine that is not ready yet: OK on operating system, native plugin, graphics card and NVIDIA driver, CHECK on video memory, BLOCKED on model files with a Sync StreamingAssets button beside it and on the TensorRT engine, with Re-check and Copy report along the bottom](/audio-face-animator/docs/img/face-animator-preflight-check.png){: width="559" height="575"}
 
 <div class="table-scroll" markdown="1">
 
@@ -117,7 +117,7 @@ until you do, generation keeps using the old model data without saying anything,
 which is why the preflight treats out-of-date files as a failure and opens itself
 to tell you.
 
-![The StreamingAssets Sync window, listing model files missing from Assets/StreamingAssets/DevEloop/AudioFaceAnimator](/audio-face-animator/docs/img/streamingassets-sync.png)
+![The StreamingAssets Sync window, listing model files missing from Assets/StreamingAssets/DevEloop/AudioFaceAnimator](/audio-face-animator/docs/img/streamingassets-sync.png){: width="686" height="411"}
 
 This copies the model files to `Assets/StreamingAssets/DevEloop/AudioFaceAnimator`,
 which is where Unity looks for them at runtime. The window compares file
@@ -131,7 +131,7 @@ to do.
 This GPU** — the preflight report links straight to it. About a minute, once per
 machine.
 
-![The TensorRT Engine window: the detected GPU, a warning that no engine exists yet, and the Build Engine for This GPU button](/audio-face-animator/docs/img/tensorrt-engine-setup.png)
+![The TensorRT Engine window: the detected GPU, a warning that no engine exists yet, and the Build Engine for This GPU button](/audio-face-animator/docs/img/tensorrt-engine-setup.png){: width="687" height="410"}
 
 The engine is compiled from the `network.onnx` synced in step 1, because a
 compiled engine only loads on the GPU architecture it was built for. Leave *Build
@@ -161,7 +161,7 @@ Two components: a **Face Blends Mapper** on each face renderer, and one
 
 Add it and assign your face `SkinnedMeshRenderer` to **Target Renderer**.
 
-![The Face Blends Mapper component with no Target Renderer assigned, showing the notice "Mappings not initialized. Assign a SkinnedMeshRenderer with blendshapes."](/audio-face-animator/docs/img/face-blends-mapper-empty.png)
+![The Face Blends Mapper component with no Target Renderer assigned, showing the notice "Mappings not initialized. Assign a SkinnedMeshRenderer with blendshapes."](/audio-face-animator/docs/img/face-blends-mapper-empty.png){: width="560" height="126"}
 
 It immediately creates all 52 ARKit rows and matches them against the mesh's
 blendshapes — ignoring case, spaces and underscores, and accepting prefixed names
@@ -171,7 +171,7 @@ could not match.
 **Add one mapper per face renderer** (head, teeth, tongue and eyes are often
 separate). The three shipped prefabs carry five each.
 
-![The Face Blends Mapper after auto-mapping: the Preset row with Save, Load and Save As, both Auto-Map buttons, the Filter box, and the first ARKit rows matched to mesh blendshapes with their max-weight sliders. Eye Blink Left carries a +1 badge for its second blendshape target, Jaw Open a 1b badge for a bone target](/audio-face-animator/docs/img/face-blends-mapper-mapped.png)
+![The Face Blends Mapper after auto-mapping: the Preset row with Save, Load and Save As, both Auto-Map buttons, the Filter box, and the first ARKit rows matched to mesh blendshapes with their max-weight sliders. Eye Blink Left carries a +1 badge for its second blendshape target, Jaw Open a 1b badge for a bone target](/audio-face-animator/docs/img/face-blends-mapper-mapped.png){: width="560" height="513"}
 
 Matching is deliberately generous, so read down the list once. A **Filter** box
 narrows the 52 rows while you work, and each row expands to show everything it
@@ -188,7 +188,7 @@ drives:
   generating anything. The quickest proof that a row is wired correctly.
   Collapsing the row, or selecting another object, returns the face to rest.
 
-![One ARKit row expanded: a Blendshapes list with two targets, eyeBlinkLeft at max weight 100 and eyeSquintLeft at 60, an Add blendshape target button, an empty Bones section, and the row's own Preview slider](/audio-face-animator/docs/img/face-blends-mapper-row-expanded.png)
+![One ARKit row expanded: a Blendshapes list with two targets, eyeBlinkLeft at max weight 100 and eyeSquintLeft at 60, an Add blendshape target button, an empty Bones section, and the row's own Preview slider](/audio-face-animator/docs/img/face-blends-mapper-row-expanded.png){: width="560" height="185"}
 
 **Auto-Map (fill empty)** touches only unmapped rows; **Auto-Map (overwrite all)**
 redoes everything, discarding manual edits. Several rows may point at the same
@@ -202,7 +202,7 @@ cannot do without. Check those first.
 For a rig whose jaw, lips or brows are bones, expand the row and press **Add bone
 target**.
 
-![The Bones block of the Jaw Open row: a Bone field holding a transform, the captured rest pose with a Re-capture rest button, a Rotation (deg) delta of 14 degrees on X, a zero Position offset, an Influence slider at 1, and a Capture delta from current pose button](/audio-face-animator/docs/img/face-blends-mapper-bone-target.png)
+![The Bones block of the Jaw Open row: a Bone field holding a transform, the captured rest pose with a Re-capture rest button, a Rotation (deg) delta of 14 degrees on X, a zero Position offset, an Influence slider at 1, and a Capture delta from current pose button](/audio-face-animator/docs/img/face-blends-mapper-bone-target.png){: width="560" height="271"}
 
 Assign the **Bone** and its current local pose is captured as the rest pose
 immediately — so do this with the rig neutral, or press **Re-capture rest**
@@ -240,11 +240,11 @@ Add it to the character root and drag every mapper into **Blendshapes
 Configuration → Blends Mappers**. Any renderer whose mapper is not listed will
 not move.
 
-![The Face Animator component with its Blends Mappers list expanded, showing five Face Blends Mapper references](/audio-face-animator/docs/img/face-animator-blends-mappers.png)
+![The Face Animator component with its Blends Mappers list expanded, showing five Face Blends Mapper references](/audio-face-animator/docs/img/face-animator-blends-mappers.png){: width="513" height="276"}
 
 ## Generate animation in Editor
 
-![The Face Animator component in the Inspector: Model Type, Blendshapes Configuration, Model Configuration, Eyes, Blinking, and Animation Playback with an Audio Clip and an Emotion Preset assigned. Outside Play mode a notice reads "Enter Play Mode to generate and play animation" and the Generate, Play and Stop buttons are disabled](/audio-face-animator/docs/img/face-animator-inspector.png)
+![The Face Animator component in the Inspector: Model Type, Blendshapes Configuration, Model Configuration, Eyes, Blinking, and Animation Playback with an Audio Clip and an Emotion Preset assigned. Outside Play mode a notice reads "Enter Play Mode to generate and play animation" and the Generate, Play and Stop buttons are disabled](/audio-face-animator/docs/img/face-animator-inspector.png){: width="560" height="546"}
 
 **Model Type** — which Audio2Face-3D model generates the animation: **Claire**,
 **James** or **Mark**. Each was trained on a different performer and produces a
@@ -268,7 +268,7 @@ animation; changing the Model Type does not, so regenerate to hear it.
 
 ### Saving an AnimationClip
 
-![The same component in Play mode after a successful generation: Generate and Play are enabled, Stop is disabled, and a Create AnimationClip button has appeared below them. Unity tints its interface slightly darker in Play mode](/audio-face-animator/docs/img/face-animator-generate-playmode.png)
+![The same component in Play mode after a successful generation: Generate and Play are enabled, Stop is disabled, and a Create AnimationClip button has appeared below them. Unity tints its interface slightly darker in Play mode](/audio-face-animator/docs/img/face-animator-generate-playmode.png){: width="560" height="505"}
 
 Once animation exists, a **Create AnimationClip** button appears. It writes a
 standard Unity `AnimationClip`, which must be saved **inside your project's
@@ -295,7 +295,7 @@ Animator or Timeline on any platform Unity builds for. Three things to know:
 
 ### The sample scene
 
-![The sample scene running: a head on a dark background, with a model dropdown set to James, Generate, Play and Stop buttons down the left side, and a Browse button in the top right](/audio-face-animator/docs/img/sample-scene.png)
+![The sample scene running: a head on a dark background, with a model dropdown set to James, Generate, Play and Stop buttons down the left side, and a Browse button in the top right](/audio-face-animator/docs/img/sample-scene.png){: width="942" height="612"}
 
 `Assets/DevEloop/AudioFaceAnimator/Scenes/AudioFaceAnimator.unity` has all three
 characters set up, a model selector, generation controls and a file browser for
@@ -312,7 +312,7 @@ new preset asset and assigns it in one step. An existing preset can be dropped
 into the same field, and presets can also be made from *Assets → Create →
 DevEloop → Audio Face Animator → Emotion Preset*.
 
-![The Emotion Preset inspector: three segments, amazement, cheekiness and joy, each with a share of 1 and an intensity of 1; a Crossfade of 0.25 seconds; a Preview Clip length of 5 seconds; and a coloured bar underneath giving each emotion 33.3 percent, or 1.67 seconds, of the clip](/audio-face-animator/docs/img/emotion-preset-inspector.png)
+![The Emotion Preset inspector: three segments, amazement, cheekiness and joy, each with a share of 1 and an intensity of 1; a Crossfade of 0.25 seconds; a Preview Clip length of 5 seconds; and a coloured bar underneath giving each emotion 33.3 percent, or 1.67 seconds, of the clip](/audio-face-animator/docs/img/emotion-preset-inspector.png){: width="560" height="338"}
 
 A preset is an ordered list of segments, read left to right across the clip:
 
@@ -376,7 +376,7 @@ blendshapes — without them there is no blink and no warning either. `eyeSquint
 and `eyeWide*` are used as well when mapped, so the lower lid follows and a wide
 eye does not fight a closed lid.
 
-![The Blinking section of the Face Animator: Enabled ticked, Min and Max Interval of 2 and 6 seconds, Close, Hold and Open Duration of 0.07, 0.02 and 0.18, Amplitude 1, Squint Amount 0.2, and a Random Seed of 0](/audio-face-animator/docs/img/face-animator-blinking.png)
+![The Blinking section of the Face Animator: Enabled ticked, Min and Max Interval of 2 and 6 seconds, Close, Hold and Open Duration of 0.07, 0.02 and 0.18, Amplitude 1, Squint Amount 0.2, and a Random Seed of 0](/audio-face-animator/docs/img/face-animator-blinking.png){: width="560" height="224"}
 
 <div class="table-scroll" markdown="1">
 
@@ -410,7 +410,7 @@ turning, change the axis; if it moves the right way but reversed, set that eye's
 **Pitch Scale** or **Yaw Scale** to −1. Both eyes have independent axes and
 scales, which is what a mirrored rig needs. **Stop preview** returns them to rest.
 
-![The Eyes Rotation Mapper component: Right Eye and Left Eye, each with a bone, a captured rest rotation, and its own pitch and yaw axes and scales; a Response group with Rotation Strength 1, Gaze Symmetry 1, pitch and yaw limits of minus 25 to 25 degrees and Smoothing 0.03; a Look At group pointing at the Main Camera; and a Preview group with Pitch and Yaw sliders and a Stop preview button](/audio-face-animator/docs/img/eyes-rotation-mapper.png)
+![The Eyes Rotation Mapper component: Right Eye and Left Eye, each with a bone, a captured rest rotation, and its own pitch and yaw axes and scales; a Response group with Rotation Strength 1, Gaze Symmetry 1, pitch and yaw limits of minus 25 to 25 degrees and Smoothing 0.03; a Look At group pointing at the Main Camera; and a Preview group with Pitch and Yaw sliders and a Stop preview button](/audio-face-animator/docs/img/eyes-rotation-mapper.png){: width="560" height="784"}
 
 <div class="table-scroll" markdown="1">
 
@@ -441,7 +441,7 @@ When the animation is close but too soft, too strong or too twitchy, tick
 engine, so generation continues unchanged until you actually move something.
 Change one parameter at a time and regenerate.
 
-![The Model Configuration section with Override Model Config ticked, so the Model Config parameters are editable: Input Strength, a Skin group of smoothing and strength sliders, an Eyelids and Lips group, an Eyes group with the gaze and saccade values, and a Reset to Model Defaults button](/audio-face-animator/docs/img/face-animator-model-config.png)
+![The Model Configuration section with Override Model Config ticked, so the Model Config parameters are editable: Input Strength, a Skin group of smoothing and strength sliders, an Eyelids and Lips group, an Eyes group with the gaze and saccade values, and a Reset to Model Defaults button](/audio-face-animator/docs/img/face-animator-model-config.png){: width="560" height="543"}
 
 <div class="table-scroll" markdown="1">
 
@@ -716,7 +716,7 @@ SDK's output to a file — the only way to diagnose a failure on someone else's
 machine, since the Unity console never sees what the SDK prints and a player
 build has nowhere to put it. Off by default.
 
-![The Diagnostic Log foldout in the TensorRT Engine window: a note on what the log contains, an unticked "Write a log file" checkbox, a Level dropdown set to Debug, the current log file path, and Change and Show buttons](/audio-face-animator/docs/img/tensorrt-diagnostic-log.png)
+![The Diagnostic Log foldout in the TensorRT Engine window: a note on what the log contains, an unticked "Write a log file" checkbox, a Level dropdown set to Debug, the current log file path, and Change and Show buttons](/audio-face-animator/docs/img/tensorrt-diagnostic-log.png){: width="610" height="117"}
 
 **In the Editor**, open **Tools → AudioFaceAnimator → Setup TensorRT Engine** and
 expand **Diagnostic Log**. Tick *Write a log file* and pick a *Level* — `Debug`

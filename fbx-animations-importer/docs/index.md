@@ -36,12 +36,12 @@ Open the importer window either way:
 - Or open **DevEloop → FBX Animations Importer** from the main menu and pick the
   target yourself.
 
-![The Unity Hierarchy context menu with the Import submenu open and the FBX Animations entry highlighted](/fbx-animations-importer/docs/img/hierarchy-import-menu.png)
+![The Unity Hierarchy context menu with the Import submenu open and the FBX Animations entry highlighted](/fbx-animations-importer/docs/img/hierarchy-import-menu.png){: width="606" height="620"}
 
 Point **FBX File** at a file — **Browse…** opens a file picker and remembers the
 folder — set the import options, and press **Import Animations**.
 
-![The FBX Animations Importer window: an FBX File field with a Browse button, a Target Object field, the Remove Root Node Path, Apply Root Motions, BlendShapes Animation and Loop Animation toggles, and a blue Import Animations button](/fbx-animations-importer/docs/img/importer-window.png)
+![The FBX Animations Importer window: an FBX File field with a Browse button, a Target Object field, the Remove Root Node Path, Apply Root Motions, BlendShapes Animation and Loop Animation toggles, and a blue Import Animations button](/fbx-animations-importer/docs/img/importer-window.png){: width="418" height="455"}
 
 Every take in the file becomes its own clip, saved as an asset under
 `Assets/DevEloop/FbxAnimationsImporter/ImportedClips/` and named

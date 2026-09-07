@@ -48,7 +48,7 @@ press Play. The **Left Hand** and **Right Hand** toggles switch each hand's
 aligner on and off, so you can see the same pose corrected and uncorrected side
 by side.
 
-![The sample scene in Play mode: two clenched hands, the left one with its aligner off and fingers passing through each other, the right one with the aligner on and the fingers curled naturally](/movement-fingers-aligner/docs/img/sample-scene.png)
+![The sample scene in Play mode: two clenched hands, the left one with its aligner off and fingers passing through each other, the right one with the aligner on and the fingers curled naturally](/movement-fingers-aligner/docs/img/sample-scene.png){: width="960" height="551"}
 
 The objects `HandAligners → RightHand` and `HandAligners → LeftHand` carry the
 `HandFingersAligner` component that does the work. They are plain empty
@@ -66,7 +66,7 @@ character needs two.
 **3. Assign the bones.** Until every slot is filled the component shows *"All
 bones should be specified."* and the configuration button stays hidden.
 
-![The Hand Fingers Aligner component with every bone slot empty, showing Index, Middle, Ring, Pinky and Thumb groups each with Proximal, Intermediate, Distal and Tip, and a warning reading All bones should be specified](/movement-fingers-aligner/docs/img/component-empty.png)
+![The Hand Fingers Aligner component with every bone slot empty, showing Index, Middle, Ring, Pinky and Thumb groups each with Proximal, Intermediate, Distal and Tip, and a warning reading All bones should be specified](/movement-fingers-aligner/docs/img/component-empty.png){: width="547" height="687"}
 
 - **Hand Type** — **Right** or **Left**. Finger movement orientations differ
   between hands, so this has to match the hand you are assigning.
@@ -81,7 +81,7 @@ know which way the last segment points.
 **4. Set the constraints.** With the bones in place the component offers
 **Fingers Constraints**.
 
-![The configured Hand Fingers Aligner component: Align On Update ticked, Align Mode set to Rescue, Hand Type Right, a Hand Bone assigned, the five collapsed bone groups, and a Finger Configuration box with the Fingers Constraints button](/movement-fingers-aligner/docs/img/component-configured.png)
+![The configured Hand Fingers Aligner component: Align On Update ticked, Align Mode set to Rescue, Hand Type Right, a Hand Bone assigned, the five collapsed bone groups, and a Finger Configuration box with the Fingers Constraints button](/movement-fingers-aligner/docs/img/component-configured.png){: width="546" height="326"}
 
 ## Component properties
 
@@ -118,7 +118,7 @@ move. Pressing it stores the current finger poses and frames the hand in the
 Scene view; the constraint sliders then pose the fingers live, so you can see
 exactly what a limit means before committing to it.
 
-![The Fingers Constraints panel for the Thumb: Spread, Proximal Stretch, Proximal Axes Tilt, Intermediate Stretch, Intermediate Axes Tilt, Distal Stretch and Distal Axes Tilt rows, each with Min and Max fields and a slider, above Close and Reset buttons](/movement-fingers-aligner/docs/img/fingers-constraints.png)
+![The Fingers Constraints panel for the Thumb: Spread, Proximal Stretch, Proximal Axes Tilt, Intermediate Stretch, Intermediate Axes Tilt, Distal Stretch and Distal Axes Tilt rows, each with Min and Max fields and a slider, above Close and Reset buttons](/movement-fingers-aligner/docs/img/fingers-constraints.png){: width="631" height="231"}
 
 Each of the five fingers gets the same set of rows:
 

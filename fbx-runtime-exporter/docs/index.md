@@ -44,13 +44,13 @@ LOD groups and scripts are outside what an FBX file carries here.
 
 Right-click the object in the **Hierarchy** window and choose **Export → FBX**.
 
-![The Unity Hierarchy context menu with the Export submenu open and the FBX entry highlighted](/fbx-runtime-exporter/docs/img/hierarchy-export-menu.png)
+![The Unity Hierarchy context menu with the Export submenu open and the FBX entry highlighted](/fbx-runtime-exporter/docs/img/hierarchy-export-menu.png){: width="486" height="437"}
 
 The **FBX Exporter** window opens with that object as its subject. Set the
 options, press **Export**, and the window closes and refreshes the asset
 database.
 
-![The FBX Exporter window: Output Settings with the exporting object, an export path with a Browse button and a File Format dropdown; an Exported Components section with Meshes, Textures, Blend Shapes, Animations and Terrains toggles; an Advanced Configuration section with World Position and Model Scale; and a green Export button](/fbx-runtime-exporter/docs/img/exporter-window.png)
+![The FBX Exporter window: Output Settings with the exporting object, an export path with a Browse button and a File Format dropdown; an Exported Components section with Meshes, Textures, Blend Shapes, Animations and Terrains toggles; an Advanced Configuration section with World Position and Model Scale; and a green Export button](/fbx-runtime-exporter/docs/img/exporter-window.png){: width="397" height="416"}
 
 <div class="table-scroll" markdown="1">
 

@@ -76,7 +76,7 @@ edition or the platform does not support it.
 Open **Window → Animation → AnimationRecorder**, or **Animation Recorder →
 Open** in the main menu.
 
-![The Animation Recorder window: the Recording section with an Animator assigned, Run Animator, the Record Blendshapes, Start recording manually and Stop recording when animation ends toggles, and the Recorded Animation section with Animation Data, Save, Load JSON, an Animation Name field, Play, and the Rotation, Translation, Scale and Blendshapes toggles](/animation-recorder/docs/img/window-recording.png)
+![The Animation Recorder window: the Recording section with an Animator assigned, Run Animator, the Record Blendshapes, Start recording manually and Stop recording when animation ends toggles, and the Recorded Animation section with Animation Data, Save, Load JSON, an Animation Name field, Play, and the Rotation, Translation, Scale and Blendshapes toggles](/animation-recorder/docs/img/window-recording.png){: width="475" height="340"}
 
 Drag a GameObject with an **Animator** into the Animator field, then press **Run
 Animator**. The window drives the Animator itself, so this works **without
@@ -101,7 +101,7 @@ previews it in the scene, and the **Rotation / Translation / Scale /
 Blendshapes** toggles choose which of those the preview applies — useful for
 checking that a jitter comes from where you think it does.
 
-![The Editor foldout of the Animation Recorder window: a Frame Number slider with step and delete buttons, a Select Transform dropdown, Position and Rotation fields, and a collapsed Advanced foldout](/animation-recorder/docs/img/window-editor.png)
+![The Editor foldout of the Animation Recorder window: a Frame Number slider with step and delete buttons, a Select Transform dropdown, Position and Rotation fields, and a collapsed Advanced foldout](/animation-recorder/docs/img/window-editor.png){: width="453" height="185"}
 
 The **Editor** foldout is a frame-by-frame fixup tool:
 
@@ -131,7 +131,7 @@ somewhere else.
 
 ### AnimationClip
 
-![The Animation Clip foldout: Save Rotations, Save Translations, Save Scales and Save Blendshapes toggles, a Blend Weight Scale field, an Output Animation Clip field and a Save button](/animation-recorder/docs/img/window-animation-clip.png)
+![The Animation Clip foldout: Save Rotations, Save Translations, Save Scales and Save Blendshapes toggles, a Blend Weight Scale field, an Output Animation Clip field and a Save button](/animation-recorder/docs/img/window-animation-clip.png){: width="455" height="157"}
 
 Writes a standard Unity `AnimationClip` — one curve per recorded channel — which
 plays from an Animator or Timeline with no dependency on the plugin. Assign an
@@ -145,7 +145,7 @@ character root will not line up.
 
 ### FBX
 
-![The FBX Export foldout: Model Scale, Blend Weight Scale, File Format, Export Meshes, Export Textures, Export Rotations, Export Translations, Export Scales and Export Blendshapes settings, an Output FBX Folder field and an Export button](/animation-recorder/docs/img/window-fbx-export.png)
+![The FBX Export foldout: Model Scale, Blend Weight Scale, File Format, Export Meshes, Export Textures, Export Rotations, Export Translations, Export Scales and Export Blendshapes settings, an Output FBX Folder field and an Export button](/animation-recorder/docs/img/window-fbx-export.png){: width="423" height="240"}
 
 Exports the model and the animation as an FBX for Blender, Maya, 3ds Max or
 Unreal. Windows only.
@@ -163,7 +163,7 @@ Unreal. Windows only.
 
 ### GLB
 
-![The GLB Export foldout: Export Rotations, Export Translations, Export Scales and Export Blendshapes toggles, an Output GLB Folder field and an Export button](/animation-recorder/docs/img/window-glb-export.png)
+![The GLB Export foldout: Export Rotations, Export Translations, Export Scales and Export Blendshapes toggles, an Output GLB Folder field and an Export button](/animation-recorder/docs/img/window-glb-export.png){: width="445" height="138"}
 
 Exports a single self-contained `.glb` — meshes, materials, textures and the
 animation — on every platform. This is the export to use for the web, for
@@ -272,7 +272,7 @@ flags and the same scale settings as the window; each takes either an
 **Animation Player Component** replays a recording onto a model at runtime,
 without an Animator or an AnimationClip.
 
-![The Animation Player Component inspector: Model, Animation Json Filename, Apply Translations, Apply Rotations, Apply Scales, Apply Blendshapes, Start Playing Automatically and Local Poses](/animation-recorder/docs/img/animation-player-component.jpg)
+![The Animation Player Component inspector: Model, Animation Json Filename, Apply Translations, Apply Rotations, Apply Scales, Apply Blendshapes, Start Playing Automatically and Local Poses](/animation-recorder/docs/img/animation-player-component.jpg){: width="599" height="236"}
 
 Point **Model** at the hierarchy to animate and give it an **Animation Json
 Filename**, or hand it data from code with `SetAnimationData()`. The **Apply**
@@ -291,7 +291,7 @@ platform where you cannot create an AnimationClip asset.
 
 Four scenes in `Assets/DevEloop/AnimationRecorder/Scenes`:
 
-![The play-mode recording sample: on-screen buttons offering AnimationClip, GLB, FBX, AnimationData and JSON output, with the recorded character on the left and the character replaying the take on the right](/animation-recorder/docs/img/play-mode-sample.jpg)
+![The play-mode recording sample: on-screen buttons offering AnimationClip, GLB, FBX, AnimationData and JSON output, with the recorded character on the left and the character replaying the take on the right](/animation-recorder/docs/img/play-mode-sample.jpg){: width="1075" height="730"}
 
 - **1-EditorModeRecordingSample** — the Animation Recorder window workflow, with
   a character and an Animator already set up.

@@ -96,7 +96,12 @@
     }
 
     *,*::before,*::after{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    /* Smooth scrolling is switched on by script once the page has loaded, never
+       before: while the browser is still doing its own jump to a `#hash` it turns
+       that jump into an animation and then abandons it, so a page opened at an
+       anchor lands at the top instead of the section. Off during load, the jump is
+       instant and lands; clicks afterwards still glide. */
+    html.smooth-scroll{scroll-behavior:smooth}
     body{
       margin:0;
       background:var(--bg);
@@ -371,7 +376,7 @@
     .reveal{transition:opacity .5s ease, transform .5s ease}
     .reveal.pre{opacity:0;transform:translateY(14px)}
     @media (prefers-reduced-motion: reduce){
-      html{scroll-behavior:auto}
+      html.smooth-scroll{scroll-behavior:auto}
       *,*::before,*::after{animation:none!important;transition:none!important}
       .reveal.pre{opacity:1;transform:none}
     }

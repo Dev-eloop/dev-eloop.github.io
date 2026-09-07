@@ -552,6 +552,19 @@ syncThemeButton();
 
 document.getElementById("yr").textContent = new Date().getFullYear();
 
+/* Land on the section a `#hash` names. The browser makes that jump itself, but
+   only after `load`, and with `scroll-behavior:smooth` in force it animates the
+   jump and then abandons it — the page opens at the top instead. So make the
+   jump here, instantly, and let anchors glide only afterwards (see
+   `.smooth-scroll` in styles.css). `scrollIntoView` honours the heading's
+   `scroll-margin-top`, so the sticky top bar does not cover it. */
+addEventListener("load", () => {
+  const id = decodeURIComponent(location.hash.slice(1));
+  const target = id && document.getElementById(id);
+  if (target) target.scrollIntoView({behavior: "instant", block: "start"});
+  document.documentElement.classList.add("smooth-scroll");
+}, {once: true});
+
 /* ---------- deep links to a single card ---------- */
 const cardIds = new Set(cards.map(c => c.id));
 const isCardSlug = id => cardIds.has(id);

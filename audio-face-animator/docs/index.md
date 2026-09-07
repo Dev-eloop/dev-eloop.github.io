@@ -84,6 +84,8 @@ driver**, **video memory**, **model files**, **TensorRT engine**, and which
 **edition** is installed — and puts the button that fixes a problem beside the
 line that reports it.
 
+![The Preflight Check window on a machine that is not ready yet: OK on operating system, native plugin, graphics card and NVIDIA driver, CHECK on video memory, BLOCKED on model files with a Sync StreamingAssets button beside it and on the TensorRT engine, with Re-check and Copy report along the bottom](/audio-face-animator/docs/img/face-animator-preflight-check.png)
+
 <div class="table-scroll" markdown="1">
 
 | Badge | Meaning |
@@ -101,9 +103,11 @@ compute capability 7.5.
 
 **Re-check** runs everything again. **Copy report** puts the whole report on the
 clipboard as text — the GPU, the driver, the edition and every line's result —
-which is what to paste into a [support](#support) message. A tick at the bottom
-stops the window opening on its own, except when the model files need syncing,
-which it always reports.
+which is what to paste into a [support](#support) message. Two ticks sit at the
+bottom: *Explain the checks that passed as well* adds the explanation paragraph
+under the lines that are fine too, not only under the ones that are not, and
+*Do not open this window automatically* stops it opening on its own — except
+when the model files need syncing, which it always reports.
 
 ### 1. Sync StreamingAssets
 

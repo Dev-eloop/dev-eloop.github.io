@@ -83,17 +83,21 @@
   <section class="doc">
     <div class="wrap">
 
-      <!-- The featured video is a YouTube Short, so this frame is 9:16 and capped
-           in width by `.portrait`. Putting a vertical video in the 16:9 box would
-           letterbox it to a third of the width and look like a mistake. -->
-      <div class="video-embed portrait" id="videoEmbed">
-        <button class="video-facade" type="button" data-video="QetI6kjNgQE"
-                data-title="How to animate a character&#39;s face in Unity — from audio alone"
-                aria-label="Play the video: How to animate a character&#39;s face in Unity — from audio alone">
-          <img src="../img/audio-face-animator-short.jpg" alt="" width="720" height="1280" decoding="async" />
+      <!-- The featured video is landscape, so it uses the default 16:9 frame. A
+           vertical video would need `.portrait` here — in the 16:9 box it gets
+           letterboxed to a third of the width and looks like a mistake. -->
+      <div class="video-embed" id="videoEmbed">
+        <button class="video-facade" type="button" data-video="9yqASBrARtc"
+                data-title="Animating a Complex Facial Rig From Audio in Unity"
+                aria-label="Play the video: Animating a Complex Facial Rig From Audio in Unity">
+          <img src="../img/audio-face-animator-rig.jpg" alt="" width="1280" height="720" decoding="async" />
           <span class="video-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
         </button>
       </div>
+      <p class="vid-caption">
+        Gawain, from Unity’s <em>The Heretic</em> — 322 blendshapes, not one of them named
+        the ARKit way. Everything moving on his face was generated from the voice track.
+      </p>
 
       <h2>Why this exists</h2>
       <p>
@@ -114,6 +118,12 @@
         character, producing synchronised mouth movement and facial expression. Everything is
         computed locally: CUDA and TensorRT ship with the plugin, so there is nothing to install
         separately and no connection is required at any point.
+      </p>
+      <p>
+        Your character does not have to be named the ARKit way. The 52 shapes the model outputs
+        are mapped onto whatever your rig actually has — one ARKit shape can drive several of
+        your blendshapes, or a bone — so a 322-shape face with its own naming scheme works as
+        well as a stock ARKit head.
       </p>
 
       <h2>What you get</h2>
@@ -187,6 +197,8 @@
 
       <h2 id="videos">Videos</h2>
       <ul class="doc-links">
+        <li><a href="https://youtu.be/9yqASBrARtc" target="_blank" rel="noopener">Animating a complex facial rig</a> — Gawain from Unity’s <em>The Heretic</em>: 322 blendshapes, no ARKit naming, and a whole performance taken from the voice track.</li>
+        <li><a href="https://youtube.com/shorts/XD_ff4EiLNI" target="_blank" rel="noopener">Lip-sync from one audio clip</a> — the same rig in three quarters of a minute, generated on the machine it plays on.</li>
         <li><a href="https://youtube.com/shorts/QetI6kjNgQE" target="_blank" rel="noopener">Animate a face from audio alone</a> — lips, brows, eyes and blinks generated from the voice track, with nothing keyframed by hand.</li>
         <li><a href="https://youtu.be/xT1ONHNwERw" target="_blank" rel="noopener">Plugin overview</a> — what the plugin does, what it produces, and how it runs locally.</li>
         <li><a href="https://youtu.be/-6sJwitVeBE" target="_blank" rel="noopener">Character setup walkthrough</a> — mapping your own character step by step.</li>
@@ -286,7 +298,7 @@ addEventListener("load", () => {
   "softwareRequirements": "Unity 6000.0 or newer; NVIDIA driver 576 or newer",
   "image": "https://dev-eloop.github.io/img/383624.webp",
   "description": "A Unity plugin that runs the NVIDIA Audio2Face AI model locally to generate facial animation from audio files, driving ARKit-compatible blendshapes and saving the result as Unity AnimationClips. Works in the Editor and at runtime in Windows Standalone builds, fully offline.",
-  "video": { "@id": "https://dev-eloop.github.io/audio-face-animator/#video-short" },
+  "video": { "@id": "https://dev-eloop.github.io/audio-face-animator/#video-rig" },
   "publisher": {
     "@type": "Organization",
     "name": "DevEloop",
@@ -295,16 +307,41 @@ addEventListener("load", () => {
 }
 </script>
 
-<!-- The three videos this page links to. Names are the actual YouTube titles and
+<!-- The five videos this page links to. Names are the actual YouTube titles and
      the upload dates and durations are the real ones — Google drops a VideoObject
      whose uploadDate is missing, and a wrong one is worse than none. The featured
-     short carries the @id the SoftwareApplication above points at. Thumbnails are
-     YouTube's own: `oardefault` is the short's true 9:16 frame, `maxresdefault`
-     the 16:9 one for the other two. -->
+     video carries the @id the SoftwareApplication above points at. Thumbnails are
+     YouTube's own: `oardefault` is a short's true 9:16 frame, `maxresdefault` the
+     16:9 one for the landscape videos. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
+    {
+      "@type": "VideoObject",
+      "@id": "https://dev-eloop.github.io/audio-face-animator/#video-rig",
+      "name": "Animating a Complex Facial Rig From Audio in Unity",
+      "description": "Gawain from Unity's Digital Human sample, The Heretic, animated by Audio Face Animator from a single audio track. His face carries 322 blendshapes and none of them use ARKit naming, so the plugin remaps its 52 ARKit channels onto the rig he already has.",
+      "thumbnailUrl": "https://i.ytimg.com/vi/9yqASBrARtc/maxresdefault.jpg",
+      "uploadDate": "2026-09-18T04:27:03-07:00",
+      "duration": "PT1M7S",
+      "url": "https://www.youtube.com/watch?v=9yqASBrARtc",
+      "embedUrl": "https://www.youtube.com/embed/9yqASBrARtc",
+      "mainEntityOfPage": "https://dev-eloop.github.io/audio-face-animator/",
+      "publisher": { "@id": "https://dev-eloop.github.io/#org" }
+    },
+    {
+      "@type": "VideoObject",
+      "@id": "https://dev-eloop.github.io/audio-face-animator/#video-lipsync-short",
+      "name": "Unity lip sync from one audio clip — runs locally, no cloud",
+      "description": "A 44-second short: Audio Face Animator turns one AudioClip into facial animation on a character with 322 non-ARKit blendshapes, entirely on the local machine — no cloud service, no account, no keyframes and no mocap.",
+      "thumbnailUrl": "https://i.ytimg.com/vi/XD_ff4EiLNI/oardefault.jpg",
+      "uploadDate": "2026-09-14T12:13:23-07:00",
+      "duration": "PT44S",
+      "url": "https://www.youtube.com/shorts/XD_ff4EiLNI",
+      "embedUrl": "https://www.youtube.com/embed/XD_ff4EiLNI",
+      "publisher": { "@id": "https://dev-eloop.github.io/#org" }
+    },
     {
       "@type": "VideoObject",
       "@id": "https://dev-eloop.github.io/audio-face-animator/#video-short",
@@ -315,7 +352,6 @@ addEventListener("load", () => {
       "duration": "PT38S",
       "url": "https://www.youtube.com/shorts/QetI6kjNgQE",
       "embedUrl": "https://www.youtube.com/embed/QetI6kjNgQE",
-      "mainEntityOfPage": "https://dev-eloop.github.io/audio-face-animator/",
       "publisher": { "@id": "https://dev-eloop.github.io/#org" }
     },
     {

@@ -466,6 +466,9 @@
       background:rgba(255,255,255,.94);border-radius:50%;fill:#031927;
       box-shadow:0 6px 22px rgba(0,0,0,.4);
     }
+    /* Sits directly under the featured video, so it keeps the frame's own
+       bottom margin rather than adding a second one. */
+    .vid-caption{margin:0 0 4px;font-size:14px;color:var(--muted)}
     .vid-links{font-size:14px}
     .vid-links a{color:var(--accent);text-decoration:none;font-weight:600}
     .vid-links a:hover{text-decoration:underline}

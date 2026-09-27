@@ -104,7 +104,7 @@
     <div class="card-body">
       <div class="kicker"><span class="cat">Animation Tools</span></div>
       <h3><a href="https://assetstore.unity.com/packages/slug/383626" target="_blank" rel="noopener">Audio Face Animator Lite</a></h3>
-      <p>The free edition of Audio Face Animator — try audio-driven lip-sync and facial expressions on your own characters before upgrading.</p>
+      <p>Free CPU generation in the Unity Editor for the first five seconds of a clip. Bake animations for Player playback.</p>
       <ul class="tags"><li>Lip-sync</li><li>Blendshapes</li><li>ARKit</li><li>Audio2Face</li></ul>
     </div>
     <div class="card-foot">
@@ -647,9 +647,9 @@ addEventListener("hashchange", () => {
             "url": "https://assetstore.unity.com/packages/slug/383624",
             "applicationCategory": "DeveloperApplication",
             "operatingSystem": "Windows 10, Windows 11 (64-bit)",
-            "processorRequirements": "NVIDIA GPU with compute capability 7.5 or newer (GeForce RTX 20-series or later). AMD and Intel GPUs are not supported.",
-            "memoryRequirements": "6 GB VRAM",
-            "softwareRequirements": "Unity 6000.0 or newer; NVIDIA driver 576 or newer",
+            "processorRequirements": "Windows x64 CPU; optional NVIDIA GPU backend requires compute capability 7.5 or newer",
+            "memoryRequirements": "About 6 GB free VRAM for optional NVIDIA GPU generation",
+            "softwareRequirements": "Unity 6000.0 or newer; NVIDIA driver only for optional NVIDIA GPU generation",
             "publisher": { "@id": "https://dev-eloop.github.io/#org" },
             "image": "https://dev-eloop.github.io/img/383624.webp",
             "description": "Turn any audio clip into facial animation. Generates lip-sync and expressions on your character's blendshapes, with ARKit-compatible rigs and streaming audio support."
@@ -664,12 +664,11 @@ addEventListener("hashchange", () => {
             "url": "https://assetstore.unity.com/packages/slug/383626",
             "applicationCategory": "DeveloperApplication",
             "operatingSystem": "Windows 10, Windows 11 (64-bit)",
-            "processorRequirements": "NVIDIA GPU with compute capability 7.5 or newer (GeForce RTX 20-series or later). AMD and Intel GPUs are not supported.",
-            "memoryRequirements": "6 GB VRAM",
-            "softwareRequirements": "Unity 6000.0 or newer; NVIDIA driver 576 or newer",
+            "processorRequirements": "Windows x64 CPU; no NVIDIA GPU required",
+            "softwareRequirements": "Unity 6000.0 or newer; CPU generation in Editor only, first five seconds",
             "publisher": { "@id": "https://dev-eloop.github.io/#org" },
             "image": "https://dev-eloop.github.io/img/383626.webp",
-            "description": "The free edition of Audio Face Animator — try audio-driven lip-sync and facial expressions on your own characters before upgrading."
+            "description": "Free CPU facial animation generation in the Unity Editor for the first five seconds of a clip; baked clips play in Unity Players."
           }
         },
         {

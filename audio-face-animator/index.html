@@ -116,8 +116,8 @@
       <p>
         The plugin analyses a speech recording and drives ARKit-compatible blendshapes on your
         character, producing synchronised mouth movement and facial expression. Everything is
-        computed locally: CUDA and TensorRT ship with the plugin, so there is nothing to install
-        separately and no connection is required at any point.
+        computed locally. CPU is the default in both editions, with no NVIDIA GPU required;
+        Full also includes an optional NVIDIA GPU backend. No connection is required.
       </p>
       <p>
         Your character does not have to be named the ARKit way. The 52 shapes the model outputs
@@ -133,7 +133,7 @@
         <li><b>Fully offline</b><span>No internet connection required at any stage.</span></li>
         <li><b>ARKit blendshapes</b><span>Works with the standard ARKit facial rig your character already uses.</span></li>
         <li><b>Saves AnimationClips</b><span>Output is a normal Unity clip — reuse, edit and blend it like any other.</span></li>
-        <li><b>Editor and runtime</b><span>Generate while authoring, or at runtime in a Windows Standalone build.</span></li>
+        <li><b>Editor and runtime</b><span>Both editions generate in the Editor; Full also generates in Windows x64 Players.</span></li>
         <li><b>Emotions</b><span>Play a line angrily, or move through several moods inside one clip, with ten emotions the model knows.</span></li>
         <li><b>Eyes and blinking</b><span>Gaze driven onto your rig's eye bones, an optional look-at target, and involuntary blinking.</span></li>
         <li><b>Blendshapes or bones</b><span>One ARKit shape can drive several blendshapes, or a bone — so a rig whose jaw is a bone works too.</span></li>
@@ -142,18 +142,17 @@
       <h2>First run</h2>
       <p>
         Start at <code>Tools &gt; AudioFaceAnimator &gt; Preflight Check</code>. It opens by
-        itself on a fresh project and works down the requirements one line at a time —
-        Windows, the native plugin, your GPU and its compute capability, the driver, video
-        memory, model files, the TensorRT engine and which edition is installed — putting
-        the button that fixes a problem beside the line that reports it.
+        itself on a fresh project with common platform and model checks. Sync StreamingAssets,
+        then select Checks &gt; CPU for CPU readiness. Full users can separately select
+        Checks &gt; NVIDIA GPU to check their driver, video memory and TensorRT engine.
       </p>
       <p>
-        The AI model ships as ONNX. The first time you generate, the plugin compiles a TensorRT
-        engine matched to your specific GPU — roughly a minute on a modern card. That engine is
-        then cached and reused, so it happens once.
+        The AI model ships as ONNX. CPU generation loads it into a shared context; Prewarm can
+        do this ahead of time. No GPU engine is built for CPU generation.
       </p>
       <p>
-        In the Editor you can get it out of the way up front via
+        For optional NVIDIA GPU in Full, the first generation builds and caches a TensorRT
+        engine matched to that GPU. In the Editor you can get it out of the way up front via
         <code>Tools &gt; AudioFaceAnimator &gt; Setup TensorRT Engine</code>, which shows your GPU
         and a progress bar. The same applies per machine in a shipped build: the first generation
         call on each player's PC builds and caches an engine, so show your own loading UI while it
@@ -163,14 +162,13 @@
 
       <h2>Requirements</h2>
       <p class="req-note">
-        This plugin runs the Audio2Face model on your GPU, so the hardware requirements are
-        specific. Please check them before buying.
+        Generation runs on Windows x64. CPU needs no NVIDIA GPU; the GPU requirements below
+        apply only if you explicitly select NVIDIA GPU in Full.
       </p>
       <ul class="req-list">
         <li><b>Windows 10 or 11, 64-bit.</b></li>
-        <li><b>NVIDIA GPU, compute capability 7.5 or newer</b> — GeForce RTX 20-series or newer, or an equivalent Quadro, RTX A-series or data-center card. <strong>AMD and Intel GPUs are not supported.</strong></li>
-        <li><b>NVIDIA driver 576 or newer.</b> CUDA and TensorRT are bundled; nothing needs installing separately.</li>
-        <li><b>6 GB or more free VRAM</b> while generating.</li>
+        <li><b>CPU backend:</b> works without an NVIDIA GPU, CUDA or TensorRT installation.</li>
+        <li><b>Optional NVIDIA GPU:</b> compute capability 7.5 or newer, a suitable driver (576 or newer recommended) and about 6 GB free VRAM.</li>
         <li><b>About 3 GB of disk space</b>, and roughly the same again while the plugin copies its model files into StreamingAssets.</li>
         <li><b>A character model with ARKit blendshapes.</b></li>
       </ul>
@@ -179,7 +177,7 @@
       <div class="edition-grid">
         <div class="panel">
           <h3>Audio Face Animator</h3>
-          <p>The full plugin, including runtime generation in Windows Standalone builds.</p>
+          <p>CPU by default, optional NVIDIA GPU, and generation in Windows x64 Editor and Players without an edition audio-length limit.</p>
           <a class="btn btn-primary" href="https://assetstore.unity.com/packages/slug/383624" target="_blank" rel="noopener">
             View on Asset Store
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
@@ -187,7 +185,7 @@
         </div>
         <div class="panel">
           <h3>Audio Face Animator Lite <span class="price free">Free</span></h3>
-          <p>Try audio-driven lip-sync and expressions on your own characters before buying.</p>
+          <p>CPU generation in the Unity Editor for the first five seconds of a clip; baked clips also play in Players.</p>
           <a class="btn btn-ghost" href="https://assetstore.unity.com/packages/slug/383626" target="_blank" rel="noopener">
             View on Asset Store
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
@@ -292,10 +290,10 @@ addEventListener("load", () => {
   "url": "https://assetstore.unity.com/packages/slug/383624",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Windows 10, Windows 11 (64-bit)",
-  "processorRequirements": "NVIDIA GPU with compute capability 7.5 or newer (GeForce RTX 20-series or later). AMD and Intel GPUs are not supported.",
-  "memoryRequirements": "6 GB VRAM",
+  "processorRequirements": "Windows x64 CPU. Optional NVIDIA GPU backend in Full requires compute capability 7.5 or newer.",
+  "memoryRequirements": "About 6 GB free VRAM for optional NVIDIA GPU generation",
   "storageRequirements": "3 GB",
-  "softwareRequirements": "Unity 6000.0 or newer; NVIDIA driver 576 or newer",
+  "softwareRequirements": "Unity 6000.0 or newer; NVIDIA driver only for optional NVIDIA GPU generation",
   "image": "https://dev-eloop.github.io/img/383624.webp",
   "description": "A Unity plugin that runs the NVIDIA Audio2Face AI model locally to generate facial animation from audio files, driving ARKit-compatible blendshapes and saving the result as Unity AnimationClips. Works in the Editor and at runtime in Windows Standalone builds, fully offline.",
   "video": { "@id": "https://dev-eloop.github.io/audio-face-animator/#video-rig" },

@@ -4,26 +4,23 @@ title: Audio Face Animator documentation
 description: Complete documentation for Audio Face Animator — the Unity plugin that generates ARKit facial animation from audio on your own machine, using the NVIDIA Audio2Face-3D SDK. Setup, character mapping, emotions, eyes and blinking, the scripting API and troubleshooting.
 parent: Audio Face Animator
 parent_url: /audio-face-animator/
-updated: 2026-09-07
+updated: 2026-09-27
 nav_blurb: generate lip-sync and facial animation for a Unity character from an audio file, with NVIDIA Audio2Face
 ---
 
 **Audio Face Animator** generates facial animation from audio using the **NVIDIA
 Audio2Face-3D** model, driving any character with **ARKit-compatible
 blendshapes**. Everything runs on your own machine — no cloud service, no
-account, no API key and no per-request cost, with the model, CUDA and TensorRT
-all inside the package.
+account, no API key and no per-request cost. CPU generation is the default in
+both editions; Full also includes CUDA and TensorRT for optional NVIDIA GPU generation.
 
 A performance can carry an **emotion**, the eyes can be driven from the rig's own
 eye bones, and the character **blinks** on its own. Individual ARKit shapes can
 drive **several blendshapes or a bone**, so rigs whose jaw is a bone are
 supported too.
 
-**Version 1.3.0** adds a [preflight check](#preflight-check): one window that
-says whether this machine can run the plugin at all, which requirement failed
-when it cannot, and what to press about it. The Face Animator inspector reports
-the same thing, instead of looking as though everything were fine on a machine
-where the native plugin never loaded.
+Use [preflight](#preflight-check) to check the selected backend before generating.
+CPU checks do not require an NVIDIA GPU or build a TensorRT engine.
 
 ## Requirements
 
@@ -32,9 +29,9 @@ where the native plugin never loaded.
 | Requirement | Minimum |
 |---|---|
 | **Platform** | Windows 10 / 11, 64-bit |
-| **GPU** | NVIDIA, compute capability 7.5 or newer — GeForce RTX 20-series or newer, or the equivalent Quadro / RTX A-series / data-center card |
-| **Driver** | Recent enough for CUDA 12.9; version 576 or newer recommended |
-| **VRAM** | 6 GB or more free while generating |
+| **CPU** | Default in Full and Lite; no NVIDIA GPU required |
+| **NVIDIA GPU** | Optional in Full only; compute capability 7.5 or newer and about 6 GB free VRAM |
+| **NVIDIA GPU driver** | Recent enough for CUDA 12.9; version 576 or newer recommended |
 | **Unity** | 6000.0 or newer |
 | **Disk** | About 3 GB, and roughly the same again while the plugin syncs its model files |
 
@@ -46,12 +43,19 @@ transforms, and never touches materials or shaders.
 ## Versions Comparison: Lite vs Full
 {: #editions}
 
-![Feature comparison: both versions generate facial animation from audio, process fully offline and work in the Unity Editor. Only the full version supports standalone builds and unlimited audio length; Lite is capped at 5 seconds of audio and animation](/audio-face-animator/docs/img/face-animator-versions-comparison.webp){: width="1536" height="1024"}
+| Feature | Lite | Full |
+|---|---|---|
+| Generation backend | CPU | CPU (default), NVIDIA GPU (optional) |
+| Generated audio | First five seconds | No edition limit |
+| Generation | Windows x64 Editor | Windows x64 Editor and Mono/IL2CPP Player |
+| Baked clip playback | Any Unity Player | Any Unity Player |
+| Characters, emotions, eyes, custom rigs | Included | Included |
 
-The Lite version has two limitations:
+The Lite version has three generation limitations:
 
-- **Audio length is limited at five seconds.**
-- **It works in the Unity Editor only** — no standalone builds.
+- **CPU is the only backend.** Full also offers NVIDIA GPU.
+- **Generation uses only the first five seconds of audio.**
+- **Generation works in the Unity Editor only.** Baked AnimationClips still play in Player builds.
 
 Everything else — mapping, emotions, eyes, blinking, AnimationClip export — is
 the same in both.
@@ -64,13 +68,12 @@ when it cannot tell yet because the sync has not run.
 
 ## Configuration
 
-Two one-time steps — syncing the model files, and compiling a TensorRT engine for
-your GPU — with a preflight check in front of them that says which of the two, if
-either, still needs doing.
+Sync the model files, choose **Checks > CPU** in preflight, then generate in the
+sample scene. Full users who explicitly select NVIDIA GPU must also prepare a
+TensorRT engine for their GPU.
 
-The package adds four menu items, all under **Tools → AudioFaceAnimator**:
-*Preflight Check*, *Sync StreamingAssets*, *Setup TensorRT Engine* and
-*Documentation*, which opens this page.
+Both editions add *Preflight Check*, *Sync StreamingAssets* and *Documentation*
+under **Tools → AudioFaceAnimator**. Full also adds *Setup TensorRT Engine*.
 
 ### Preflight check
 {: #preflight-check}
@@ -78,13 +81,10 @@ The package adds four menu items, all under **Tools → AudioFaceAnimator**:
 **Tools → AudioFaceAnimator → Preflight Check**. It also opens by itself the
 first time a project loads, and again whenever something it checks is not ready.
 
-The window works down the requirements one line at a time — **operating system**,
-**native plugin**, **graphics card** and its compute capability, **NVIDIA
-driver**, **video memory**, **model files**, **TensorRT engine**, and which
-**edition** is installed — and puts the button that fixes a problem beside the
-line that reports it.
-
-![The Preflight Check window on a machine that is not ready yet: OK on operating system, native plugin, graphics card and NVIDIA driver, CHECK on video memory, BLOCKED on model files with a Sync StreamingAssets button beside it and on the TensorRT engine, with Re-check and Copy report along the bottom](/audio-face-animator/docs/img/face-animator-preflight-check.png){: width="559" height="575"}
+Automatic startup checks common platform and model requirements. Select
+**Checks > CPU** for CPU libraries and model readiness; in Full, select
+**Checks > NVIDIA GPU** separately for driver, GPU memory and TensorRT engine.
+Opening CPU diagnostics does not load the ONNX session.
 
 <div class="table-scroll" markdown="1">
 
@@ -97,12 +97,11 @@ line that reports it.
 
 </div>
 
-Two results cannot be fixed in software, and the window says so plainly rather
-than sending you looking: an editor that is not 64-bit Windows, and a GPU below
-compute capability 7.5.
+Generation needs Windows x64. A GPU below compute capability 7.5 blocks only
+the NVIDIA GPU backend; Full users can explicitly select CPU.
 
-**Re-check** runs everything again. **Copy report** puts the whole report on the
-clipboard as text — the GPU, the driver, the edition and every line's result —
+**Re-check** runs the selected checks again. **Copy report** puts the selected
+backend, edition and displayed results on the clipboard —
 which is what to paste into a [support](#support) message. Two ticks sit at the
 bottom: *Explain the checks that passed as well* adds the explanation paragraph
 under the lines that are fine too, not only under the ones that are not, and
@@ -125,7 +124,7 @@ which is where Unity looks for them at runtime. The window compares file
 damaged one is repaired by copying again. *No Differences* means there is nothing
 to do.
 
-### 2. Setup TensorRT engine
+### 2. Setup TensorRT engine (Full, NVIDIA GPU only)
 
 **Tools → AudioFaceAnimator → Setup TensorRT Engine**, then **Build Engine for
 This GPU** — the preflight report links straight to it. About a minute, once per
@@ -244,27 +243,29 @@ not move.
 
 ## Generate animation in Editor
 
-![The Face Animator component in the Inspector: Model Type, Blendshapes Configuration, Model Configuration, Eyes, Blinking, and Animation Playback with an Audio Clip and an Emotion Preset assigned. Outside Play mode a notice reads "Enter Play Mode to generate and play animation" and the Generate, Play and Stop buttons are disabled](/audio-face-animator/docs/img/face-animator-inspector.png){: width="560" height="546"}
-
 **Model Type** — which Audio2Face-3D model generates the animation: **Claire**,
 **James** or **Mark**. Each was trained on a different performer and produces a
 different speaking style. This is a *performance style*, not a character: it has
 nothing to do with what your character looks like, and Claire will drive a male
 character perfectly well. Try all three on the same audio.
 
-**Audio Clip**, under *Animation Playback* — the speech to animate. Any length,
-any sample rate, mono or stereo; the plugin resamples to 16 kHz mono itself. No
+**Audio Clip**, under *Animation Playback* — the speech to animate. Full has no
+edition length cap; Lite generates only the first five seconds. Mono or stereo
+clips at supported sample rates are resampled to 16 kHz mono. No
 other preparation is needed, though a clip whose import **Load Type** prevents
 `AudioClip.GetData` from returning samples cannot be read.
 
-Then **enter Play mode** — outside it the inspector says so and **Generate** is
+Keep **CPU** selected in *Generation > Backend*. Full can explicitly choose
+**NVIDIA GPU**; Lite offers CPU only. An older Lite scene saved with NVIDIA GPU
+selected must be switched to CPU. Then **enter Play mode** — outside it the inspector says so and **Generate** is
 disabled — press **Generate**, and press **Play** to preview the result. **Stop**
 ends it early and resets the face to neutral. Generation runs on a background
 thread, so the Editor stays usable.
 
-On the very first generation the plugin may pause to compile a TensorRT engine,
-logging progress to the console. Changing the AudioClip discards the generated
-animation; changing the Model Type does not, so regenerate to hear it.
+The first CPU generation loads the ONNX model. **Prewarm** can do that ahead of
+time; **Release CPU** frees the shared context after generation. NVIDIA GPU in
+Full may build a TensorRT engine on its first run. Changing the AudioClip or
+other generation inputs invalidates the generated result; generate again.
 
 ### Saving an AnimationClip
 
@@ -294,8 +295,6 @@ Animator or Timeline on any platform Unity builds for. Three things to know:
   the rest.
 
 ### The sample scene
-
-![The sample scene running: a head on a dark background, with a model dropdown set to James, Generate, Play and Stop buttons down the left side, and a Browse button in the top right](/audio-face-animator/docs/img/sample-scene.png){: width="942" height="612"}
 
 `Assets/DevEloop/AudioFaceAnimator/Scenes/AudioFaceAnimator.unity` has all three
 characters set up, a model selector, generation controls and a file browser for
@@ -473,7 +472,8 @@ change the whole performance, a max weight fixes one expression on one rig.
 ## Generate animation at runtime
 
 Runtime generation in a standalone player is a [full-version](#editions) feature;
-Lite generates in the Editor only.
+Lite generates in the Editor only. Full generates on CPU by default in Windows x64
+Mono and IL2CPP Players. Baked clips can play on other Unity platforms.
 
 ```csharp
 using DevEloop.AudioFaceAnimator;
@@ -496,8 +496,8 @@ public class Example : MonoBehaviour
 }
 ```
 
-`GenerateAsync()` does not throw for the ordinary failures — a missing GPU, no
-engine, an unreadable model file. It logs the reason and leaves
+`GenerateAsync()` does not throw for ordinary failures — a missing library or
+model file, or an unavailable selected backend. It logs the reason and leaves
 `HasAnimationData` false, so check that rather than catching exceptions. Use
 `IsGenerating` to disable your UI while it runs, as the sample scene does, and do
 not start a second generation while one is running.
@@ -507,6 +507,7 @@ not start a second generation while one is running.
 | Member | What it does |
 |---|---|
 | `AudioClip AudioClip { get; set; }` | The clip to animate. Assigning a different clip discards the generated animation. |
+| `AnimationBackend Backend { get; set; }` | CPU by default. Full also supports `AnimationBackend.Nvidia` for NVIDIA GPU; there is no automatic fallback. |
 | `AudioFaceModel model` | `Claire`, `James` or `Mark`. |
 | `List<FaceBlendsMapper> blendsMappers` | The mappers to drive. |
 | `EmotionPreset Emotions { get; set; }` | The preset the next generation uses; `null` is neutral. |
@@ -538,8 +539,17 @@ character instantiated at runtime needs no extra setup for playback.
 
 Run **Sync StreamingAssets** before building — the plugin reads
 `Application.streamingAssetsPath`, and the copy inside the package folder is a
-source, not what ships. A build carries about **2 GB**: `network.onnx` alone is
-691 MB, and the CUDA and TensorRT DLLs are not trimmable.
+source, not what ships. Include `audio2face-cpu.dll`, `onnxruntime.dll` and
+the model files for CPU. Full also includes its NVIDIA GPU DLLs. Check the
+Windows x64 plugin importers and the built Player's `Plugins/x86_64` directory.
+
+To prepare CPU generation ahead of a line, call
+`await generator.PrewarmAsync(AnimationBackend.Cpu)` from Unity's main thread and
+check its boolean result. Later, `await generator.ReleaseCpuResourcesAsync()`
+frees the shared context. Completed animations remain playable. CPU runs on
+machines without NVIDIA GPU, CUDA or TensorRT.
+
+The engine advice below applies only when Full explicitly selects NVIDIA GPU.
 
 **Keep `network.onnx` in StreamingAssets and let the first generation call build
 an engine on each player's machine.** Your players' GPUs are not yours, and the
@@ -567,31 +577,29 @@ bool Report(string phase, float progress) { Phase = phase; Progress = progress; 
 ```
 
 `EnsureEngine` blocks for about a minute, so it belongs on a worker thread.
-`GetStatus` doubles as the **capability check to run at startup**: a large share
-of players will not have a qualifying NVIDIA GPU, and the fallback worth building
-is baked `AnimationClip` assets for every line you know in advance. They play on
-any GPU and any platform, with no plugin involved, which makes runtime generation
-an enhancement for dynamic lines rather than a requirement.
+`GetStatus` checks NVIDIA GPU only. If it is unavailable, explicitly choose
+CPU or play an already baked `AnimationClip`. Baked clips play on any platform
+Unity supports, without native generation libraries.
 
-`PluginVersion.GetState()` answers the other half of the question — whether the
-plugin can run here at all, and which edition is installed:
+`PluginVersion.GetPackageState(out error)` identifies the edition without
+loading a backend. `PluginVersion.GetState(AnimationBackend.Cpu, out error)`
+checks CPU readiness; the no-argument `GetState()` also checks CPU. Pass
+`AnimationBackend.Nvidia` to check NVIDIA GPU explicitly:
 
 <div class="table-scroll" markdown="1">
 
 | `PluginState` | Meaning |
 |---|---|
-| `Ready` | The native plugin loaded and the complete model package is present. |
-| `LiteEdition` | Loaded, but audio is capped at five seconds and generation runs in the Unity Editor only. |
-| `NativePluginUnavailable` | The native plugin did not load — the wrong operating system, no usable NVIDIA driver, or a damaged install. `GetState(out string error)` gives the reason. |
-| `ModelDataMissing` | Loaded, but StreamingAssets has not been synced, so the edition cannot be established yet. |
+| `Ready` | The selected backend and model are available. |
+| `LiteEdition` | Lite restrictions apply, or a selected backend is unavailable in Lite. Lite CPU still generates in the Editor. |
+| `NativePluginUnavailable` | The selected backend's libraries cannot load; use its preflight report for the reason. |
+| `ModelDataMissing` | StreamingAssets has not been synced or model data is incomplete. |
 
 </div>
 
-It calls into the native plugin, so cache the result per component rather than
-asking on every frame or repaint. `PluginVersion.Version` is the shipped version
-string. The older `IsModelComplete()` is kept for compatibility but cannot
-express `NativePluginUnavailable` — it reports `true` there — so new code should
-call `GetState()`.
+`PluginVersion.Version` is the shipped version string. The older
+`IsModelComplete()` is kept for compatibility; new code should call
+`GetPackageState` or `GetState(backend, out error)` as appropriate.
 
 You can additionally ship a `network.trt` in
 `Assets/DevEloop/AudioFaceAnimator/StreamingAssets`, copied out of your engine
@@ -636,29 +644,30 @@ there.
 
 ## Troubleshooting
 
-Open the [preflight check](#preflight-check) first: it names the requirement that
-failed, which settles most first-run problems on its own. If every line there
+Open the [preflight check](#preflight-check), select the backend used by the
+component and read its failed gate. If every line there
 passes, open the Unity console. Every failure reports the actual reason,
 including what TensorRT itself said, and failures print a specific line followed
 by a generic one — the first is the useful one.
 
-### Setup and the GPU
+### Setup and the selected backend
 
 <div class="table-scroll" markdown="1">
 
 | Symptom | Cause and fix |
 |---|---|
-| *"No usable CUDA device"*, or the native plugin could not be loaded | No NVIDIA GPU was found, or the driver is too old. Update to driver 576 or newer. On switchable-graphics laptops, make sure Unity runs on the NVIDIA GPU. |
-| The Face Animator shows **"Audio Face Animator cannot run on this machine"** | The native plugin did not load, so nothing will generate here whatever the edition is. Press **Open Preflight Check** in that banner: it names the gate that failed. |
+| CPU libraries missing or incompatible | Restore the bundled CPU DLL and ONNX Runtime, restart Unity, then select **Checks > CPU** in preflight. No NVIDIA GPU or engine is needed. |
+| *"No usable CUDA device"* | NVIDIA GPU was selected but no supported device or driver was found. Update the driver or explicitly select CPU in Full. |
+| The Face Animator says the selected backend cannot run | Open the matching preflight check; a CPU failure does not imply a GPU requirement. |
 | The Face Animator shows **"The model files have not been synced yet"** | Run **Tools → AudioFaceAnimator → Sync StreamingAssets** and press **Copy All Files**. Until that finishes there is nothing to read an edition out of either, which is why the banner does not name one. |
 | *"The TensorRT engine … cannot be loaded on this GPU"* | A `network.trt` you supplied was built for a different architecture. Build one via **Setup TensorRT Engine**, or remove the file and let the plugin build from `network.onnx`. |
 | *"… is not a TensorRT engine (N bytes)"* | A `network.trt` did not arrive intact — usually Git LFS storing a pointer instead of the file. Delete it and rebuild. |
 | *"no execution context could be created"* | Not enough free VRAM. Close other GPU-heavy applications. If you enabled the full batch range, rebuild with it off. |
-| *"network.onnx is missing"*, *"trt_info.json is missing"*, *"Using built-in defaults"*, *"Using the built-in emotion names"* | Run **Tools → AudioFaceAnimator → Sync StreamingAssets**. |
+| *"network.onnx is missing"* or damaged model data | Run **Tools → AudioFaceAnimator → Sync StreamingAssets**. `trt_info.json` exists only in Full for NVIDIA GPU. |
 | The engine build fails or is very slow | Building needs several GB of free VRAM and disk. Close other GPU applications; the console shows what TensorRT reported. |
 | The Sync window opens on every Editor start | Files still differ, usually because the sync was cancelled. Press **Copy All Files** and let it finish. |
 | The engine rebuilds after a driver or plugin update | Expected: the cache key is the GPU signature plus a fingerprint of `network.onnx`. |
-| Animation is capped at 5 seconds, or a **⚠️ LITE VERSION** banner appears unexpectedly, or a build refuses to generate with code `-2` | All three are the same thing: the model package is incomplete. In the Lite edition they are the intended limits — [the full version is on the Asset Store](https://assetstore.unity.com/packages/slug/383624). If you own the full version, the model data did not fully arrive: run **Sync StreamingAssets**, press **Copy All Files**, and re-import the package if that does not settle it. A partial checkout is the usual cause, and it can leave everything else looking fine. |
+| Animation is capped at five seconds, or a **⚠️ LITE VERSION** banner appears | These are Lite's expected generation limits. In Full, re-sync and re-import incomplete model data. An older Lite scene with NVIDIA GPU selected needs an explicit switch to CPU. |
 
 </div>
 

@@ -4,15 +4,17 @@ title: Audio Face Animator documentation
 description: Complete documentation for Audio Face Animator — the Unity plugin that generates ARKit facial animation from audio on your own machine, using the NVIDIA Audio2Face-3D SDK. Setup, character mapping, emotions, eyes and blinking, the scripting API and troubleshooting.
 parent: Audio Face Animator
 parent_url: /audio-face-animator/
-updated: 2026-09-27
+updated: 2026-09-28
 nav_blurb: generate lip-sync and facial animation for a Unity character from an audio file, with NVIDIA Audio2Face
 ---
 
 **Audio Face Animator** generates facial animation from audio using the **NVIDIA
 Audio2Face-3D** model, driving any character with **ARKit-compatible
 blendshapes**. Everything runs on your own machine — no cloud service, no
-account, no API key and no per-request cost. CPU generation is the default in
-both editions; Full also includes CUDA and TensorRT for optional NVIDIA GPU generation.
+API key and no per-request cost. **This guide covers version 2.0.0.** CPU
+generation is the default in both editions and needs no NVIDIA account or GPU.
+Full also offers NVIDIA GPU generation: CUDA is bundled, but TensorRT must be
+installed separately. Downloading that optional dependency requires an NVIDIA account.
 
 A performance can carry an **emotion**, the eyes can be driven from the rig's own
 eye bones, and the character **blinks** on its own. Individual ARKit shapes can
@@ -31,9 +33,11 @@ CPU checks do not require an NVIDIA GPU or build a TensorRT engine.
 | **Platform** | Windows 10 / 11, 64-bit |
 | **CPU** | Default in Full and Lite; no NVIDIA GPU required |
 | **NVIDIA GPU** | Optional in Full only; compute capability 7.5 or newer and about 6 GB free VRAM |
-| **NVIDIA GPU driver** | Recent enough for CUDA 12.9; version 576 or newer recommended |
+| **NVIDIA GPU driver** | GPU backend only: recent enough for CUDA 12.9; version 576 or newer recommended |
+| **TensorRT** | GPU backend only: separate TensorRT 10.16.1.11 Windows x64 / CUDA 12.9 installation |
 | **Unity** | 6000.0 or newer |
-| **Disk** | About 3 GB, and roughly the same again while the plugin syncs its model files |
+| **Disk** | Imported asset: about 1.58 GiB Full / 0.78 GiB Lite, plus a separate copy of model data in StreamingAssets. Allow additional space for Unity's Library, and for TensorRT and its engine when using GPU. |
+| **Sample scene UI** | Unity Input System (`com.unity.inputsystem` 1.14.2); Inspector/API generation does not need it |
 
 </div>
 
@@ -43,13 +47,17 @@ transforms, and never touches materials or shaders.
 ## Versions Comparison: Lite vs Full
 {: #editions}
 
+<div class="table-scroll" markdown="1">
+
 | Feature | Lite | Full |
 |---|---|---|
 | Generation backend | CPU | CPU (default), NVIDIA GPU (optional) |
-| Generated audio | First five seconds | No edition limit |
+| Audio processed per clip | First five seconds | No edition limit |
 | Generation | Windows x64 Editor | Windows x64 Editor and Mono/IL2CPP Player |
 | Baked clip playback | Any Unity Player | Any Unity Player |
 | Characters, emotions, eyes, custom rigs | Included | Included |
+
+</div>
 
 The Lite version has three generation limitations:
 
@@ -78,8 +86,9 @@ under **Tools → AudioFaceAnimator**. Full also adds *Setup TensorRT Engine*.
 ### Preflight check
 {: #preflight-check}
 
-**Tools → AudioFaceAnimator → Preflight Check**. It also opens by itself the
-first time a project loads, and again whenever something it checks is not ready.
+**Tools → AudioFaceAnimator → Preflight Check**. It opens automatically at
+Editor startup when common platform or model checks fail, including a fresh
+import whose model files have not been synced.
 
 Automatic startup checks common platform and model requirements. Select
 **Checks > CPU** for CPU libraries and model readiness; in Full, select
@@ -91,7 +100,7 @@ Opening CPU diagnostics does not load the ONNX session.
 | Badge | Meaning |
 |---|---|
 | **OK** | Nothing to do. |
-| **CHECK** | Generation will run, but something is worth knowing — a card below the recommended VRAM, or an engine not built yet. |
+| **CHECK** | Review the warning before generating — for example, low free VRAM or an engine that still needs building. This is not a guarantee that generation will succeed. |
 | **BLOCKED** | Generation cannot run until this is dealt with. |
 | **UNKNOWN** | The check could not run, almost always because an earlier line failed. Fix that one and press **Re-check**. |
 
@@ -111,7 +120,7 @@ when the model files need syncing, which it always reports.
 ### 1. Sync StreamingAssets
 
 **Tools → AudioFaceAnimator → Sync StreamingAssets**, then **Copy All Files**. It
-is about 1.4 GB, so give it a minute. Run it again after every plugin update:
+copies the model data, so give it time to finish. Run it again after every plugin update:
 until you do, generation keeps using the old model data without saying anything,
 which is why the preflight treats out-of-date files as a failure and opens itself
 to tell you.
@@ -124,13 +133,35 @@ which is where Unity looks for them at runtime. The window compares file
 damaged one is repaired by copying again. *No Differences* means there is nothing
 to do.
 
+<span id="2-setup-tensorrt-engine"></span>
+
 ### 2. Setup TensorRT engine (Full, NVIDIA GPU only)
+{: #tensorrt-setup}
+
+CPU users can skip this step. Full's GPU backend requires a separate
+**TensorRT 10.16.1.11 Windows x64 / CUDA 12.9** installation. No TensorRT DLLs
+are included in the asset; CUDA DLLs are bundled.
+
+1. Open **Tools → AudioFaceAnimator → Setup TensorRT Engine** and press
+   **Download TensorRT**, or use the [NVIDIA download page](https://developer.nvidia.com/nvidia-tensorrt-download).
+   Sign in to NVIDIA and select the exact version above, not TensorRT for RTX
+   or a newer release.
+2. Extract the **whole ZIP**, for example to `C:\Tools\TensorRT-10.16.1.11`.
+   Keep all builder resources, not only `nvinfer_10.dll`.
+3. Open Windows **Edit environment variables for your account**, then
+   **Path → Edit → New** and add `C:\Tools\TensorRT-10.16.1.11\bin`.
+   Preserve the existing entries.
+4. Close the Unity Editor and fully exit **Unity Hub**, including its tray icon.
+   Reopen Hub and the project to pick up the new `PATH`.
+5. Press **Check Installation** in the setup window. Resolve any reported
+   missing, incompatible or conflicting files before building the engine.
+
+The plugin does not download dependencies or edit `PATH` for you. Python, pip
+and a separate CUDA Toolkit are not required. Once installed, generation runs offline.
 
 **Tools → AudioFaceAnimator → Setup TensorRT Engine**, then **Build Engine for
-This GPU** — the preflight report links straight to it. About a minute, once per
-machine.
-
-![The TensorRT Engine window: the detected GPU, a warning that no engine exists yet, and the Build Engine for This GPU button](/audio-face-animator/docs/img/tensorrt-engine-setup.png){: width="687" height="410"}
+This GPU** — the preflight report links straight to it. Building can take a
+minute or longer, depending on the machine.
 
 The engine is compiled from the `network.onnx` synced in step 1, because a
 compiled engine only loads on the GPU architecture it was built for. Leave *Build
@@ -148,8 +179,22 @@ fingerprint of `network.onnx`, so the engine survives plugin updates but is
 rebuilt — correctly — after a GPU or driver change, or when the model itself
 changes. **Clear Built Engine Cache** in the same window forces a rebuild.
 
-In a standalone build the first generation call does this automatically, on each
-player's machine.
+In a standalone build the first GPU generation call builds the engine on each
+player's machine, after the same external TensorRT installation is available.
+
+### Updating from an older Lite installation
+
+Back up the project and keep your own scenes, prefabs and baked clips outside
+the package folder. Before importing Lite 2.0.0, remove the old
+`Assets/DevEloop/AudioFaceAnimator/Plugins` folder: Unity package import does
+not remove obsolete GPU DLLs. The new Lite import restores its three plugins.
+Remove old GPU-only `trt_info.json` files from the package's StreamingAssets
+folder and `Assets/StreamingAssets/DevEloop/AudioFaceAnimator`, preserving any
+custom files separately. Run **Sync StreamingAssets → Copy All Files**.
+
+Existing scenes can retain **NVIDIA GPU** as their saved backend. Select
+**CPU** on each affected Face Animator, run **Checks > CPU**, then generate a
+short clip. New components and the sample scene default to CPU.
 
 ## Preparing your character
 
@@ -262,14 +307,13 @@ disabled — press **Generate**, and press **Play** to preview the result. **Sto
 ends it early and resets the face to neutral. Generation runs on a background
 thread, so the Editor stays usable.
 
-The first CPU generation loads the ONNX model. **Prewarm** can do that ahead of
-time; **Release CPU** frees the shared context after generation. NVIDIA GPU in
+The first CPU generation loads the ONNX model. The sample scene's **Prewarm**
+button can do that ahead of time; **Release CPU** frees the shared context
+after queued generation finishes. Completed animations remain playable. NVIDIA GPU in
 Full may build a TensorRT engine on its first run. Changing the AudioClip or
 other generation inputs invalidates the generated result; generate again.
 
 ### Saving an AnimationClip
-
-![The same component in Play mode after a successful generation: Generate and Play are enabled, Stop is disabled, and a Create AnimationClip button has appeared below them. Unity tints its interface slightly darker in Play mode](/audio-face-animator/docs/img/face-animator-generate-playmode.png){: width="560" height="505"}
 
 Once animation exists, a **Create AnimationClip** button appears. It writes a
 standard Unity `AnimationClip`, which must be saved **inside your project's
@@ -300,6 +344,15 @@ Animator or Timeline on any platform Unity builds for. Three things to know:
 characters set up, a model selector, generation controls and a file browser for
 loading a WAV from disk. It is the quickest way to confirm the plugin works on
 your machine, and a working reference for wiring the API to UI.
+
+For the sample's buttons, install **Input System** (`com.unity.inputsystem`
+1.14.2) through **Window → Package Manager**. Without it, the scene's
+`EventSystem` has a missing UI component and buttons may not respond.
+Generation through the Face Animator Inspector or API works independently of
+this sample UI dependency.
+
+Generation processes a complete audio clip. Streaming audio generation is not
+supported. CPU and GPU use different solvers, so their facial poses can differ.
 
 ## Emotions
 
@@ -477,14 +530,19 @@ Mono and IL2CPP Players. Baked clips can play on other Unity platforms.
 
 ```csharp
 using DevEloop.AudioFaceAnimator;
+using UnityEngine;
 
 public class Example : MonoBehaviour
 {
     public FaceAnimator faceAnimator;
     public AudioClip clip;
 
-    async void Speak()
+    public async void Speak()
     {
+        if (faceAnimator == null || clip == null || faceAnimator.IsGenerating)
+            return;
+
+        faceAnimator.Backend = AnimationBackend.Cpu;
         faceAnimator.AudioClip = clip;
         await faceAnimator.GenerateAsync();
 
@@ -543,13 +601,31 @@ source, not what ships. Include `audio2face-cpu.dll`, `onnxruntime.dll` and
 the model files for CPU. Full also includes its NVIDIA GPU DLLs. Check the
 Windows x64 plugin importers and the built Player's `Plugins/x86_64` directory.
 
-To prepare CPU generation ahead of a line, call
-`await generator.PrewarmAsync(AnimationBackend.Cpu)` from Unity's main thread and
-check its boolean result. Later, `await generator.ReleaseCpuResourcesAsync()`
-frees the shared context. Completed animations remain playable. CPU runs on
-machines without NVIDIA GPU, CUDA or TensorRT.
+To prepare CPU generation ahead of a line, use `AnimationGenerator` from an
+async method entered on Unity's main thread:
+
+```csharp
+var generator = new AnimationGenerator();
+if (!await generator.PrewarmAsync(AnimationBackend.Cpu))
+    return; // See the Unity console for the failure.
+
+faceAnimator.Backend = AnimationBackend.Cpu;
+await faceAnimator.GenerateAsync();
+if (faceAnimator.HasAnimationData)
+    faceAnimator.Play();
+
+// Optional when generation is finished; affects the shared CPU context.
+await generator.ReleaseCpuResourcesAsync();
+```
+
+Release waits for preceding queued operations. Completed animations remain
+playable; a later generation loads the context again. CPU runs on machines
+without NVIDIA GPU, CUDA or TensorRT.
 
 The engine advice below applies only when Full explicitly selects NVIDIA GPU.
+Each target machine also needs the [external TensorRT installation](#2-setup-tensorrt-engine).
+For version 2.0.0, keep the GPU Player and model paths ASCII-only: a GPU native
+crash was reproduced with a path containing Unicode characters.
 
 **Keep `network.onnx` in StreamingAssets and let the first generation call build
 an engine on each player's machine.** Your players' GPUs are not yours, and the
@@ -583,14 +659,16 @@ Unity supports, without native generation libraries.
 
 `PluginVersion.GetPackageState(out error)` identifies the edition without
 loading a backend. `PluginVersion.GetState(AnimationBackend.Cpu, out error)`
-checks CPU readiness; the no-argument `GetState()` also checks CPU. Pass
-`AnimationBackend.Nvidia` to check NVIDIA GPU explicitly:
+checks CPU library/package availability; the no-argument `GetState()` also
+checks CPU. Neither prepares an ONNX session or proves generation will succeed.
+Pass `AnimationBackend.Nvidia` to check NVIDIA libraries/package state, and use
+`EngineProvisioner.GetStatus` for GPU/engine readiness:
 
 <div class="table-scroll" markdown="1">
 
 | `PluginState` | Meaning |
 |---|---|
-| `Ready` | The selected backend and model are available. |
+| `Ready` | Full package data is present; `GetState` also checks the selected backend's libraries. Engine/session preparation can still fail. |
 | `LiteEdition` | Lite restrictions apply, or a selected backend is unavailable in Lite. Lite CPU still generates in the Editor. |
 | `NativePluginUnavailable` | The selected backend's libraries cannot load; use its preflight report for the reason. |
 | `ModelDataMissing` | StreamingAssets has not been synced or model data is incomplete. |
@@ -638,6 +716,11 @@ Point your assistant at that folder, or copy the skills into wherever it reads
 them from. They are ordinary Markdown with YAML frontmatter and carry no
 dependency on any particular tool, and both editions ship the same set.
 
+**Version 2.0.0 documentation correction:** some instructions bundled in the
+package still describe TensorRT as included and omit the sample's Input System
+dependency. Follow this page for those requirements: TensorRT is installed
+separately for Full GPU generation, and Input System is needed for the sample UI.
+
 Worth doing because an assistant working from the plugin's name alone will invent
 an API that reads plausibly and does not exist. These describe what is actually
 there.
@@ -657,6 +740,9 @@ by a generic one — the first is the useful one.
 | Symptom | Cause and fix |
 |---|---|
 | CPU libraries missing or incompatible | Restore the bundled CPU DLL and ONNX Runtime, restart Unity, then select **Checks > CPU** in preflight. No NVIDIA GPU or engine is needed. |
+| TensorRT missing, incompatible, or a builder resource such as `nvinfer_builder_resource_sm86_10.dll` is missing | Install the complete required TensorRT ZIP, add its `bin` to `PATH`, restart Unity and Hub, then press **Check Installation**. See [GPU setup](#2-setup-tensorrt-engine). Re-importing the asset does not install TensorRT. CPU remains available. |
+| Sample scene buttons do not respond, or `EventSystem` has a missing component | Install `com.unity.inputsystem` 1.14.2 through Package Manager. Inspector/API generation does not depend on the sample UI. |
+| A GPU Player crashes from a path containing non-ASCII characters | For 2.0.0, use ASCII-only Player and model paths, or select CPU. |
 | *"No usable CUDA device"* | NVIDIA GPU was selected but no supported device or driver was found. Update the driver or explicitly select CPU in Full. |
 | The Face Animator says the selected backend cannot run | Open the matching preflight check; a CPU failure does not imply a GPU requirement. |
 | The Face Animator shows **"The model files have not been synced yet"** | Run **Tools → AudioFaceAnimator → Sync StreamingAssets** and press **Copy All Files**. Until that finishes there is nothing to read an edition out of either, which is why the banner does not name one. |
@@ -720,10 +806,11 @@ by a generic one — the first is the useful one.
 
 ### Diagnostic log
 
-When the console is not conclusive, the plugin can write its own and the native
-SDK's output to a file — the only way to diagnose a failure on someone else's
-machine, since the Unity console never sees what the SDK prints and a player
-build has nowhere to put it. Off by default.
+For **CPU**, use Unity Console, `Editor.log` or `Player.log`, plus
+**Checks > CPU → Copy report** for the latest CPU operation, timings and error.
+
+The file logger below is for **NVIDIA GPU in Full**. It captures native SDK
+output that is not forwarded to the Unity console and is off by default.
 
 ![The Diagnostic Log foldout in the TensorRT Engine window: a note on what the log contains, an unticked "Write a log file" checkbox, a Level dropdown set to Debug, the current log file path, and Change and Show buttons](/audio-face-animator/docs/img/tensorrt-diagnostic-log.png){: width="610" height="117"}
 
@@ -746,16 +833,16 @@ NativeLog.Disable();
 
 The default file is
 `%USERPROFILE%\AppData\LocalLow\<company>\<product>\DevEloop\AudioFaceAnimator\audio-face-animator.log`.
-Every line is flushed as it is written, so the log survives a crash. In a player
-build, `Player.log` beside it carries everything the plugin logged, including the
-engine-build progress.
+Every line is flushed as it is written, so the log survives a crash. Unity's
+`Player.log` also carries the plugin's managed logs, including engine-build progress.
 
 ## Support
 
 Press **Copy report** in the [preflight check](#preflight-check) and paste the
-result into your message: it carries the **GPU**, the **driver version**, the
-**Unity version**, the installed edition and every check's result, which is most
-of what a diagnosis needs. Add the **full console output** alongside it — the
+result into your message after selecting the affected backend. It carries the
+plugin and Unity versions, installed edition and displayed checks. CPU includes
+library information and the latest operation; NVIDIA GPU includes GPU, driver
+and engine information. Add the **full console output** alongside it — the
 messages identify the failure precisely, which makes most issues diagnosable at a
 glance. If neither is conclusive, turn on the diagnostic log, reproduce the
 failure and attach the file.

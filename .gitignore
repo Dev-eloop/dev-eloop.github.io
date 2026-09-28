@@ -8,5 +8,6 @@ how_to_set_ssh_key.txt
 # Local Jekyll preview output. GitHub Pages builds the site itself and resolves
 # its own gem versions, so the lockfile would only cause needless conflicts.
 _site/
+.stage4-site-preview/
 .jekyll-cache/
 Gemfile.lock

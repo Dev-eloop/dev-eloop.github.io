@@ -117,7 +117,8 @@
         The plugin analyses a speech recording and drives ARKit-compatible blendshapes on your
         character, producing synchronised mouth movement and facial expression. Everything is
         computed locally. CPU is the default in both editions, with no NVIDIA GPU required;
-        Full also includes an optional NVIDIA GPU backend. No connection is required.
+        Full also offers an optional NVIDIA GPU backend, which needs a separate TensorRT
+        installation. After setup, generation runs offline.
       </p>
       <p>
         Your character does not have to be named the ARKit way. The 52 shapes the model outputs
@@ -130,7 +131,7 @@
       <ul class="feature-grid">
         <li><b>Animation from audio files</b><span>Point it at a recording and generate a performance — no keyframing pass.</span></li>
         <li><b>NVIDIA Audio2Face</b><span>The real AI model, running locally inside Unity.</span></li>
-        <li><b>Fully offline</b><span>No internet connection required at any stage.</span></li>
+        <li><b>Offline generation</b><span>Audio stays on your machine; no cloud service or per-request fees.</span></li>
         <li><b>ARKit blendshapes</b><span>Works with the standard ARKit facial rig your character already uses.</span></li>
         <li><b>Saves AnimationClips</b><span>Output is a normal Unity clip — reuse, edit and blend it like any other.</span></li>
         <li><b>Editor and runtime</b><span>Both editions generate in the Editor; Full also generates in Windows x64 Players.</span></li>
@@ -151,7 +152,10 @@
         do this ahead of time. No GPU engine is built for CPU generation.
       </p>
       <p>
-        For optional NVIDIA GPU in Full, the first generation builds and caches a TensorRT
+        For optional NVIDIA GPU in Full, first install TensorRT 10.16.1.11 for Windows x64 / CUDA 12.9
+        separately, add its bin folder to PATH, and restart Unity and Unity Hub.
+        The <a href="/audio-face-animator/docs/#2-setup-tensorrt-engine">GPU setup guide</a> covers each step.
+        The first GPU generation then builds and caches a TensorRT
         engine matched to that GPU. In the Editor you can get it out of the way up front via
         <code>Tools &gt; AudioFaceAnimator &gt; Setup TensorRT Engine</code>, which shows your GPU
         and a progress bar. The same applies per machine in a shipped build: the first generation
@@ -169,7 +173,9 @@
         <li><b>Windows 10 or 11, 64-bit.</b></li>
         <li><b>CPU backend:</b> works without an NVIDIA GPU, CUDA or TensorRT installation.</li>
         <li><b>Optional NVIDIA GPU:</b> compute capability 7.5 or newer, a suitable driver (576 or newer recommended) and about 6 GB free VRAM.</li>
-        <li><b>About 3 GB of disk space</b>, and roughly the same again while the plugin copies its model files into StreamingAssets.</li>
+        <li><b>TensorRT for GPU only:</b> install version 10.16.1.11, Windows x64 / CUDA 12.9 separately. Downloading it requires an NVIDIA account. CUDA is bundled with Full.</li>
+        <li><b>Unity 6000.0 or newer.</b> The sample UI also needs Input System 1.14.2.</li>
+        <li><b>Imported asset size:</b> about 1.58 GiB Full or 0.78 GiB Lite, plus the synced model copy and Unity's Library. GPU use also needs space for TensorRT and its engine.</li>
         <li><b>A character model with ARKit blendshapes.</b></li>
       </ul>
 
@@ -292,8 +298,8 @@ addEventListener("load", () => {
   "operatingSystem": "Windows 10, Windows 11 (64-bit)",
   "processorRequirements": "Windows x64 CPU. Optional NVIDIA GPU backend in Full requires compute capability 7.5 or newer.",
   "memoryRequirements": "About 6 GB free VRAM for optional NVIDIA GPU generation",
-  "storageRequirements": "3 GB",
-  "softwareRequirements": "Unity 6000.0 or newer; NVIDIA driver only for optional NVIDIA GPU generation",
+  "storageRequirements": "About 1.58 GiB for the imported Full asset, plus synced model data, Unity Library and optional TensorRT/engine files",
+  "softwareRequirements": "Unity 6000.0 or newer; Input System 1.14.2 for sample UI; optional NVIDIA GPU requires a suitable driver and separate TensorRT 10.16.1.11 Windows x64 / CUDA 12.9",
   "image": "https://dev-eloop.github.io/img/383624.webp",
   "description": "A Unity plugin that runs the NVIDIA Audio2Face AI model locally to generate facial animation from audio files, driving ARKit-compatible blendshapes and saving the result as Unity AnimationClips. Works in the Editor and at runtime in Windows Standalone builds, fully offline.",
   "video": { "@id": "https://dev-eloop.github.io/audio-face-animator/#video-rig" },

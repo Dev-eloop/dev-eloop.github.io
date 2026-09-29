@@ -4,7 +4,7 @@ title: Audio Face Animator documentation
 description: Complete documentation for Audio Face Animator — the Unity plugin that generates ARKit facial animation from audio on your own machine, using the NVIDIA Audio2Face-3D SDK. Setup, character mapping, emotions, eyes and blinking, the scripting API and troubleshooting.
 parent: Audio Face Animator
 parent_url: /audio-face-animator/
-updated: 2026-09-28
+updated: 2026-09-29
 nav_blurb: generate lip-sync and facial animation for a Unity character from an audio file, with NVIDIA Audio2Face
 ---
 
@@ -90,10 +90,19 @@ under **Tools → AudioFaceAnimator**. Full also adds *Setup TensorRT Engine*.
 Editor startup when common platform or model checks fail, including a fresh
 import whose model files have not been synced.
 
+![Audio Face Animator 2.0.0 Preflight Check in Common mode: operating system, model files and Full edition checks passed; select CPU or NVIDIA GPU to check the backend](/audio-face-animator/docs/img/face-animator-preflight-check.png){: width="562" height="582"}
+
 Automatic startup checks common platform and model requirements. Select
 **Checks > CPU** for CPU libraries and model readiness; in Full, select
 **Checks > NVIDIA GPU** separately for driver, GPU memory and TensorRT engine.
 Opening CPU diagnostics does not load the ONNX session.
+
+![CPU preflight ready to generate: Windows, synced model files, Full edition and CPU libraries passed; no CPU operation has run yet, and CPU logging uses Unity Console and Editor.log](/audio-face-animator/docs/img/preflight-cpu-ready.png){: width="562" height="582"}
+
+Before the first CPU generation, **CPU operation** can show **UNKNOWN** with
+“No CPU operation has completed in this domain.” This is operation history,
+not a failed readiness check; the headline above can still say **Ready to
+generate animation**.
 
 <div class="table-scroll" markdown="1">
 
@@ -284,9 +293,11 @@ Add it to the character root and drag every mapper into **Blendshapes
 Configuration → Blends Mappers**. Any renderer whose mapper is not listed will
 not move.
 
-![The Face Animator component with its Blends Mappers list expanded, showing five Face Blends Mapper references](/audio-face-animator/docs/img/face-animator-blends-mappers.png){: width="513" height="276"}
-
 ## Generate animation in Editor
+
+[![The version 2.0.0 sample scene with Claire selected: the Inspector on the right shows Generation Backend set to CPU, five Blends Mappers, an assigned Audio Clip, CPU readiness and the Open CPU Preflight Check button](/audio-face-animator/docs/img/face-animator-inspector.png){: width="1918" height="951"}](/audio-face-animator/docs/img/face-animator-inspector.png)
+
+*The Face Animator Inspector is on the right. Open the image for full-size labels.*
 
 **Model Type** — which Audio2Face-3D model generates the animation: **Claire**,
 **James** or **Mark**. Each was trained on a different performer and produces a
@@ -339,6 +350,8 @@ Animator or Timeline on any platform Unity builds for. Three things to know:
   the rest.
 
 ### The sample scene
+
+[![James playing a generated CPU animation in the sample scene, with model and CPU backend selectors, Prewarm, Generate, Play, Stop, Release CPU and Browse controls](/audio-face-animator/docs/img/sample-scene.png){: width="1920" height="1080"}](/audio-face-animator/docs/img/sample-scene.png)
 
 `Assets/DevEloop/AudioFaceAnimator/Scenes/AudioFaceAnimator.unity` has all three
 characters set up, a model selector, generation controls and a file browser for

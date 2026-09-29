@@ -68,6 +68,8 @@ The Lite version has three generation limitations:
 Everything else — mapping, emotions, eyes, blinking, AnimationClip export — is
 the same in both.
 
+![Lite Face Animator with CPU selected, CPU readiness, and the orange banner explaining the five-second and Editor-only generation limits](/audio-face-animator/docs/img/face-animator-lite.png){: width="618" height="658"}
+
 If you own the full version and still see a five-second cap or an orange
 **⚠️ LITE VERSION** banner on the Face Animator, the model files did not arrive
 intact; see [Troubleshooting](#troubleshooting). The
@@ -168,9 +170,16 @@ are included in the asset; CUDA DLLs are bundled.
 The plugin does not download dependencies or edit `PATH` for you. Python, pip
 and a separate CUDA Toolkit are not required. Once installed, generation runs offline.
 
+![TensorRT setup with Manual installation instructions expanded, including the required version, PATH setup, restart and installation check](/audio-face-animator/docs/img/tensorrt-installation.png){: width="522" height="412"}
+
+*Expand Manual installation instructions for the setup steps. This example was
+captured on a machine where TensorRT was already installed.*
+
 **Tools → AudioFaceAnimator → Setup TensorRT Engine**, then **Build Engine for
 This GPU** — the preflight report links straight to it. Building can take a
 minute or longer, depending on the machine.
+
+![TensorRT 10.16.1.11 installation verified and GPU engine ready, with Download TensorRT, Check Installation, Rebuild Engine and Re-check controls](/audio-face-animator/docs/img/tensorrt-engine-setup.png){: width="522" height="412"}
 
 The engine is compiled from the `network.onnx` synced in step 1, because a
 compiled engine only loads on the GPU architecture it was built for. Leave *Build
@@ -293,11 +302,11 @@ Add it to the character root and drag every mapper into **Blendshapes
 Configuration → Blends Mappers**. Any renderer whose mapper is not listed will
 not move.
 
+![Blends Mappers expanded with five assigned Face Blends Mapper components on JamesModel](/audio-face-animator/docs/img/face-animator-blends-mappers.png){: width="428" height="175"}
+
 ## Generate animation in Editor
 
-[![The version 2.0.0 sample scene with Claire selected: the Inspector on the right shows Generation Backend set to CPU, five Blends Mappers, an assigned Audio Clip, CPU readiness and the Open CPU Preflight Check button](/audio-face-animator/docs/img/face-animator-inspector.png){: width="1918" height="951"}](/audio-face-animator/docs/img/face-animator-inspector.png)
-
-*The Face Animator Inspector is on the right. Open the image for full-size labels.*
+![Face Animator configured for James and CPU, with five Blends Mappers, male_intro Audio Clip, an emotion preset and CPU readiness](/audio-face-animator/docs/img/face-animator-inspector.png){: width="439" height="510"}
 
 **Model Type** — which Audio2Face-3D model generates the animation: **Claire**,
 **James** or **Mark**. Each was trained on a different performer and produces a
@@ -331,6 +340,8 @@ standard Unity `AnimationClip`, which must be saved **inside your project's
 `Assets` folder**. The button is only there while generated data exists, which
 means **before you leave Play mode** — leaving discards it.
 
+![Face Animator after successful CPU generation in Play mode: CPU context loaded, operation Succeeded, and Create AnimationClip available below Generate, Play and Stop](/audio-face-animator/docs/img/face-animator-generate-playmode.png){: width="439" height="693"}
+
 What lands in the clip: one curve per mapped blendshape per renderer, rotation
 curves for every driven bone (plus position curves only for bones some row
 actually offsets), the procedural blink, and the eye rotations if an Eyes
@@ -361,6 +372,11 @@ your machine, and a working reference for wiring the API to UI.
 For the sample's buttons, install **Input System** (`com.unity.inputsystem`
 1.14.2) through **Window → Package Manager**. Without it, the scene's
 `EventSystem` has a missing UI component and buttons may not respond.
+
+[![Package Manager showing Input System 1.14.2 installed under In Project; this capture also shows Unity's package signature warning](/audio-face-animator/docs/img/input-system-package-manager.png){: width="1191" height="610"}](/audio-face-animator/docs/img/input-system-package-manager.png)
+
+*Input System 1.14.2 in Package Manager. The capture also shows a package
+signature warning from this Editor; it does not demonstrate a clean signature check.*
 Generation through the Face Animator Inspector or API works independently of
 this sample UI dependency.
 

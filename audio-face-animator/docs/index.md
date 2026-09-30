@@ -68,7 +68,7 @@ The Lite version has three generation limitations:
 Everything else — mapping, emotions, eyes, blinking, AnimationClip export — is
 the same in both.
 
-![Lite Face Animator with CPU selected, CPU readiness, and the orange banner explaining the five-second and Editor-only generation limits](/audio-face-animator/docs/img/face-animator-lite.png){: width="618" height="658"}
+![Lite Face Animator with CPU selected, CPU readiness, and the orange banner explaining the five-second and Editor-only generation limits](/audio-face-animator/docs/img/face-animator-lite.png){: width="625" height="658"}
 
 If you own the full version and still see a five-second cap or an orange
 **⚠️ LITE VERSION** banner on the Face Animator, the model files did not arrive
@@ -99,7 +99,7 @@ Automatic startup checks common platform and model requirements. Select
 **Checks > NVIDIA GPU** separately for driver, GPU memory and TensorRT engine.
 Opening CPU diagnostics does not load the ONNX session.
 
-![CPU preflight ready to generate: Windows, synced model files, Full edition and CPU libraries passed; no CPU operation has run yet, and CPU logging uses Unity Console and Editor.log](/audio-face-animator/docs/img/preflight-cpu-ready.png){: width="562" height="582"}
+![CPU preflight ready to generate: Windows, synced model files, Full edition and CPU libraries passed; no CPU operation has run yet, and CPU logging uses Unity Console and Editor.log](/audio-face-animator/docs/img/preflight-cpu-ready.png){: width="570" height="582"}
 
 Before the first CPU generation, **CPU operation** can show **UNKNOWN** with
 “No CPU operation has completed in this domain.” This is operation history,
@@ -302,7 +302,7 @@ Add it to the character root and drag every mapper into **Blendshapes
 Configuration → Blends Mappers**. Any renderer whose mapper is not listed will
 not move.
 
-![Blends Mappers expanded with five assigned Face Blends Mapper components on JamesModel](/audio-face-animator/docs/img/face-animator-blends-mappers.png){: width="428" height="175"}
+![Blends Mappers expanded with five assigned Face Blends Mapper components on JamesModel](/audio-face-animator/docs/img/face-animator-blends-mappers.png){: width="428" height="170"}
 
 ## Generate animation in Editor
 
@@ -373,7 +373,7 @@ For the sample's buttons, install **Input System** (`com.unity.inputsystem`
 1.14.2) through **Window → Package Manager**. Without it, the scene's
 `EventSystem` has a missing UI component and buttons may not respond.
 
-[![Package Manager showing Input System 1.14.2 installed under In Project; this capture also shows Unity's package signature warning](/audio-face-animator/docs/img/input-system-package-manager.png){: width="1191" height="610"}](/audio-face-animator/docs/img/input-system-package-manager.png)
+[![Package Manager showing Input System 1.14.2 installed under In Project; this capture also shows Unity's package signature warning](/audio-face-animator/docs/img/input-system-package-manager.png){: width="1194" height="668"}](/audio-face-animator/docs/img/input-system-package-manager.png)
 
 *Input System 1.14.2 in Package Manager. The capture also shows a package
 signature warning from this Editor; it does not demonstrate a clean signature check.*

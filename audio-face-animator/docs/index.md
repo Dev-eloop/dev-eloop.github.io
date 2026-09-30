@@ -4,17 +4,13 @@ title: Audio Face Animator documentation
 description: Complete documentation for Audio Face Animator — the Unity plugin that generates ARKit facial animation from audio on your own machine, using the NVIDIA Audio2Face-3D SDK. Setup, character mapping, emotions, eyes and blinking, the scripting API and troubleshooting.
 parent: Audio Face Animator
 parent_url: /audio-face-animator/
-updated: 2026-09-29
+updated: 2026-09-30
 nav_blurb: generate lip-sync and facial animation for a Unity character from an audio file, with NVIDIA Audio2Face
 ---
 
-**Audio Face Animator** generates facial animation from audio using the **NVIDIA
-Audio2Face-3D** model, driving any character with **ARKit-compatible
-blendshapes**. Everything runs on your own machine — no cloud service, no
-API key and no per-request cost. **This guide covers version 2.0.0.** CPU
-generation is the default in both editions and needs no NVIDIA account or GPU.
-Full also offers NVIDIA GPU generation: CUDA is bundled, but TensorRT must be
-installed separately. Downloading that optional dependency requires an NVIDIA account.
+**Audio Face Animator** turns speech into facial animation for characters with
+ARKit-compatible blendshapes. It uses the **NVIDIA Audio2Face-3D** model and
+runs locally, with CPU generation available by default.
 
 A performance can carry an **emotion**, the eyes can be driven from the rig's own
 eye bones, and the character **blinks** on its own. Individual ARKit shapes can
@@ -31,7 +27,7 @@ CPU checks do not require an NVIDIA GPU or build a TensorRT engine.
 | Requirement | Minimum |
 |---|---|
 | **Platform** | Windows 10 / 11, 64-bit |
-| **CPU** | Default in Full and Lite; no NVIDIA GPU required |
+| **CPU** | 64-bit processor; generation speed depends on CPU performance |
 | **NVIDIA GPU** | Optional in Full only; compute capability 7.5 or newer and about 6 GB free VRAM |
 | **NVIDIA GPU driver** | GPU backend only: recent enough for CUDA 12.9; version 576 or newer recommended |
 | **TensorRT** | GPU backend only: separate TensorRT 10.16.1.11 Windows x64 / CUDA 12.9 installation |
@@ -199,20 +195,6 @@ changes. **Clear Built Engine Cache** in the same window forces a rebuild.
 
 In a standalone build the first GPU generation call builds the engine on each
 player's machine, after the same external TensorRT installation is available.
-
-### Updating from an older Lite installation
-
-Back up the project and keep your own scenes, prefabs and baked clips outside
-the package folder. Before importing Lite 2.0.0, remove the old
-`Assets/DevEloop/AudioFaceAnimator/Plugins` folder: Unity package import does
-not remove obsolete GPU DLLs. The new Lite import restores its three plugins.
-Remove old GPU-only `trt_info.json` files from the package's StreamingAssets
-folder and `Assets/StreamingAssets/DevEloop/AudioFaceAnimator`, preserving any
-custom files separately. Run **Sync StreamingAssets → Copy All Files**.
-
-Existing scenes can retain **NVIDIA GPU** as their saved backend. Select
-**CPU** on each affected Face Animator, run **Checks > CPU**, then generate a
-short clip. New components and the sample scene default to CPU.
 
 ## Preparing your character
 

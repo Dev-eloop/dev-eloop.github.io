@@ -342,6 +342,30 @@
       <span class="price">€9.19</span>
     </div>
   </li>
+  <li class="card reveal" id="gesture-animations-pack" data-type="pack" data-free="false">
+    <div class="thumb" style="--c1:hsl(176 62% 34%);--c2:hsl(214 66% 42%)">
+      <span class="mono" aria-hidden="true">GA</span>
+      <img src="img/418452.webp" alt="Gesture Animations Pack cover art"
+            decoding="async" onerror="this.closest('.thumb').classList.add('no-img');this.remove()"><button class="play" type="button" data-video="mJGOaxAVQ0A"
+               aria-label="Watch the Gesture Animations Pack video">
+         <span><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+       </button>
+    </div>
+    <div class="card-body">
+      <div class="kicker"><span class="cat">3D Animations</span></div>
+      <h3><a href="https://assetstore.unity.com/packages/slug/418452" target="_blank" rel="noopener">Gesture Animations Pack</a></h3>
+      <p>17 hand gestures for Humanoid characters — thumbs up, pointing, heart, OK, facepalm and more — as masked clips that play over any animation, plus full-body sitting and standing takes.</p>
+      <ul class="tags"><li>Humanoid</li><li>Gestures</li><li>NPC</li><li>Avatar Masks</li></ul>
+    </div>
+    <div class="card-foot">
+      <a class="btn btn-primary" href="https://assetstore.unity.com/packages/slug/418452" target="_blank" rel="noopener">
+        View on Asset Store
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="gesture-animations-pack/docs/">Docs</a>
+      <span class="price">€9.19</span>
+    </div>
+  </li>
       </ul>
     </div>
   </section>
@@ -402,7 +426,7 @@
 
 <script>
 /* ==========================================================================
-   The 12 asset cards are static HTML in the markup above — this script only
+   The 13 asset cards are static HTML in the markup above — this script only
    enhances them. It never creates or destroys a card.
 
    Why: crawlers that don't run JavaScript (and most AI crawlers don't) used to
@@ -636,7 +660,7 @@ addEventListener("hashchange", () => {
     {
       "@type": "ItemList",
       "name": "DevEloop assets on the Unity Asset Store",
-      "numberOfItems": 12,
+      "numberOfItems": 13,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -805,6 +829,19 @@ addEventListener("hashchange", () => {
             "publisher": { "@id": "https://dev-eloop.github.io/#org" },
             "image": "https://dev-eloop.github.io/img/380536.webp",
             "description": "Import animations from FBX files directly at runtime — or in the Editor — and convert them into Unity AnimationClips."
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 13,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "Gesture Animations Pack",
+            "url": "https://assetstore.unity.com/packages/slug/418452",
+            "genre": "3D Animations",
+            "creator": { "@id": "https://dev-eloop.github.io/#org" },
+            "image": "https://dev-eloop.github.io/img/418452.webp",
+            "description": "17 hand gestures for Humanoid characters — thumbs up, pointing, heart, OK, facepalm and more — as masked clips that play over any animation, plus full-body sitting and standing takes."
           }
         }
       ]

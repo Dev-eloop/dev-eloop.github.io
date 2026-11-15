@@ -93,6 +93,21 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-ZS2M22J91N');
+
+    /* Every click on an Asset Store link is sent as `store_click`, so the step that
+       matters — from this site to the shop — can be counted. `asset_slug` names
+       the package, `placement` where the link sat — its `data-placement`, else
+       "card" on a home-page card or "link" anywhere else. Same snippet on every page. */
+    document.addEventListener("click", function(e){
+      var a = e.target.closest && e.target.closest('a[href*="assetstore.unity.com"]');
+      if (!a) return;
+      var m = a.href.match(/slug\/(\d+)/);
+      gtag('event', 'store_click', {
+        asset_slug: m ? m[1] : '',
+        placement: a.dataset.placement || (a.closest('.card') ? 'card' : 'link'),
+        link_url: a.href
+      });
+    });
   </script>
 
   <script>
@@ -141,6 +156,23 @@
     </nav>
     <h1>{{ page.title }}</h1>
     {% if page.lead %}<p class="page-lead">{{ page.lead }}</p>{% endif %}
+    {% comment %}
+      Buy links. Readers arrive here from search, often by a product query, so the
+      shop has to be one click away rather than behind the home-page card.
+      `store:` in the front matter is a list; the first entry is the paid edition
+      and gets the primary button, a second one (a free Lite) the ghost button.
+      `label` defaults to the same wording as the home-page cards.
+    {% endcomment %}
+    {% if page.store %}{% capture store_buttons %}
+      {% for s in page.store %}
+      <a class="btn {% if forloop.first %}btn-primary{% else %}btn-ghost{% endif %}" href="{{ s.url }}" target="_blank" rel="noopener" data-placement="PLACEMENT">
+        {{ s.label | default: "View on Asset Store" }}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+      </a>
+      {% endfor %}
+    {% endcapture %}
+    <div class="cta-row doc-cta">{{ store_buttons | replace: "PLACEMENT", "hero" }}</div>
+    {% endif %}
   </div>
 </header>
 
@@ -157,6 +189,14 @@
 
       <div class="doc-body">
         {{ content }}
+
+        {% if page.store %}
+        <!-- A reader who got to the end has read enough to decide. -->
+        <aside class="doc-store" aria-label="Get it on the Asset Store">
+          <p class="doc-store-head">Get {{ page.parent | escape }} on the Unity Asset Store</p>
+          <div class="cta-row">{{ store_buttons | replace: "PLACEMENT", "end" }}</div>
+        </aside>
+        {% endif %}
 
         <!-- Every documentation page links to every other one. Two reasons: a
              reader who found one plugin's guide is a plausible customer for the

@@ -610,6 +610,16 @@
     /* Cross-links to the other documentation pages, appended to every doc page by
        `_layouts/doc.html`. Set apart from the prose by a rule rather than a card,
        because it is an appendix to the document, not another section of it. */
+    /* Buy links on documentation pages: under the title, and again after the prose. */
+    .doc-cta{margin-top:22px}
+    .doc-store{
+      margin:48px 0 0;padding:22px 24px;
+      background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .doc-store-head{margin:0;font-weight:700;color:var(--text)}
+    .doc-store .cta-row{margin-top:14px}
+
     .doc-more{margin:56px 0 0;padding-top:26px;border-top:1px solid var(--border)}
     .doc-more h2{font-size:1.05rem;margin:0 0 12px;letter-spacing:.01em}
     .doc-more ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}

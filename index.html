@@ -26,6 +26,21 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-ZS2M22J91N');
+
+    /* Every click on an Asset Store link is sent as `store_click`, so the step that
+       matters — from this site to the shop — can be counted. `asset_slug` names
+       the package, `placement` where the link sat — its `data-placement`, else
+       "card" on a home-page card or "link" anywhere else. Same snippet on every page. */
+    document.addEventListener("click", function(e){
+      var a = e.target.closest && e.target.closest('a[href*="assetstore.unity.com"]');
+      if (!a) return;
+      var m = a.href.match(/slug\/(\d+)/);
+      gtag('event', 'store_click', {
+        asset_slug: m ? m[1] : '',
+        placement: a.dataset.placement || (a.closest('.card') ? 'card' : 'link'),
+        link_url: a.href
+      });
+    });
   </script>
 
   <script>

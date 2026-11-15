@@ -6,6 +6,11 @@ parent: Animation Recorder
 parent_url: /#animation-recorder
 og_image: /img/284862.webp
 nav_blurb: record transform and blendshape animation in the Editor or at runtime, and save it as an AnimationClip, FBX or GLB
+store:
+  - url: https://assetstore.unity.com/packages/slug/284862
+    label: Get Animation Recorder
+  - url: https://assetstore.unity.com/packages/slug/285804
+    label: Try Animation Recorder Lite — free
 ---
 
 **Animation Recorder** captures what a character actually does in your scene —

@@ -8,6 +8,8 @@ parent: Movement Fingers Aligner
 parent_url: /#movement-fingers-aligner
 og_image: /img/308721.webp
 nav_blurb: fix retargeted and VR-tracked finger poses on a live rig, every frame
+store:
+  - url: https://assetstore.unity.com/packages/slug/308721
 ---
 
 The **Movement Fingers Aligner** plugin adjusts the rotations of a character's

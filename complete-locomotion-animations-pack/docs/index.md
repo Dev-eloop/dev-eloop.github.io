@@ -8,6 +8,8 @@ parent: Complete Locomotion Animations Pack
 parent_url: /#complete-locomotion-animations-pack
 og_image: /img/347820.webp
 nav_blurb: walk and run cycles, starts, stops, turns and jumps with root motion, plus the transition timings that keep the feet planted
+store:
+  - url: https://assetstore.unity.com/packages/slug/347820
 ---
 
 **Complete Locomotion Animations Pack** is 33 full-body motion-capture animations

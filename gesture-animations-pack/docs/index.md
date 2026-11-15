@@ -8,6 +8,8 @@ parent: Gesture Animations Pack
 parent_url: /#gesture-animations-pack
 og_image: /img/418452.webp
 nav_blurb: layer 17 hand gestures over any Humanoid animation, or use the full-body sitting and standing takes
+store:
+  - url: https://assetstore.unity.com/packages/slug/418452
 ---
 
 **Gesture Animations Pack** gives a Humanoid character 17 hand gestures — thumbs

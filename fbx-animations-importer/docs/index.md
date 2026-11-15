@@ -8,6 +8,8 @@ parent: FBX Animations Importer
 parent_url: /#fbx-animations-importer
 og_image: /img/380536.webp
 nav_blurb: load animations out of FBX files at runtime and turn them into playable AnimationClips
+store:
+  - url: https://assetstore.unity.com/packages/slug/380536
 ---
 
 The **FBX Animations Importer** plugin loads animation data directly from FBX

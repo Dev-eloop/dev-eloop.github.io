@@ -6,6 +6,11 @@ parent: Audio Face Animator
 parent_url: /audio-face-animator/
 updated: 2026-09-30
 nav_blurb: generate lip-sync and facial animation for a Unity character from an audio file, with NVIDIA Audio2Face
+store:
+  - url: https://assetstore.unity.com/packages/slug/383624
+    label: Get Audio Face Animator
+  - url: https://assetstore.unity.com/packages/slug/383626
+    label: Try Audio Face Animator Lite — free
 ---
 
 **Audio Face Animator** turns speech into facial animation for characters with

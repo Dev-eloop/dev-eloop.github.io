@@ -8,6 +8,8 @@ parent: FBX Runtime Exporter
 parent_url: /#fbx-runtime-exporter
 og_image: /img/313666.webp
 nav_blurb: export meshes, skinning, blendshapes, materials, terrain and animation from a scene to FBX
+store:
+  - url: https://assetstore.unity.com/packages/slug/313666
 ---
 
 The **FBX Runtime Exporter** plugin allows you to seamlessly export objects from
